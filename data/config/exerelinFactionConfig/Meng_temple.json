@@ -1,0 +1,49 @@
+{
+    "playableFaction":true,
+    "corvusCompatible":true,
+    
+    "rebelFleetSuffix":"狂信徒",
+    
+    "directoryUseShortName":true,
+
+    "startRelationships":{ "luddic_church":-0.4, "tritachyon": -0.4,"independent":+0.6},
+    "diplomacyPositiveChance":{ "independent":2 },
+    "diplomacyNegativeChance":{ "independent":0.1 },
+    "morality":"neutral",
+    "diplomacyTraits":["helps_allies", "irredentist", "foreverwar", "likes_ai", "lowprofile"],
+    "alignments":{
+        "corporate":0.5,
+        "technocratic":1,
+        #"militarist":0.5,
+        "ideological":1,
+    },
+    
+    
+    "startShipsSolo":[["Meng_fire_arsonist_Standard"]],
+    "startShipsCombatSmall":[
+      ["Meng_fire_arsonist_Standard", "Meng_fire_firesmoke_Standard", "Meng_fire_firewood_Attack"]
+    ],
+    
+    "startShipsCarrierSmall":[["Meng_fire_redfeather_Standard", "Meng_fire_arsonist_Standard","Meng_fire_endless_variant"]],
+	
+	"startShipsSuper":[
+        ["Meng_Yuanzhi_variant"],
+    ],
+    
+    "startSpecialItems":[
+        
+    ],
+	
+	"bonusSeeds": [
+    {"id": "nanoforge_pristine", "count": 1},
+    {"id": "aiCore_station", "count": 2, "mult": 0.2},
+    {"id": "aiCore_military", "mult": 0.25},
+    {"id": "aiCore_heavyindustry", "count": 1},
+    {"id": "aiCore_any", "mult": 2.5},
+	],
+  
+
+    "defenceStations": [
+    {"ids": ["orbitalstation_high", "battlestation_high", "starfortress_high"]},
+    ],
+}

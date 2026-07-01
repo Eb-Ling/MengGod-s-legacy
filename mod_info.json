@@ -1,0 +1,28 @@
+{
+	"id":"Meng",
+	"name":"神之遗卷",
+	"author":"Mengmeng",
+	"version":"1.1.4",
+	"description":"如果真的存在所谓的神明，它将带来的是救赎，亦或者是毁灭？这是一个被埋藏在历史中的故事，更是一个被无数次轮回选中的未来。本Mod包含数条故事线、特殊赏金和势力：余烬圣殿。",
+	"gameVersion":"0.98a-RC8",
+	"modPlugin":"data.scripts.Mengplugin",
+	"jars":["jars/Meng.jar"],
+	"dependencies": [
+        {
+            "id": "lw_lazylib",
+            "name": "LazyLib",
+        },
+        {
+            "id": "shaderLib",
+            "name": "ZZ GraphicsLib",
+        },
+    	{
+    		"id": "MagicLib",
+    		"name": "MagicLib",
+    	},
+		{
+            "id": "BoxUtil",
+            "name": "zz BoxUtil",
+        }
+    ],
+}

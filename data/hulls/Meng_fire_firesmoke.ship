@@ -1,0 +1,200 @@
+{
+  "hullName": "烟火",
+  "hullId": "Meng_fire_firesmoke",
+  "hullSize": "DESTROYER",
+  "spriteName": "graphics/Meng/ships/fire/Meng_fire_firesmoke.png",
+  "style": "Meng_Fire",
+  "height": 182,
+  "width": 178,
+  "center": [89, 91],
+  "collisionRadius": 117.5,
+  "shieldCenter": [0, 0],
+  "shieldRadius": 116,
+  "viewOffset": 0,
+  "builtInMods": [
+    "Meng_fire_core"
+  ],
+  "builtInWeapons": {
+    "WS0004": "Meng_fire_firesmoke_light"
+  },
+  "weaponSlots": [
+    {
+      "id": "WS0001",
+      "size": "MEDIUM",
+      "type": "BALLISTIC",
+      "mount": "HARDPOINT",
+      "arc": 10,
+      "angle": 0,
+      "locations": [84, -0]
+    },
+    {
+      "id": "WS0002",
+      "size": "MEDIUM",
+      "type": "BALLISTIC",
+      "mount": "TURRET",
+      "arc": 120,
+      "angle": 0,
+      "locations": [-25, 45]
+    },
+    {
+      "id": "WS0003",
+      "size": "MEDIUM",
+      "type": "BALLISTIC",
+      "mount": "TURRET",
+      "arc": 120,
+      "angle": -0,
+      "locations": [-25, -45]
+    },
+    {
+      "id": "WS0006",
+      "size": "SMALL",
+      "type": "MISSILE",
+      "mount": "HARDPOINT",
+      "arc": 20,
+      "angle": -0,
+      "locations": [25, -62]
+    },
+    {
+      "id": "WS0007",
+      "size": "SMALL",
+      "type": "MISSILE",
+      "mount": "HARDPOINT",
+      "arc": 20,
+      "angle": 0,
+      "locations": [25, 62]
+    },
+    {
+      "id": "WS0008",
+      "size": "SMALL",
+      "type": "COMPOSITE",
+      "mount": "HARDPOINT",
+      "arc": 20,
+      "angle": -0,
+      "locations": [52, -40]
+    },
+    {
+      "id": "WS0009",
+      "size": "SMALL",
+      "type": "COMPOSITE",
+      "mount": "HARDPOINT",
+      "arc": 20,
+      "angle": 0,
+      "locations": [52, 40]
+    },
+    {
+      "id": "WS0004",
+      "size": "LARGE",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 120,
+      "angle": 0,
+      "locations": [0, -0]
+    }
+  ],
+  "engineSlots": [
+    {
+      "location": [-89, 45],
+      "length": 51,
+      "width": 2,
+      "angle": 180,
+      "contrailSize": 2,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine"
+    },
+    {
+      "location": [-89, -45],
+      "length": 51,
+      "width": 2,
+      "angle": -180,
+      "contrailSize": 2,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine"
+    },
+    {
+      "location": [-51, 5],
+      "length": 59,
+      "width": 2,
+      "angle": 180,
+      "contrailSize": 2,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine"
+    },
+    {
+      "location": [-51, -5],
+      "length": 59,
+      "width": 2,
+      "angle": -180,
+      "contrailSize": 2,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine"
+    },
+    {
+      "location": [-89, 45],
+      "length": 39.5,
+      "width": 12,
+      "angle": 180,
+      "contrailSize": 12,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-51, 5],
+      "length": 39.5,
+      "width": 12,
+      "angle": 180,
+      "contrailSize": 12,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-51, -5],
+      "length": 39.5,
+      "width": 12,
+      "angle": 180,
+      "contrailSize": 12,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-89, -45],
+      "length": 39.5,
+      "width": 12,
+      "angle": 180,
+      "contrailSize": 12,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    }
+  ],
+  "bounds": [
+    -52.5, -7.5,
+    -60.5, -15,
+    -51, -20,
+    -59, -30,
+    -89, -32,
+    -88, -51,
+    -47, -65.5,
+    -61.5, -72,
+    -37.5, -73,
+    -43.5, -85.5,
+    -32, -80,
+    -18.5, -90,
+    26.5, -70,
+    64.5, -37,
+    91.5, -9.5,
+    91.5, 9.5,
+    64.5, 37,
+    26.5, 70,
+    -18.5, 90,
+    -32, 80,
+    -43.5, 85.5,
+    -37.5, 73,
+    -61.5, 72,
+    -47, 65.5,
+    -88, 51,
+    -89, 32,
+    -59, 30,
+    -51, 20,
+    -60.5, 15,
+    -52.5, 7.5
+  ]
+}

@@ -1,0 +1,146 @@
+{
+	# should be a copy of "combatSmall", minus variants that are annoying to fight in low numbers
+	# for example, no Hyperions or fast beam-based kiting loadouts, or ships with damper field
+	# 战船
+	"combatSmallForSmallFleet":{
+            "Meng_fire_arsonist_Standard":5,
+            "Meng_fire_firesmoke_Standard":5,
+			"Meng_fire_firewatch_attack":3,
+			"Meng_fire_firewood_Attack":4,
+			"Meng_fire_spark_Standard":3,
+			"Meng_fire_offlight_Standard":3,
+			"Meng_fire_redfeather_Standard":2,
+			"Meng_fire_fuse_Standard":0.5,
+			"Meng_fire_brandwing_Standard":2,
+	},
+	"combatSmall":{
+			"Meng_fire_brandwing_Standard":4,
+            "Meng_fire_firesmoke_Standard":5,
+			"Meng_fire_firewood_Attack":4,
+			"Meng_fire_spark_Standard":3,
+	},
+	"combatMedium":{
+			"Meng_fire_brandwing_Standard":2,
+			"Meng_fire_arsonist_Standard":3,
+            "Meng_fire_firesmoke_Standard":2,
+			"Meng_fire_redfeather_Standard":3,
+			"Meng_fire_firewatch_attack":3,
+			"Meng_fire_firewood_Attack":2,
+			"Meng_fire_spark_Standard":3,
+			"Meng_fire_endless_variant":3,
+	},
+	"combatLarge":{
+            "Meng_fire_arsonist_Standard":2,
+			"Meng_fire_offlight_Standard":3,
+			"Meng_fire_redfeather_Standard":2,
+			"Meng_fire_fuse_Standard":3,
+			"Meng_fire_endless_variant":3,
+			"Meng_fire_brandwing_Standard":2,
+			"Meng_fire_firelight_Standard":3,
+	},
+	"combatCapital":{
+			"Meng_fire_firelight_Standard":2,
+            "Meng_fire_offlight_Standard":3,
+			"Meng_fire_redfeather_Standard":2,
+			"Meng_fire_fuse_Standard":3,
+	},
+	
+	
+	# hybrid ships with good combat and cargo capacity  武装货船
+	"combatFreighterSmall":{
+		
+		
+	},
+	"combatFreighterMedium":{
+           
+	},
+	"combatFreighterLarge":{
+	},
+	
+	"civilianRandom":{
+            
+	},
+
+	# carriers 航母
+	"carrierSmall":{
+		
+            "Meng_fire_redfeather_Standard":10,
+			
+	},
+	"carrierMedium":{	
+            "Meng_fire_redfeather_Standard":6,
+         
+			
+	},
+	"carrierLarge":{
+            "Meng_fire_redfeather_Standard":6,
+ 
+	},
+
+	# phase ships 相位船
+	
+	"phaseSmall":{
+		
+	},
+	"phaseMedium":{
+				"Meng_fire_brandwing_Standard":6,
+	},
+	"phaseLarge":{
+				"Meng_fire_firelight_Standard":4,
+	},
+	"phaseCapital":{
+	},
+
+	# freighters and such 货船
+	"freighterSmall":{
+           "Meng_fire_StageFire_Standard":3,
+	},
+	"freighterMedium":{
+           "Meng_fire_StageFire_Standard":3,
+          
+	},
+	"freighterLarge":{
+           "Meng_fire_StageFire_Standard":3,
+	},
+	
+	"tankerSmall":{
+           
+	},
+	"tankerMedium":{
+			
+	},
+	"tankerLarge":{
+			
+	},
+	
+	"personnelSmall":{
+           
+	},
+	"personnelMedium":{
+		
+	},
+	"personnelLarge":{
+	},
+	
+	"linerSmall":{
+	},
+	"linerMedium":{
+		
+	},
+	"linerLarge":{
+	},
+	
+	# utility ships  多用途船
+	"tug":{
+	},
+	"crig":{
+	},
+	"utility":{
+	},
+	
+	"orbitalStationLowTech":{
+	},
+	
+	"battlestationLowTech":{
+	},
+}

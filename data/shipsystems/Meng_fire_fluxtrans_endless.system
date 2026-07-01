@@ -1,0 +1,28 @@
+{
+	"id":"Meng_fire_fluxtrans_endless",
+	"type":"STAT_MOD",
+	"aiType":"CUSTOM",
+	"aiScript":"data.shipsystems.scripts.ai.Meng_fire_fluxtrans_endlessAI",
+	"statsScript":"data.shipsystems.scripts.Meng_fire_fluxtrans_endless",
+	
+	#"engineGlowColor":[255,175,125,255],
+	#"engineGlowContrailColor":[100,165,255,25],
+	"engineGlowLengthMult":2,
+	"engineGlowWidthMult":1.25,
+	"engineGlowGlowMult":1.5,
+	
+	"flameoutOnImpactChance":0,
+
+	"clampTurnRateAfter":true,
+	"clampMaxSpeedAfter":false,
+
+	"useSound":"Meng_fire_start",
+	"loopSound":"Meng_fire_loop",
+	"outOfUsesSound":"engine_disabled",
+	
+	"aiHints":{
+		"activeSpeedIncrease":50,
+		"burstMovementPotential":0,
+		"averageSpeedIncrease":25,
+	}
+}

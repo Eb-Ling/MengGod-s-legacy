@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MengGL11Tool:jar">
+    <output-path>$PROJECT_DIR$/../../../../MengGL11Tool</output-path>
+    <root id="archive" name="MengGL11Tool.jar">
+      <element id="module-output" name="MengGL11Tool" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../starsector-core/lwjgl.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

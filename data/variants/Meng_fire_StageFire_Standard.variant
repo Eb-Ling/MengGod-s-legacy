@@ -1,0 +1,26 @@
+{
+    "displayName": "Standard",
+    "fluxCapacitors": 13,
+    "fluxVents": 0,
+    "goalVariant": true,
+    "hullId": "Meng_fire_StageFire",
+    "hullMods": [
+        "augmentedengines",
+        "expanded_cargo_holds",
+    ],
+    "permaMods": [],
+    "sMods": [],
+    "suppressedMods": [],
+    "variantId": "Meng_fire_StageFire_Standard",
+    "weaponGroups": [
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0005": "flak",
+            }
+        },
+    ],
+    "wings": [],
+    "modules": [],
+}

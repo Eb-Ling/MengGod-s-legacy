@@ -1,0 +1,341 @@
+package data.scripts.campaign.intel;
+
+
+import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.*;
+import com.fs.starfarer.api.campaign.econ.MarketAPI;
+import com.fs.starfarer.api.characters.FullName;
+import com.fs.starfarer.api.characters.PersonAPI;
+import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.impl.campaign.events.OfficerManagerEvent;
+import com.fs.starfarer.api.impl.campaign.fleets.FleetFactoryV3;
+import com.fs.starfarer.api.impl.campaign.fleets.FleetParamsV3;
+import com.fs.starfarer.api.impl.campaign.ids.Abilities;
+import com.fs.starfarer.api.impl.campaign.ids.Tags;
+import com.fs.starfarer.api.impl.campaign.intel.BaseIntelPlugin;
+import com.fs.starfarer.api.ui.SectorMapAPI;
+import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import com.fs.starfarer.api.util.Misc;
+import data.scripts.campaign.bar.Meng_protect_bar_event1;
+import data.scripts.campaign.bar.MengSearch;
+import data.scripts.campaign.bar.Meng_protect_bar_event2;
+import org.lazywizard.lazylib.MathUtils;
+import org.lwjgl.util.vector.Vector2f;
+import org.magiclib.plugins.MagicRenderPlugin;
+import org.magiclib.util.MagicFakeBeam;
+import org.magiclib.util.MagicRender;
+
+import java.awt.*;
+import java.util.Random;
+import java.util.Set;
+
+public class Meng_timefleetintel extends BaseIntelPlugin {
+    private final MarketAPI market;
+    private final String fleetFactionId;
+    private boolean init = false;
+    private SectorEntityToken orbitCenter = null;
+    private StarSystemAPI picker = null;
+    private CampaignFleetAPI target = null;
+    private PlanetAPI pick = null;
+    private float lefttime;
+
+    public Meng_timefleetintel(InteractionDialogAPI dialog) {
+        this.market = dialog.getInteractionTarget().getMarket();
+        this.fleetFactionId = "neutral";
+
+        setImportant(true);
+
+        spawnFleet();
+
+        setImportant(true);
+
+        Global.getSector().addScript(this);
+        if (dialog == null) {
+            Global.getSector().getIntelManager().addIntel(this, true);
+        } else {
+            Global.getSector().getIntelManager().addIntel(this, true, dialog.getTextPanel());
+        }
+    }
+
+    public static void backDoor() {
+        new Meng_protect_bar_event2();
+    }
+
+    @Override
+    public void advanceImpl(float amount) {
+        if (target == null) {
+            spawnFleet();
+            sendUpdateIfPlayerHasIntel(new Object(), false);
+        }
+        float days = Global.getSector().getClock().convertToDays(amount);
+        lefttime -= days;
+        boolean existCheck = target.isEmpty();
+        if (existCheck) {
+            if (!init) {
+                Global.getSoundPlayer().setSuspendDefaultMusicPlayback(false);
+                Global.getSoundPlayer().playCustomMusic(1,0,null,false);
+                MengSearch.setStage(MengSearch.MengStep.Meng_Step7);
+                sendUpdateIfPlayerHasIntel(new Object(), false);
+                Global.getSector().getPlayerFleet().getCargo().addHullmods("Meng_God_Timecontrol", 1);
+                init = true;
+            }
+            endAfterDelay();
+        }
+
+    }
+
+    private void spawnFleet() {
+        float d = 0f;
+        while (picker==null||pick==null) {
+            float dist = Math.max(10000f, (float) Math.random() * 50000f);
+
+            for (StarSystemAPI system : Global.getSector().getStarSystems()) {
+                if (system.hasPulsar()) continue;
+
+                float systemMult = 0f;
+                if (system.hasTag(Tags.THEME_MISC_SKIP)) {
+                    systemMult = 1f;
+                } else if (system.hasTag(Tags.THEME_MISC)) {
+                    systemMult = 3f;
+                } else if (system.hasTag(Tags.THEME_REMNANT_NO_FLEETS)) {
+                    systemMult = 3f;
+                } else if (system.hasTag(Tags.THEME_RUINS)) {
+                    systemMult = 5f;
+                } else if (system.hasTag(Tags.THEME_REMNANT_DESTROYED)) {
+                    systemMult = 3f;
+                } else if (system.hasTag(Tags.THEME_REMNANT_MAIN)) {
+                    systemMult = 0f;
+                } else if (system.hasTag(Tags.THEME_REMNANT_SECONDARY)) {
+                    systemMult = 0f;
+                } else if (system.hasTag(Tags.THEME_CORE_UNPOPULATED)) {
+                    systemMult = 0f;
+                }
+
+                for (MarketAPI market : Misc.getMarketsInLocation(system)) {
+                    if (market.isHidden()) continue;
+                    systemMult = 0f;
+                    break;
+                }
+
+                if (systemMult <= 0f) continue;
+
+
+                for (PlanetAPI planet : system.getPlanets()) {
+                    if (planet.isStar()) continue;
+
+                    if (planet.getOrbitFocus() != null && MathUtils.getDistance(planet, planet.getOrbitFocus()) < 500f)
+                        continue;
+                    if (planet.getMarket() == null || !planet.getMarket().isPlanetConditionMarketOnly()) continue;
+                    if (Vector2f.sub(system.getLocation(), Global.getSector().getPlayerFleet().getLocation(), new Vector2f()).length() >= d && d <= dist) {
+                        d = Vector2f.sub(system.getLocation(), Global.getSector().getPlayerFleet().getLocation(), new Vector2f()).length();
+                        picker = system;
+                        pick = planet;
+                    }
+
+                }
+            }
+        }
+
+        FleetParamsV3 params = new FleetParamsV3(
+                null,
+                null,
+                fleetFactionId,
+                null,
+                "时间之外的旅者",
+                200f,
+                100f,
+                100f,
+                0f,
+                0f,
+                0f,
+                2f
+        );
+
+        params.random = new Random();
+        params.officerLevelBonus = 3;
+        params.officerNumberBonus = 20;
+        params.averageSMods = 2;
+        params.ignoreMarketFleetSizeMult = true;
+
+        target = FleetFactoryV3.createFleet(params);
+        target.setTransponderOn(false);
+        Misc.makeImportant(target, "interception");
+
+        FleetMemberAPI member = target.getFleetData().addFleetMember("astral_Attack");
+        member.getRepairTracker().setCR(1f);
+        PersonAPI officer = OfficerManagerEvent.createOfficer(getFactionForUIColors(), 7, FleetFactoryV3.getSkillPrefForShip(member), false, target, true, true, 4, params.random);
+        member.setCaptain(officer);
+        member = target.getFleetData().addFleetMember("paragon_Elite");
+        member.getRepairTracker().setCR(1f);
+        officer = OfficerManagerEvent.createOfficer(getFactionForUIColors(), 7, FleetFactoryV3.getSkillPrefForShip(member), false, target, true, true, 4, params.random);
+        member.setCaptain(officer);
+        member = target.getFleetData().addFleetMember("odyssey_Balanced");
+        member.getRepairTracker().setCR(1f);
+        officer = OfficerManagerEvent.createOfficer(getFactionForUIColors(), 7, FleetFactoryV3.getSkillPrefForShip(member), false, target, true, true, 4, params.random);
+        member.setCaptain(officer);
+        member = target.getFleetData().addFleetMember("aurora_Assault");
+        member.getRepairTracker().setCR(1f);
+        officer = OfficerManagerEvent.createOfficer(getFactionForUIColors(), 7, FleetFactoryV3.getSkillPrefForShip(member), false, target, true, true, 4, params.random);
+        member.setCaptain(officer);
+        member = target.getFleetData().addFleetMember("doom_Strike");
+        member.getRepairTracker().setCR(1f);
+        officer = OfficerManagerEvent.createOfficer(getFactionForUIColors(), 7, FleetFactoryV3.getSkillPrefForShip(member), false, target, true, true, 4, params.random);
+        member.setCaptain(officer);
+
+        member = target.getFleetData().addFleetMember("hyperion_Attack");
+        member.getRepairTracker().setCR(1f);
+        officer = OfficerManagerEvent.createOfficer(getFactionForUIColors(), 7, FleetFactoryV3.getSkillPrefForShip(member), false, target, true, true, 4, params.random);
+        member.setCaptain(officer);
+
+        member = target.getFleetData().addFleetMember("hyperion_Attack");
+        member.getRepairTracker().setCR(1f);
+        officer = OfficerManagerEvent.createOfficer(getFactionForUIColors(), 7, FleetFactoryV3.getSkillPrefForShip(member), false, target, true, true, 4, params.random);
+        member.setCaptain(officer);
+
+        member = target.getFleetData().addFleetMember("Meng_timeboss_variant");
+        member.getVariant().addTag("no_autofit");
+        member.getVariant().addTag(Tags.VARIANT_ALWAYS_RECOVERABLE);
+        member.getRepairTracker().setCR(1f);
+
+        PersonAPI Meng = OfficerManagerEvent.createOfficer(getFactionForUIColors(), 14, FleetFactoryV3.getSkillPrefForShip(member), false, target, true, false, 4, params.random);
+        Meng.setPortraitSprite(Global.getSettings().getSpriteName("intel", "MouMeng_Black"));
+        params.commander = Meng;
+
+        orbitCenter = picker.getCenter();
+        target.getFleetData().sort();
+
+        target.getFleetData().setFlagship(member);
+        target.setCommander(Meng);
+        target.getCommander().setName(new FullName("Mengmeng", "", FullName.Gender.FEMALE));
+        target.getFleetData().addOfficer(Meng);
+        target.getFlagship().setCaptain(Meng);
+
+
+        target.getMemoryWithoutUpdate().set("$Meng_timeFleet", true);
+
+
+        target.removeAbility(Abilities.SENSOR_BURST);
+        target.removeAbility(Abilities.INTERDICTION_PULSE);
+
+        LocationAPI location = pick.getContainingLocation();
+        location.addEntity(target);
+        target.setLocation(pick.getLocation().x, pick.getLocation().y);
+        target.getAI().addAssignment(FleetAssignment.ORBIT_PASSIVE, pick, 1000000f, null);
+
+
+    }
+
+    @Override
+    public boolean runWhilePaused() {
+        return false;
+    }
+
+    @Override
+    protected void addBulletPoints(TooltipMakerAPI info, ListInfoMode mode, boolean isUpdate, Color tc, float initPad) {
+        Color h = Misc.getHighlightColor();
+        Color g = Misc.getGrayColor();
+        float pad = 3f;
+        float opad = 10f;
+
+        if (mode == ListInfoMode.IN_DESC) initPad = opad;
+        FactionAPI faction = getFactionForUIColors();
+
+        bullet(info);
+        if (isUpdate) {
+
+            info.addPara("圣殿赠送了你新的船插。", initPad, tc, h, picker != null ? picker.getName() : "未知星系");
+        } else {
+            if (isEnding()) {
+                info.addPara("未知的神明，前方究竟藏着什么。", initPad, tc, h);
+                initPad = 0f;
+            } else {
+                if (mode != ListInfoMode.IN_DESC) {
+                    initPad = 0f;
+                }
+                if (picker != null) {
+                    info.addPara("星系位置", initPad, tc, h, picker.getName());
+                } else {
+                    info.addPara("正在定位目标星系...", initPad, tc, h);
+                }
+
+            }
+
+        }
+
+
+        unindent(info);
+
+    }
+
+    @Override
+    public void createIntelInfo(TooltipMakerAPI info, ListInfoMode mode) {
+        Color c = getTitleColor(mode);
+        info.addPara(getSmallDescriptionTitle(), c, 0f);
+        addBulletPoints(info, mode);
+    }
+
+    @Override
+    public String getSortString() {
+        return getSmallDescriptionTitle();
+    }
+
+    @Override
+    public String getSmallDescriptionTitle() {
+        if (isEnded() || isEnding()) {
+            return "圣殿组织浮出了水面。";
+        }
+        return "时间之外的旅者";
+    }
+
+    @Override
+    public String getName() {
+        return getSmallDescriptionTitle();
+    }
+
+    @Override
+    public FactionAPI getFactionForUIColors() {
+        return market.getFaction();
+    }
+
+
+    @Override
+    public void createSmallDescription(TooltipMakerAPI info, float width, float height) {
+        Color h = Misc.getHighlightColor();
+        Color g = Misc.getGrayColor();
+        Color tc = Misc.getTextColor();
+        float pad = 3f;
+        float opad = 10f;
+        float expad = 20f;
+
+        FactionAPI faction = getFactionForUIColors();
+        info.addImages(width, 80, opad, opad * 2f, "graphics/factions/Meng_embers_s.png");
+        if (isEnded() || isEnding()) {
+            info.addPara("你终结了这个失控的舰队，他们的意志似乎已经不再清醒...", opad, h, target.getContainingLocation().getName());
+        } else {
+            info.addPara("你记录下了任务位置，终结它，或者在无尽轮回中死去。", opad, h, target.getContainingLocation().getName());
+            // write your code gere
+        }
+    }
+
+    @Override
+    public String getIcon() {
+
+        return "graphics/factions/Meng_embers_s.png";
+    }
+
+    @Override
+    public Set<String> getIntelTags(SectorMapAPI map) {
+        Set<String> tags = super.getIntelTags(map);
+        tags.add(Tags.INTEL_STORY);
+        if (getFactionForUIColors() != null) {
+            tags.add(getFactionForUIColors().getId());
+        }
+
+        return tags;
+    }
+
+    @Override
+    public SectorEntityToken getMapLocation(SectorMapAPI map) {
+        return orbitCenter;
+    }
+}

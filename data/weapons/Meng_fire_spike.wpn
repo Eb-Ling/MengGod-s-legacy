@@ -1,0 +1,30 @@
+{
+	"id":"Meng_fire_spike",  # this id must match what's in the spreadsheet
+	"specClass":"projectile",
+	"type":"BALLISTIC",
+	"size":"LARGE",
+	"displayArcRadius":1200,
+	"turretSprite": "graphics/Meng/hullmods/meng_cover.png",
+    "turretGlowSprite": "graphics/Meng/hullmods/meng_cover.png",
+    "turretGunSprite": "graphics/Meng/hullmods/meng_cover.png",
+    "hardpointSprite": "graphics/Meng/hullmods/meng_cover.png",
+    "hardpointGlowSprite": "graphics/Meng/hullmods/meng_cover.png",
+    "hardpointGunSprite": "graphics/Meng/hullmods/meng_cover.png",
+	"glowColor":[200,120,200,255],
+	"turretOffsets":[25, 0],
+	"turretAngleOffsets":[0],
+	"hardpointOffsets":[25, 0],
+	"hardpointAngleOffsets":[0],
+	"barrelMode":"ALTERNATING", # or LINKED.  whether barrels fire at the same time or alternate.
+	"animationType":"GLOW_AND_FLASH",
+	"muzzleFlashSpec":{"length":100.0,
+					   "spread":5.0,
+					   "particleSizeMin":20.0,
+					   "particleSizeRange":20.0,
+					   "particleDuration":0.25,
+					   "particleCount":25,
+					   "particleColor":[200,120,200,255]},
+	"autocharge":true,  # whether the weapon will continue charging and fire if the LMB is tapped instead of held
+	"projectileSpecId":"Meng_fire_spike_proj",  # projectile that will be fired
+	"fireSoundTwo":"gauss_cannon_fire",
+}

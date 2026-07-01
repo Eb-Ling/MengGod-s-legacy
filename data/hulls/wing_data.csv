@@ -1,0 +1,4 @@
+id,variant,tags,tier,rarity,fleet pts,op cost,formation,range,attackRunRange,attackPositionOffset,num,role,role desc,refit,base value,number
+Meng_Xufighter_wing,Meng_Xufighter_variant,"no_drop,no_sell,support,high,merc,auto_fighter",2,,5,50,CLAW,1000,500,0,1,SUPPORT,终末之歌,30,6000,4400.21
+,,,,,,,,,,,,,,,,
+Meng_witness_wing,Meng_witness_variant,"fighter3, fighter, high, rare_bp, Meng_fire_fighter, auto_fighter",2,,6,12,CLAW,1000,200,200,3,SUPPORT,无人支援战斗机,6,10000,4400.51

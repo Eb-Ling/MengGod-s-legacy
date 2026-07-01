@@ -1,0 +1,43 @@
+{
+  "id": "Meng_Noname_Weapon",
+  "specClass": "beam",
+  "type": "ENERGY",
+  "size": "LARGE",
+  "collisionClass": "RAY",
+  "collisionClassByFighter": "RAY_FIGHTER",
+  "beamEffect": "data.weapons.Meng_Noname_WeaponTree",
+  "turretSprite": "graphics/weapons/Mercy_NoName_Weapon.png",
+  "hardpointSprite": "",
+  "glowColor": [
+     17, 248, 248, 255
+  ],
+  "hitGlowRadius": 80,
+  "turretOffsets": [
+    0,
+    0
+  ],
+  "turretAngleOffsets": [
+    0
+  ],
+  "hardpointOffsets": [
+    0,
+    0
+  ],
+  "hardpointAngleOffsets": [
+    0
+  ],
+  "fringeColor": [
+    17, 248, 248, 255
+  ],
+  "coreColor": [
+    17, 248, 248, 255
+  ],
+  "width": 48,
+  "textureType": [
+    "graphics/fx/empty.png",
+    "graphics/fx/Meng_Starproject_fringe.png"
+  ],
+  "pierceSet":[PROJECTILE_FF,PROJECTILE_NO_FF,PROJECTILE_FIGHTER,MISSILE_FF,MISSILE_NO_FF,FIGHTER],
+  "textureScrollSpeed": 32,
+  "pixelsPerTexel": 1
+}

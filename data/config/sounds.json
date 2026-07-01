@@ -1,0 +1,162 @@
+{
+"music":{
+
+		"Meng_Templebgm":[
+			{
+				"source":"sounds/Meng",
+				"volume":0.6,
+				"files":[
+					"Meng_Templebgm.ogg",
+				],
+				"randomStart":false,
+			},
+		],
+		"Meng_Embersbgm":[
+			{
+				"source":"sounds/Meng",
+				"volume":1,
+				"files":[
+					"Meng_Embersbgm.ogg",
+				],
+				"randomStart":false,
+			},
+		],
+		"Meng_Timebossbgm":[
+			{
+				"source":"sounds/Meng",
+				"volume":2,
+				"files":[
+					"Meng_Timebossbgm.ogg",
+				],
+				"randomStart":false,
+			},
+		],
+	},
+  "Meng_time_change": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_time_change.ogg", "pitch": 1, "volume": 1.0},
+    ],
+  },
+   "Meng_Starengine": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_Starengine.ogg", "pitch": 1, "volume": 1.0},
+    ],
+  },
+  "Meng_Dragonfire_X": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_Dragonfire_X.ogg", "pitch": 0.9, "volume": 1.5},
+    ],
+  },
+  "Meng_Dragonfire": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_Dragonfire.ogg", "pitch": 0.8, "volume": 0.4},
+    ],
+  },
+  "Meng_Dragonwing": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_Dragonwing.ogg", "pitch": 1.0, "volume": 1.0},
+    ],
+  },
+  "Meng_Dragonwing_c": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_Dragonwing_c.ogg", "pitch": 0.8, "volume": 0.8},
+    ],
+  },
+  "Meng_Cracksound": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_Cracksound.ogg", "pitch": 2, "volume": 0.6},
+    ],
+  },
+  "Meng_Space_fire":{
+	"sounds": [
+		{"file":"sounds/sfx_wpn_guns/hellbore_fire_01.ogg","pitch":2,"volume":1},
+	],
+  },
+  "Meng_fire_loop":{
+	"sounds": [
+		{"file":"sounds/Meng/Meng_fire_loop.ogg","pitch":1,"volume":0.7},
+	],
+  },
+  "Meng_fire_start":{
+	"sounds": [
+		{"file":"sounds/Meng/Meng_fire_start.ogg","pitch":1,"volume":1},
+	],
+  },
+   "Meng_missile_shot":{
+	"sounds": [
+		{"file":"sounds/Meng/Meng_missile_shot.ogg","pitch":0.5,"volume":0.2},
+	],
+  },
+   "Meng_largemissile_shot":{
+	"sounds": [
+		{"file":"sounds/Meng/Meng_missile_shot.ogg","pitch":0.6,"volume":0.5},
+	],
+  },
+  "Meng_Sunder_shot":{
+	"sounds": [
+		{"file":"sounds/Meng/Meng_Sunder_shot.ogg","pitch":1,"volume":0.7},
+	],
+  },
+  "Meng_Xusound":{
+	  "sounds":[
+	  {"file":"sounds/Meng/Meng_Xusound.ogg","pitch":1.0,"volume":1.5},
+	  ],
+  },
+  "Meng_Kongjian": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_Kongjian.ogg", "pitch": 1.5, "volume": 1.0},
+    ],
+  },
+  "Meng_Starproject_fire":{
+	"sounds": [
+		  {"file":"sounds/sfx_wpn_energy/kinetic_blaster_01.ogg","pitch":1.1,"volume":0.5},
+          {"file":"sounds/sfx_wpn_energy/kinetic_blaster_02.ogg","pitch":1.1,"volume":0.5},
+	],
+  },
+  "Meng_bossweapon": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_bossweapon.ogg", "pitch": 1, "volume": 1.0},
+    ],
+  },
+  "Meng_Kongjianweapon": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_Kongjianweapon.ogg", "pitch": 1, "volume": 0.6},
+    ],
+  },
+   "Meng_Starbeamsound": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_Starbeamsound.ogg", "pitch": 1, "volume": 1.0},
+    ],
+  },
+  "Meng_bossbgmic": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_bossbgmic.ogg", "pitch": 1, "volume": 1.0},
+    ],
+  },
+  "Meng_Starfalling1": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_Starfalling1.ogg", "pitch": 0.9, "volume": 2},
+    ],
+  },
+  "Meng_Dragonbiu": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_Dragonbiu.ogg", "pitch": 1.0, "volume": 0.4},
+    ],
+  },
+  "Meng_nclock": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_nclock.ogg", "pitch": 1.0, "volume": 1.0},
+    ],
+  },
+  "Meng_fclock": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_fclock.ogg", "pitch": 1.0, "volume": 1.0},
+    ],
+  },
+  "Meng_Xweaponmic": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_Xweapon.ogg", "pitch": 1, "volume": 1.0},
+    ],
+  }
+
+}

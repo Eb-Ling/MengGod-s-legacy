@@ -1,0 +1,51 @@
+{
+  "id": "Meng_Cracking",
+  "specClass": "projectile",
+  "projectileSpecId": "Meng_Crackingproj",
+  "type": "ENERGY",
+  "size": "LARGE",
+  "turretSprite": "graphics/weapons/Cracking_pulse.png",
+  "turretGlowSprite": "graphics/weapons/Cracking_pulse_fire.png",
+  "turretGunSprite": "graphics/weapons/Cracking_pulse.png",
+  "hardpointSprite": "graphics/weapons/Cracking_pulse_1.png",
+  "hardpointGlowSprite": "graphics/weapons/Cracking_pulse_1_fire.png",
+  "hardpointGunSprite": "graphics/weapons/Cracking_pulse_1.png",
+  "glowColor": [
+    100,
+    100,
+    255,
+    225
+  ],
+  "turretOffsets": [
+    17,
+    3
+  ],
+  "turretAngleOffsets": [
+    0
+  ],
+  "hardpointOffsets": [
+    39.5,
+    3
+  ],
+  "hardpointAngleOffsets": [
+    0
+  ],
+  "barrelMode": "ALTERNATING",
+  "animationType": "GLOW_AND_FLASH",
+  "autocharge": true,
+  "muzzleFlashSpec": {
+    "length": 20,
+    "spread": 6,
+    "particleSizeMin": 6,
+    "particleSizeRange": 8,
+    "particleDuration": 0.15,
+    "particleCount": 7,
+    "particleColor": [
+      255,
+      240,
+      165,
+      200
+    ]
+  },
+  "fireSoundTwo": "Meng_Cracksound"
+}

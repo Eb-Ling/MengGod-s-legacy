@@ -1,0 +1,66 @@
+{
+    "displayName": "Standard",
+    "fluxCapacitors": 1,
+    "fluxVents": 50,
+    "goalVariant": true,
+    "hullId": "Meng_fire_fuse",
+    "hullMods": [
+        "Meng_fire_Energy",
+        "Meng_fire_FluxEnhance",
+        "Meng_fire_TargetingCore",
+        "armoredweapons",
+        "hardenedshieldemitter",
+        "heavyarmor",
+    ],
+    "permaMods": [],
+    "sMods": [],
+    "suppressedMods": [],
+    "variantId": "Meng_fire_fuse_Standard",
+    "weaponGroups": [
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0001": "Meng_fire_firefly",
+                "WS0002": "Meng_fire_firefly",
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0010": "heatseeker",
+                "WS0009": "heatseeker",
+                "WS0008": "heatseeker",
+                "WS0007": "heatseeker",
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0013": "Meng_fire_spike",
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0012": "lightmg",
+                "WS0011": "lightmg",
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0003": "vulcan",
+                "WS0005": "vulcan",
+                "WS0004": "vulcan",
+                "WS0006": "vulcan",
+            }
+        },
+    ],
+    "wings": [],
+    "modules": [],
+}

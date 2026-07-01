@@ -1,0 +1,63 @@
+{
+  "variantId": "Meng_MouMengship_variant",
+  "hullId": "Meng_MouMengship",
+  "displayName": "星落",
+  "goalVariant": false,
+  "fluxCapacitors": 50,
+  "fluxVents": 28,
+  "quality": 1,
+  "permaMods": [],
+  "hullMods": [
+    "targetingunit",
+    "hardenedshieldemitter",
+    "heavyarmor",
+    "extendedshieldemitter"
+  ],
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0001": "ionbeam",
+        "WS0005": "lightneedler",
+        "WS0006": "lightneedler",
+        "WS0007": "vulcan",
+        "WS0008": "vulcan",
+        "WS0012": "Meng_Starbeam"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0002": "ionbeam"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "pdburst",
+        "WS0004": "pdburst",
+        "WS0010": "vulcan",
+        "WS0011": "heavyburst"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0009": "tachyonlance",
+        "WS0013": "Meng_Starbeam_m",
+        "WS0014": "Meng_Starbeam_m"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {}
+    }
+  ],
+  "modules": [],
+  "wings": []
+}

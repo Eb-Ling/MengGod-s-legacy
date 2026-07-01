@@ -1,0 +1,50 @@
+{
+  "variantId": "Meng_Xushu_variant",
+  "hullId": "Meng_Xushu",
+  "displayName": "虚伪之神",
+  "goalVariant": true,
+  "fluxCapacitors": 50,
+  "fluxVents": 41,
+  "quality": 1,
+  "permaMods": [],
+  "hullMods": [
+  ],
+  "weaponGroups": [
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0001": "riftcascade",
+        "WS0007": "Meng_Reality",
+        "WS0010": "Meng_Reality",
+        "WS0013": "riftlance",
+        "WS0014": "Meng_Reality",
+        "WS0015": "riftbeam",
+        "WS0016": "riftlance",
+        "WS0017": "Meng_Zero"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0002": "riftcascade",
+        "WS0005": "riftlance",
+        "WS0011": "riftlance",
+        "WS0012": "riftbeam"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "riftcascade",
+        "WS0004": "riftlance",
+        "WS0008": "riftlance",
+        "WS0009": "riftbeam"
+      }
+    }
+  ],
+  "modules": [],
+  "wings": []
+}

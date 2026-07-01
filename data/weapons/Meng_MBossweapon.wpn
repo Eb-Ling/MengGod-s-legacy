@@ -1,0 +1,52 @@
+{
+  "id": "Meng_MBossweapon",
+  "specClass": "beam",
+  "type": "ENERGY",
+  "size": "LARGE",
+  "collisionClass": "RAY",
+  "collisionClassByFighter": "RAY_FIGHTER",
+  "turretSprite": "graphics/Meng/ships/Shandie/Mercy_Morphidae_weapon.png",
+  "turretGunSprite": "graphics/Meng/ships/Shandie/Mercy_Morphidae_weapon.png",
+  "hardpointSprite": "",
+  "glowColor": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "hitGlowRadius": 0,
+  "turretOffsets": [
+    0,
+    0
+  ],
+  "turretAngleOffsets": [
+    0
+  ],
+  "hardpointOffsets": [
+    0,
+    0
+  ],
+  "hardpointAngleOffsets": [
+    0
+  ],
+  "fringeColor": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "coreColor": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "width": 48,
+  "textureType": [
+    "graphics/fx/empty.png",
+    "graphics/fx/Meng_MBoss_beam.png"
+  ],
+  "pierceSet":[PROJECTILE_FF,PROJECTILE_NO_FF,PROJECTILE_FIGHTER,MISSILE_FF,MISSILE_NO_FF],
+  "textureScrollSpeed": 128,
+  "pixelsPerTexel": 1
+}

@@ -1,0 +1,29 @@
+{
+  "hullName": "New Hull",
+  "hullId": "Meng_DragonLeftarmor1",
+  "hullSize": "FRIGATE",
+  "spriteName": "graphics/Meng/ships/Meng_Starkiller_Leftmodule1.png",
+  "style": "OMEGA",
+  "height": 68,
+  "width": 28,
+  "center": [14, 34],
+  "collisionRadius": 44.5,
+  "shieldCenter": [0, 0],
+  "shieldRadius": 44,
+  "viewOffset": 0,
+  "weaponSlots": [],
+  "engineSlots": [],
+  "bounds": [
+    32, 4.5,
+    -2, 13,
+    -12, -1.5,
+    -29, -1.5,
+    -33, -5,
+    -30, -8.5,
+    -23.5, -8.5,
+    -20.5, -10.5,
+    5, -12.5,
+    16, -2.5,
+    24, -2
+  ]
+}

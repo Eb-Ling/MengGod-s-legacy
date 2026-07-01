@@ -1,0 +1,238 @@
+id,trigger,conditions,script,text,options,notes,
+Meng_protectFleetGreeting1,OpenCommLink,$entity.Meng_protectFleet score:1000,,这支舰队漫无目的的游荡着，杀戮一切敢于接近他的敌人,cutCommLink:切断通讯连接,,
+Meng_timeFleetGreeting1,OpenCommLink,$entity.Meng_timeFleet score:1000,,你试图建立通讯连接，但是警报突然响起，对方的武器系统已经开始充能。,cutCommLink:切断通讯连接,,
+,,,,,,,
+Meng_riverFleetGreeting1,OpenCommLink,$entity.Meng_riverFleet score:1000,,"通讯被接通了，另一头是一个阴冷的男声，""你也是他们派来截杀我的？真是无知啊，我已经窥探到了高维的秘密！准备拜倒在冥域之神的脚下吧。""",cutCommLink:切断通讯连接,,
+,,,,,,,
+Meng_Starship_1,OpenInteractionDialog,$id == Meng_StarshipMist score:1000,"ShowDefaultVisual
+PrintDescription 3
+SetShortcut defaultLeave ""ESCAPE""
+FireBest AddMstarOptions",,,,
+Meng_Starship_2,AddMstarOptions,!$Meng_explored,,你的随舰人员登上了这艘废弃舰船的舰桥，你在控制室里远远地眺望着，有什么东西藏在它破损的表面下闪着幽幽的蓝光。,"0:mstar_explore1:探索残骸
+1:defaultLeave:离开",,
+Meng_Starship_3,DialogOptionSelected,$option == mstar_explore1  ,,“阁下。”你的控制终端上传来了探测小队的声音，“我们已经探索了这艘船的大部分区域，它似乎是我们从未听说过的型号，它的设计...怎么说呢，大部分都是我们熟悉的部分，但是还有相当一部分完全超出了我们的理解，不，准确的说，这些设计就不应该存在。”,"mstar_explore2:继续
+",,
+Meng_Starship_4,DialogOptionSelected,$option == mstar_explore2,,“它的舰体上存在着大量冗余的设备，包括一些巨大的轨道设施，占据了舰船很大的空间，这是设计上不应该出现的失误，但是正是这些冗余的设备保存最为完好，似乎舰船的损毁根本影响不到这些部位。”你的部下继续报告着。,"mstar_explore3:继续
+",,
+Meng_Starship_5,DialogOptionSelected,$option == mstar_explore3,,又过了相当一段时间，探测小队再次发来了通讯，“阁下，我们顺着对那些冗余设备作用的推测探寻，果然发现了一些奇怪的东西...”你的部下声音停顿了一下，“它隐藏在舰船的中心，那些所有的设备都是围绕着它运作的。它似乎是一个...巨大的熔炉？”,"mstar_explore4:继续
+",,
+Meng_Starship_6,DialogOptionSelected,$option == mstar_explore4,,部下的声音有了一些颤抖，“阁下，检测指标出来了，这个熔炉在舰船坠毁后依然维持着最低的运作水平直至今日，它最低的运作水平产生的能源，已经超出了寻常战列舰能源输出最大水平的数倍。这太疯狂了，这样的能源输出根本就不应该存在于这么小的一个熔炉之内，这是星球级的能源！”,"mstar_explore5:继续
+",,
+Meng_Starship_7,DialogOptionSelected,$option == mstar_explore5,,这名随舰科学家如梦初醒，“对对对，必须要把它带走，这艘舰船也许是可以修复的，让我分析一下...”,"mstar_explore6:继续
+",,
+Meng_Starship_8,DialogOptionSelected,$option == mstar_explore6,,你满怀期待的在指挥室等待着，这时Meng向你发来了视频通讯请求。,"mstar_explore7:接受通话申请
+mstar_refuse:拒绝申请",,
+Meng_Starship_9,DialogOptionSelected,$option == mstar_explore7,,她也感到激动吗？是来向你询问进度的吧，你这样想着的时候，Meng却说出了非同你所想的话，“舰长大人，你是怎么...找到它的。”她的声音有些颤抖，你甚至从她的眼中看到了泪花？你立刻意识到在这背后应该还隐藏着更深层次的、你所不知道的东西。,"mstar_explore8:继续
+",,
+Meng_Starship_10,DialogOptionSelected,$option == mstar_explore8,,“这是学院最后的光辉...”Meng喃喃道，“我的一生都在逃避，没想到最终还能与它重逢，这就是命运的选择吗？...”,"mstar_explore9:继续
+",,
+Meng_Starship_13,DialogOptionSelected,$option == mstar_refuse,,你认为这样的时刻不允许打扰，于是没有接受请求。,"mstar_explore17:继续
+",,
+Meng_Starship_19,DialogOptionSelected,$option == mstar_explore9,$Meng_explored = true,在这时，探索小队再次发来了通话申请，“阁下，非常神奇，这艘船应该是已经被人为修复了一大部分，我们可以轻而易举的带走它了。”在你把询问的目光投向Meng之后，她开口说道，“您带走它吧，相信您能让远古学院的光辉重现于英仙座之中。”,"mstar_explore18:回收舰船
+",,
+Meng_Starship_20,AddMstarOptions,$Meng_explored,,这个废弃空间站空无一物，或许曾经有有价值的事物，但也早已被取走。,0:defaultLeave:离开,,
+Meng_Starship_21,DialogOptionSelected,$option == mstar_explore17,$Meng_explored = true,在这时，探索小队再次发来了通话申请，“阁下，非常神奇，这艘船应该是已经被人为修复了一大部分，我们可以轻而易举的带走它了。”,"mstar_explore18:回收舰船
+",,
+Meng_Starship_22,DialogOptionSelected,$option == mstar_explore18,,你获得了 异宙龙级无畏舰,0:defaultLeave:离开,,
+,,,,,,,
+Meng_mengmeng_talk,PopulateOptions,$id == Mengmeng,,"""啊，是舰，舰长大人。""可能是因为出乎意料，萌萌的反应有些惊讶。
+
+但随即她便收拾好表情，带着一丝紧张地询问，""是对我在这里的工作不够满意吗？""","Meng_mengmeng_talk1:表示你想询问一些问题
+Meng_mengmeng_talk2:求萌萌赏赐你故事点
+Meng_mengmeng_talk3:说你想摸摸她的脑袋",,
+Meng_mengmeng_talk1,DialogOptionSelected,$option == Meng_mengmeng_talk1,,,"Meng_mengmeng_talk1_1:关于萌萌的殖民地管理措施
+Meng_mengmeng_talk1_2:关于萌萌的往事",,
+Meng_mengmeng_talk1_1,DialogOptionSelected,$option == Meng_mengmeng_talk1_1,,"萌萌显然没有预料到你的这个问题，有些紧张地回答道：""舰长大人，这是源于被掩埋在历史的Combus学院的技术，名为镜像世界。""
+
+说着萌萌不觉隔阂地解开自己的外衣，迎着你好奇的目光向你展示内里穿着的，泛着黑色金属光泽的，类似贴身装甲的装束。""这是Combus学院因为...某种原因遗留至今的神经接驳集成装置，它其中一项的功能在于可以连接Combus学院的量子计算机集群。""
+
+可是，Combus学院已经在历史中毁灭了，于是你露出了疑惑的表情。",Meng_mengmeng_talk1_1_c1:提出你的疑问,,
+Meng_mengmeng_talk1_1_c1,DialogOptionSelected,$option == Meng_mengmeng_talk1_1_c1,FireAll PopulateOptions,"萌萌继续说道，""很奇怪的是，明明已经毁灭的Combus学院，神经接驳装置依旧能识别并远程连接上按理说已经不存在的量子集群。我也由此在您的殖民地复刻了Combus曾经用于Embers的镜像世界技术。""
+
+萌萌露出了你曾见过的，混杂着回忆与痛苦的表情，""那是一个温柔的地方...啊，请原谅我的出神，镜像世界技术可以实时监测整个星球的一切细节，并由此推演出一定范围内的未来，我们也因此可以选择最优秀的贸易线路，培养最优秀的贸易伙伴，监测一切可能出现的动乱...""
+
+她顿了顿，""可是，被如此严密的监视着，居住于此的居民将很难感受到自由...与幸福。一切的收获都会付出代价，舰长大人，这也是我想借此给予你的忠告。""
+
+她的脸上，露出了惯常保持着的，悲伤的微笑。",cutCommLink:切断通讯,,
+Meng_mengmeng_talk1_2,DialogOptionSelected,$option == Meng_mengmeng_talk1_2,FireAll PopulateOptions,"""我的往事吗？""萌萌明显陷入了回忆。
+
+许久以后，萌萌轻轻地说，""舰长大人，那些往事十分的漫长，也包含着我最深的秘密。但我可以告诉你，哪怕它是痛苦的。""
+
+""我并不是您这个时代的人...是的，如果按寻常的理解来说，我是一位所谓的，穿越者。""萌萌的声音慢慢恢复了正常。
+""你可能无法理解我的过往里蕴含的悲伤，在Embers毁灭的决战中，我驾驶着Combus最机密的阶梯计划舰船，与我的学长学姐们赌上了性命。""
+""这并不是一场势均力敌的战斗，数十倍与我们的舰船从星系的各个跳跃点涌入，我与我的学姐，小蔡负责镇守Combus最后的防线——它的轨道。""萌萌的声音有一些颤抖。
+
+""我是被选中的适格者，神经接驳将我与被称为时旅者的超级舰船融为一体，但我从来没有经历过真正的战斗...没有任何的战斗经验。""你看到她的眼角流出了泪水。
+
+""我...如果经验再丰富一点，也许就不会是这样的结局了...""在越来越缓慢的叙述声中，萌萌已经泣不成声。。
+
+""请原谅我...原谅我不愿再回忆那场...那场战斗的细节...""萌萌遮掩着脸，沉默了许久，似乎终于缓过来一点，""在战斗的最后...我强行打开了时旅者集成的噬时之瓶，失去了所有的意识，当我再次醒来，已经来到了数十年后的今天。靠着穿着的神经接驳装置与学院最先进的宇航服，我幸运地等到了收到求救信号的探险舰队。""
+
+""这就是我的一部分过往。""萌萌闭上了眼睛，脸上还留着泪痕。""舰长大人...请珍惜你拥有的一切...哪怕是时间轴线的尽头，也总有无法夺回的过去。""",cutCommLink:切断通讯,,
+Meng_mengmeng_talk2,DialogOptionSelected,$option == Meng_mengmeng_talk2,AddStoryPoints 2,"""好，好的。""你感到能引领命运的力量涌入了体内",cutCommLink:感谢萌萌！,,
+Meng_mengmeng_talk3,DialogOptionSelected,$option == Meng_mengmeng_talk3,Meng_relationadd 5,萌萌低下了头凑到你的身前，你伸手摸了摸她的脑袋。,cutCommLink:还蛮可爱的...,,
+,,,,,,,
+,,,,,,,
+Meng_Rocifer_meet,PopulateOptions,"$id == Meng_Rocifer
+!$Meng_Rocifer_firstmeet",$Meng_Rocifer_firstmeet = true,你好，年轻人，欢迎来到余烬圣殿。我是圣殿休眠中的大长老的人格同位体AI，呵呵，我和大长老在人格与记忆上一般无二，因此你可以拿大长老的名字称呼我，Rocifer。,Meng_Rocifer_options:询问他能做些什么,,
+Meng_Rocifer_meeted,PopulateOptions,"$id == Meng_Rocifer
+$Meng_Rocifer_firstmeet",$Meng_Rocifer_firstmeet = true,我见过你，年轻人，自我介绍就免了，今天想要来做些什么呢？,"Meng_Rocifer_hsitory:请求讲述圣殿的历史
+Meng_Rocifer_event1:询问有什么特殊任务",,
+Meng_Rocifer_options,DialogOptionSelected,$option == Meng_Rocifer_options,,当然，作为Alpha级别的AI，我拥有同样庞大的信息处理能力，负责管理与像你这样的来宾之间的关系。如果你的贡献度足够高，我或许会为你安排一些特殊任务，同样的，小家伙，我也可以为你介绍圣殿的历史。,"Meng_Rocifer_hsitory:请求讲述圣殿的历史
+Meng_Rocifer_event1:询问有什么特殊任务",,
+Meng_Rocifer_hsitory1,DialogOptionSelected,"$option == Meng_Rocifer_hsitory
+!$Meng_Rocifer_addedrel
+","AdjustRep $faction.id 5
+$Meng_Rocifer_addedrel = true","正在完全表象化Rocifer人格...表象化完成！
+（你听到通讯器中传来的不再是AI的合成音，而是转变为了一个苍老温和的声音）
+小家伙，很少有人会关心历史，哪怕正是这些历史造就了我们的今天。像你这样的人越来越少了，我很欣赏你。让我先向你粗略讲述一下圣殿的历史吧。
+",Meng_Rocifer_totalhistory:圣殿历史,,
+Meng_Rocifer_hsitory2,DialogOptionSelected,"$option == Meng_Rocifer_hsitory
+$Meng_Rocifer_addedrel",,"正在完全表象化Rocifer人格...表象化完成！
+（你听到通讯器中传来的不再是AI的合成音，而是转变为了一个苍老温和的声音）
+少有的关心历史的小家伙，我还记得你，我们又见面了。听完了圣殿大致的历史，你可能会想要了解各个时期的细节吧，想要听哪个年代的故事呢？
+",Meng_Rocifer_totalhistory:圣殿历史,,
+Meng_Rocifer_totalhistory,DialogOptionSelected,$option == Meng_Rocifer_totalhistory,,"余烬圣殿是从废墟中重新建立的组织，一切的一切都起源于漫长时代以前的一所学院：Combus学院。那所坐落在这颗星球的，看似普通舰队学院下隐藏着一个天大的秘密，在那所学院最高的山峰中，藏着一个不知为何出现的高维度空间入口，它被当时的学院称作：空泡。
+围绕着这颗空泡，富有野心的科学家们蜂拥而至，从更高维度的视野之中可以得悉整个宇宙最细致的秘密，空泡的存在被那所学院作为最高机密死守了整整数十年，这数十年里，学院的技术水平以奇迹般的速度突飞猛进，无数英仙座无法想象的禁忌技术被掌握在那些人手中。
+而最终，在一场突如其来的灾难里，那所学院的秘密终于败露，各大势力伪装的海盗舰队涌入Embers星系，徒有技术而缺少工业产能的学院匆匆构筑的防线最终被撕碎，学院的高层无人生还，当各大舰队在星系内为了星球的归属权厮杀之时，那颗空泡却在不知名的影响下突然消失，除了一些外围的技术草稿以外，入侵者们什么也没有得到。",Meng_Rocifer_totalhistory1:可是这和圣殿有什么关系,,
+Meng_Rocifer_totalhistory1,DialogOptionSelected,$option == Meng_Rocifer_totalhistory1,,"是的，当然有关，小家伙，那所学院的高层并非无人生还，有少数人通过空间技术逃离了Embers，呵呵，我就是Combus学院幸存的高层之一，我们携带着空泡时代所有的技术结晶，由我带领着开启了一个新的时代：议会时代。
+历史告诉了我们一个宝贵的真理：无论是再崇高的理想都需要武力来支撑。我们抛弃了曾经隐藏自己的想法，在第二次AI战争期间在暗中吸纳资源，我建立了一个新的组织：朝圣议会，我四处寻找值得信任的人加入这个组织，直到我们拥有了21名在各大势力中都举足轻重的成员。
+变革的时代终于到来，我们策划了一场场叛乱，在第二次AI战争的一场混战中，从各大势力中叛逃而出的舰队与技术官们携带着所有的资源齐聚于这颗星球，当他们反应过来之后，我们已然汇聚成了一股无法被轻易处理的势力，经过部分潜伏成员的在谈判桌上下的外交努力，我们与各大势力达成了一个协议。
+",Meng_Rocifer_totalhistory2:是什么协议呢,,
+Meng_Rocifer_totalhistory2,DialogOptionSelected,$option == Meng_Rocifer_totalhistory2,,"我们同意不加入战争的任何一方，我们用大量的赔偿抚平他们的怒火，我们用各大势力间的制衡让他们彼此无法统一。最后，我们成功了，我们向英仙座宣布，余烬圣殿作为一个新的势力，在远离核心星域的角落正式建立。
+这就是如今的圣殿时代的来源，从第二次AI战争发展至今，拥有了重工业体系的圣殿不再是当初任人宰割的学院，我们的技术成批列装至我们的舰船，在历经奔波，逃亡与隐藏之后，已经没有什么能轻易摧毁这个教廷国度了。
+年轻人，这就是圣殿大致的历史，在这段轻描淡写的历史中，有着无数纷争，背叛，有着宝贵的牵绊，也有着无数的死亡与离别，旧学院被无辜牵连的学员与教官们埋骨于此，每当我从这里的山头眺望，总能想起那些我欣赏的后辈们向我问好的样子。
+
+唉，如果你想要了解隐藏在这些历史里的种种细节，我同样可以讲述给你听，除了被Rocifer在我内核中加密的一些记忆以外，不过还是等你下次再来的时候吧。",cutCommLink:切断通讯,,
+,,,,,,,
+,,,,,,,
+Meng_Rocifer_event1,DialogOptionSelected,"$option == Meng_Rocifer_event1
+$faction.rel == COOPERATIVE
+$faction.id == Meng_temple
+",,你对圣殿的贡献足够重要，但是目前暂时没有什么特殊任务可以安排给你。,,,
+Meng_Rocifer_cantevent,DialogOptionSelected,"$option == Meng_Rocifer_event1
+$faction.rel != COOPERATIVE
+$faction.id == Meng_temple
+",,非常抱歉，教徒，你对圣殿的贡献还不够。,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+# factions,,,,,,,
+relLevelNeutralMengTemple,RelationshipLevelDesc,"$faction.rel == NEUTRAL
+$faction.id == Meng_temple",FireAll RelLevelMoreDescription,你与圣殿的关系仅仅停留在初步认识阶段，你知晓了圣殿这个新兴势力的存在，然而和来往交易的常规商队一样，圣殿并不在意你的目的，你只被允许在圣殿对外的港口上活动，无权进入Embers内部。,,,
+relLevelFavorableMengTemple,RelationshipLevelDesc,"$faction.rel == FAVORABLE
+$faction.id == Meng_temple",FireAll RelLevelMoreDescription,你的善意已经在教廷内部为小部分人知晓，现在圣殿已经将你作为外围成员看待，你在Embers上可以以浅信徒的身份自由活动，享受圣殿超科技生活系统的种种便利。,,,
+relLevelWelcomingMengTemple,RelationshipLevelDesc,"$faction.rel == WELCOMING
+$faction.id == Meng_temple",FireAll RelLevelMoreDescription,现在，你的价值与你的虔诚得到了圣殿相当一部分管理层的认可，你被派发了C级教徒证明，你可以参加Embers上组织的祈祷活动，进入教堂聆听教诲，在涉事案件中你也获得了一定的豁免权。,,,
+relLevelFriendlyMengTemple,RelationshipLevelDesc,"$faction.rel == FRIENDLY
+$faction.id == Meng_temple",FireAll RelLevelMoreDescription,圣殿已经将你当作虔诚信徒与重要合作伙伴，你拥有B级教徒证明，可以通过贡献点换取圣殿的部分技术产品，同时，你也获取了部分对内开放的任务公告的浏览资格。,,,
+relLevelCooperativeMengTemple,RelationshipLevelDesc,"$faction.rel == COOPERATIVE
+$faction.id == Meng_temple",FireAll RelLevelMoreDescription,毫无疑问，你是圣殿真正的狂信徒，这个科技神教已经完全接纳了你，作为A级核心教徒，你拥有了出入Embers圣堂总部的资格，也可以向圣殿换取诸多核心技术，你也拥有了圣殿建立在Embers上的超科技设施的使用权限。,,,
+relLevelSuspiciousMengTemple,RelationshipLevelDesc,"$faction.rel == SUSPICIOUS
+$faction.id == Meng_temple",FireAll RelLevelMoreDescription,圣殿认为你的信仰并不纯粹，从与圣殿交涉的种种迹象上看，他们似乎在犹豫是否要将你列入不友好分子的名单。,,,
+relLevelInhospitableMengTemple,RelationshipLevelDesc,"$faction.rel == INHOSPITABLE
+$faction.id == Meng_temple",FireAll RelLevelMoreDescription,你的行为和立场毫无疑问的站在了圣殿的对立面，尽管圣殿认为人人皆有信仰，但圣殿并不会真的尊重你的理念，现在，你的外交权限被相当程度的冻结。,,,
+relLevelHostileMengTemple,RelationshipLevelDesc,"$faction.rel == HOSTILE
+$faction.id == Meng_temple",FireAll RelLevelMoreDescription,没错，你就是圣殿彻头彻尾的敌人，在长久潜藏中挣扎的余烬圣殿秉持着对敌人赶尽杀绝的态度，你最好远离这群科技疯子的势力范围。,,,
+relLevelVengefulMengTemple,RelationshipLevelDesc,"$faction.rel == VENGEFUL
+$faction.id == Meng_temple",FireAll RelLevelMoreDescription,如今，你的档案已被圣殿异教徒审判庭归档，对于像你这样的异端的处理方案只有一条，格杀勿论。,,,
+,,,,,,,
+# 圣殿跳跃点特殊对话,,,,,,,
+Meng_EmbersJump_Open,OpenInteractionDialog,$tag:Meng_embers_jump,"ShowDefaultVisual
+PrintDescription 3
+SetShortcut defaultLeave ""ESCAPE""
+FireBest Meng_EmbersJump_Options",,,,
+Meng_EmbersJump_Options,Meng_EmbersJump_Options,,,你凝视着这座古老的跳跃点，它散发着与常规跳跃点不同的能量波动。某种力量在其中涌动，仿佛连接着更深层的秘密...,"Meng_jump_scan:尝试扫描跳跃点的能量特征
+Meng_jump_leave:离开",,
+Meng_EmbersJump_Scan,DialogOptionSelected,$option == Meng_jump_scan,"EndConversation DO_NOT_FIRE
+$Meng_jumpScanning = true 0","随着你的探测设备启动，跳跃点突然产生了剧烈的反应。一股强大的信息流涌入你的终端...
+
+特殊的能量正在扫描你的舰队...",Meng_jump_wait:等待扫描完成,,
+Meng_EmbersJump_Wait,DialogOptionSelected,$option == Meng_jump_wait,"Wait $global.jumpWait 0.25 $global.jumpFinished $global.jumpInterrupted $global.jumpInProgress ""扫描中...""
+$Meng_jumpScanned = true",,,
+Meng_EmbersJump_WaitFinished,Meng_jump_wait,$global.jumpFinished,"ShowDefaultVisual
+PrintDescription 3
+SetShortcut defaultLeave ""ESCAPE""
+FireBest Meng_EmbersJump_Options","时间缓缓流逝，你的舰队静静地等待着。扫描仪发出规律的嗡鸣声，仿佛在解析某种复杂的加密信号。
+
+片刻之后，扫描终于完成了。",Meng_jump_checkRel:查看扫描结果,,
+Meng_EmbersJump_CheckRel_Low,DialogOptionSelected,"$option == Meng_jump_checkRel
+RepLTE Meng_temple FRIENDLY","AdjustRep Meng_temple SUSPICIOUS -5
+SetTextHighlightColors bad
+Highlight ""关系不足""","数据显示，你对圣殿的贡献度不足以获得自由通行的权限。
+
+跳跃点的超空间通道被某种特殊的能量封锁，系统提示：{关系不足}，拒绝进入。","Meng_jump_force:""强行突破封锁！""
+Meng_jump_leave:""放弃进入，离开此处""",,
+Meng_EmbersJump_CheckRel_OK,DialogOptionSelected,"$option == Meng_jump_checkRel
+RepGTE Meng_temple COOPERATIVE","AddTextSmall ""扫描通过，允许通行"" good","数据显示，你对圣殿的贡献得到了认可。
+
+跳跃点的封锁能量缓缓消散，系统提示：身份验证通过，允许通行。","Meng_jump_enter:进入跳跃点",,
+Meng_EmbersJump_Enter,DialogOptionSelected,$option == Meng_jump_enter,MengEmbersJumpCMD jump 0,,,
+Meng_EmbersJump_ForceEnter,DialogOptionSelected,$option == Meng_jump_force,"RemoveCommodity supplies 50
+RemoveCommodity fuel 30
+AddTextSmall ""舰船受损：消耗50补给，30燃料"" bad","你下令强行突破封锁！
+
+跳跃点的防御系统立即做出反应，强大的能量冲击波席卷了你的舰队。舰船护盾过载，装甲受损，引擎系统也受到了影响。
+
+经过一番挣扎，你的舰队终于冲破了封锁，但付出了惨重的代价。",Meng_jump_leave:迅速离开,,
+Meng_jump_leave,DialogOptionSelected,$option == Meng_jump_leave,DismissDialog,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,

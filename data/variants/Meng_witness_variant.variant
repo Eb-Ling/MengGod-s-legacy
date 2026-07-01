@@ -1,0 +1,22 @@
+{
+  "variantId": "Meng_witness_variant",
+  "hullId": "Meng_witness",
+  "displayName": "无人火力平台",
+  "goalVariant": true,
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "quality": 1,
+  "permaMods": [],
+  "hullMods": [],
+  "weaponGroups": [
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0001": "Meng_flare_fighter"
+      }
+    }
+  ],
+  "modules": [],
+  "wings": []
+}

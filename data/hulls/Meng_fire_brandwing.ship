@@ -1,0 +1,195 @@
+{
+  "hullName": "New Hull",
+  "hullId": "Meng_fire_brandwing",
+  "hullSize": "DESTROYER",
+  "spriteName": "graphics/Meng/ships/fire/Meng_fire_brandwing.png",
+  "style": "Meng_Fire",
+  "height": 230,
+  "width": 152,
+  "center": [76, 115],
+  "collisionRadius": 135.5,
+  "shieldCenter": [0, 0],
+  "shieldRadius": 134,
+  "viewOffset": 0,
+  "builtInMods": [
+    "Meng_fire_Phasecore",
+    "Meng_fire_core"
+  ],
+  "builtInWeapons": {
+    "WS0001": "Meng_fire_brandwing_light"
+  },
+  "weaponSlots": [
+    {
+      "id": "WS0001",
+      "size": "LARGE",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 0,
+      "angle": 0,
+      "locations": [0, -0]
+    },
+    {
+      "id": "WS0002",
+      "size": "SMALL",
+      "type": "BALLISTIC",
+      "mount": "TURRET",
+      "arc": 100,
+      "angle": 0,
+      "locations": [47, 18]
+    },
+    {
+      "id": "WS0003",
+      "size": "SMALL",
+      "type": "BALLISTIC",
+      "mount": "TURRET",
+      "arc": 100,
+      "angle": -0,
+      "locations": [47, -18]
+    },
+    {
+      "id": "WS0004",
+      "size": "SMALL",
+      "type": "BALLISTIC",
+      "mount": "TURRET",
+      "arc": 100,
+      "angle": 15,
+      "locations": [23, 28]
+    },
+    {
+      "id": "WS0005",
+      "size": "SMALL",
+      "type": "BALLISTIC",
+      "mount": "TURRET",
+      "arc": 100,
+      "angle": -15,
+      "locations": [23, -28]
+    },
+    {
+      "id": "WS0006",
+      "size": "SMALL",
+      "type": "BALLISTIC",
+      "mount": "TURRET",
+      "arc": 100,
+      "angle": 15,
+      "locations": [0, 38]
+    },
+    {
+      "id": "WS0007",
+      "size": "SMALL",
+      "type": "BALLISTIC",
+      "mount": "TURRET",
+      "arc": 100,
+      "angle": -15,
+      "locations": [0, -38]
+    },
+    {
+      "id": "WS0008",
+      "size": "SMALL",
+      "type": "MISSILE",
+      "mount": "HARDPOINT",
+      "arc": 30,
+      "angle": 0,
+      "locations": [78, 25]
+    },
+    {
+      "id": "WS0009",
+      "size": "SMALL",
+      "type": "MISSILE",
+      "mount": "HARDPOINT",
+      "arc": 30,
+      "angle": -0,
+      "locations": [78, -25]
+    },
+    {
+      "id": "WS0010",
+      "size": "SMALL",
+      "type": "MISSILE",
+      "mount": "HARDPOINT",
+      "arc": 30,
+      "angle": 0,
+      "locations": [39, 48]
+    },
+    {
+      "id": "WS0011",
+      "size": "SMALL",
+      "type": "MISSILE",
+      "mount": "HARDPOINT",
+      "arc": 30,
+      "angle": -0,
+      "locations": [39, -48]
+    }
+  ],
+  "engineSlots": [
+    {
+      "location": [-113.5, -0],
+      "length": 48,
+      "width": 3,
+      "angle": 180,
+      "contrailSize": 3,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-113.5, -0],
+      "length": 31,
+      "width": 7,
+      "angle": 180,
+      "contrailSize": 7,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    }
+  ],
+  "bounds": [
+    -115.5, -2,
+    -74, -6.5,
+    -87, -7.5,
+    -87, -14,
+    -55.5, -33,
+    -48.5, -26.5,
+    -56, -18,
+    -29.5, -11,
+    -42, -24.5,
+    -25, -24.5,
+    -14, -32,
+    -27.5, -45.5,
+    -35, -63,
+    -25, -63,
+    -31, -74,
+    -4.5, -60.5,
+    -4.5, -66.5,
+    22, -54,
+    44, -54,
+    44, -42,
+    70, -31,
+    82.5, -31,
+    82.5, -19.5,
+    115, -10.5,
+    115, -6,
+    75, -6,
+    75, 6,
+    115, 6,
+    115, 10.5,
+    82.5, 19.5,
+    82.5, 31,
+    70, 31,
+    44, 42,
+    44, 54,
+    22, 54,
+    -4.5, 66.5,
+    -4.5, 60.5,
+    -31, 74,
+    -25, 63,
+    -35, 63,
+    -27.5, 45.5,
+    -14, 32,
+    -25, 24.5,
+    -42, 24.5,
+    -29.5, 11,
+    -56, 18,
+    -48.5, 26.5,
+    -55.5, 33,
+    -87, 14,
+    -87, 7.5,
+    -74, 6.5,
+    -115.5, 2
+  ]
+}

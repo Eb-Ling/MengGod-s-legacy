@@ -1,0 +1,140 @@
+{
+  "hullName": "源质星",
+  "hullId": "Meng_Yuanzhi",
+  "hullSize": "FRIGATE",
+  "spriteName": "graphics/Meng/ships/Meng_yuanzhi.png",
+  "style": "HIGH_TECH",
+  "height": 134,
+  "width": 100,
+  "center": [50, 67],
+  "collisionRadius": 84,
+  "shieldCenter": [0, 0],
+  "shieldRadius": 83.5,
+  "viewOffset": 0,
+  "builtInMods": [
+    "Meng_Yuanzhixing_center"
+  ],
+  "weaponSlots": [
+    {
+      "id": "WS0001",
+      "size": "SMALL",
+      "type": "HYBRID",
+      "mount": "TURRET",
+      "arc": 50,
+      "angle": 0,
+      "locations": [13, 21]
+    },
+    {
+      "id": "WS0002",
+      "size": "SMALL",
+      "type": "HYBRID",
+      "mount": "TURRET",
+      "arc": 50,
+      "angle": -0,
+      "locations": [13, -21]
+    },
+    {
+      "id": "WS0003",
+      "size": "MEDIUM",
+      "type": "UNIVERSAL",
+      "mount": "TURRET",
+      "arc": 75,
+      "angle": 0,
+      "locations": [-5.5, -0]
+    },
+    {
+      "id": "WS0004",
+      "size": "SMALL",
+      "type": "ENERGY",
+      "mount": "TURRET",
+      "arc": 15,
+      "angle": 0,
+      "locations": [27.5, 8]
+    },
+    {
+      "id": "WS0005",
+      "size": "SMALL",
+      "type": "ENERGY",
+      "mount": "TURRET",
+      "arc": 15,
+      "angle": -0,
+      "locations": [27.5, -8]
+    }
+  ],
+  "engineSlots": [
+    {
+      "location": [-39, -0],
+      "length": 49.5,
+      "width": 8,
+      "angle": 180,
+      "contrailSize": 8,
+      "style": "HIGH_TECH"
+    },
+    {
+      "location": [-32, 30],
+      "length": 25,
+      "width": 5,
+      "angle": 180,
+      "contrailSize": 5,
+      "style": "HIGH_TECH"
+    },
+    {
+      "location": [-32, -30],
+      "length": 25,
+      "width": 5,
+      "angle": -180,
+      "contrailSize": 5,
+      "style": "HIGH_TECH"
+    }
+  ],
+  "bounds": [
+    -40, -4.5,
+    -67, -4.5,
+    -67, -10,
+    -31, -21,
+    -31, -25,
+    -33, -26,
+    -33, -33,
+    -28, -35.5,
+    -27.5, -40,
+    -20.5, -46,
+    -5.5, -39,
+    -2, -39,
+    -2, -45,
+    4, -45,
+    8, -42.5,
+    9, -50.5,
+    14.5, -49,
+    18.5, -34,
+    31.5, -34,
+    66, -26.5,
+    68, -18.5,
+    63, -18.5,
+    52, -12.5,
+    30.5, -12.5,
+    30.5, 12.5,
+    52, 12.5,
+    63, 18.5,
+    68, 18.5,
+    66, 26.5,
+    31.5, 34,
+    18.5, 34,
+    14.5, 49,
+    9, 50.5,
+    8, 42.5,
+    4, 45,
+    -2, 45,
+    -2, 39,
+    -5.5, 39,
+    -20.5, 46,
+    -27.5, 40,
+    -28, 35.5,
+    -33, 33,
+    -33, 26,
+    -31, 25,
+    -31, 21,
+    -67, 10,
+    -67, 4.5,
+    -40, 4.5
+  ]
+}

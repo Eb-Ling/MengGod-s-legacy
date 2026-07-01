@@ -1,0 +1,21 @@
+id,type,frame,magnitude,map,path
+Meng_fire_arsonist,ship                 ,      ,1.5,normal   ,graphics/textures/material/Meng_fire_arsonist_Normal.png
+Meng_fire_brandwing,ship                 ,      ,1.5,normal   ,graphics/textures/surface/Meng_fire_brandwing_Normal.png
+Meng_fire_endless,ship                 ,      ,1.5,normal   ,graphics/textures/normal/Meng_fire_endless_Normal.png
+Meng_fire_firelight,ship                 ,      ,1.5,normal   ,graphics/textures/normal/Meng_fire_firelight_Normal.png
+Meng_fire_firesmoke,ship                 ,      ,1.5,normal   ,graphics/textures/normal/Meng_fire_firesmoke_Normal.png
+Meng_fire_firewatch,ship                 ,      ,1.5,normal   ,graphics/textures/normal/Meng_fire_firewatch_Normal.png
+Meng_fire_firewood,ship                 ,      ,1.5,normal   ,graphics/textures/normal/Meng_fire_firewood_Normal.png
+Meng_fire_fuse,ship                 ,      ,1.5,normal   ,graphics/textures/normal/Meng_fire_fuse_Normal.png
+Meng_fire_offlight,ship                 ,      ,1.5,normal   ,graphics/textures/normal/Meng_fire_offlight_Normal.png
+Meng_fire_redfeather,ship                 ,      ,1.5,normal   ,graphics/textures/normal/Meng_fire_redfeather_Normal.png
+Meng_fire_spark,ship                 ,      ,1.5,normal   ,graphics/textures/normal/Meng_fire_spark_Normal.png
+Meng_fire_StageFire,ship                 ,      ,1.5,normal   ,graphics/textures/normal/Meng_fire_StageFire_Normal.png
+Meng_protect_boss2,ship                 ,,1.5,normal   ,graphics/textures/normal/Meng_protect_ship1_Normal.png
+Meng_protect_boss1,ship                 ,,1.5,normal   ,graphics/textures/normal/Meng_protect_ship_Normal.png
+Meng_protect_boss3,ship                 ,,1.5,normal   ,graphics/textures/normal/Meng_protect_ship3_Normal.png
+Meng_timeboss,ship                 ,,1.5,normal   ,graphics/textures/normal/Meng_timeboss_Normal.png
+Meng_MingGod,ship                 ,,1.5,normal   ,graphics/textures/normal/Meng_MingField_Normal.png
+Meng_Starkiller,ship                 ,,1.5,normal   ,graphics/textures/normal/Meng_Starkiller_Normal.png
+,,,,,
+,,,,,

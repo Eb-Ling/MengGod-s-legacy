@@ -1,0 +1,42 @@
+{
+	"id":"Meng_Starfalling",
+	"type":"TELEPORTER",
+	"aiType":"PHASE_TELEPORTER_2",
+	"statsScript":"data.shipsystems.scripts.Meng_Starfalling",
+	"jitterColor":[100,165,255,150],
+	#"jitterColor":[255,100,255,150],
+	"jitterCopies":0,
+	#"jitterRange":0,
+	"jitterRange":0,
+	"jitterRangeRadiusFraction":0,
+	
+	"weaponGlowColor":[100,165,255,0],
+	"weaponTypes":[ENERGY],
+	
+	#"engineGlowColor":[255,100,225,255],
+	#"engineGlowContrailColor":[200,100,200,25],
+	"engineGlowLengthMult":0,
+	"engineGlowWidthMult":0,
+	"engineGlowGlowMult":0,
+	
+	"range":2000,
+	"randomRange":0,
+	"requiresZeroFluxBoost":false,
+	
+	"vulnerableChargeup":false,
+	"vulnerableChargedown":false,
+	"renderCopyDuringTeleport":false,
+	
+	"fadeActivationSoundOnChargedown":false,
+	
+	#"useSound":"system_teleport",
+	"useSound":"Meng_Starengine",	
+	"outOfUsesSound":"gun_out_of_ammo",
+	
+	
+	"aiHints":{
+		"activeSpeedIncrease":0,
+		"burstMovementPotential":1000,
+		"averageSpeedIncrease":350,
+	}
+}

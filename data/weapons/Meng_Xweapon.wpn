@@ -1,0 +1,41 @@
+{
+  "id": "Meng_Xweapon",
+  "specClass": "beam",
+  "type": "ENERGY",
+  "size": "LARGE",
+  "beamEffect":"data.weapons.Meng_Xbeameffect",
+  "collisionClass": "RAY",
+  "collisionClassByFighter": "RAY_FIGHTER",
+  "turretSprite": "graphics/weapons/Meng_Xweapon.png",
+  "turretGlowSprite": "graphics/weapons/Meng_Xweapon.png",
+  "turretGunSprite": "graphics/weapons/Meng_Xweapon.png",
+  "hardpointSprite": "graphics/weapons/Meng_Xweapon.png",
+  "hardpointGlowSprite": "graphics/weapons/Meng_Xweapon.png",
+  "hardpointGunSprite": "graphics/weapons/Meng_Xweapon.png",
+  "turretOffsets": [
+    8.5,
+    0
+  ],
+  "turretAngleOffsets": [
+    0
+  ],
+  "hardpointOffsets": [
+    27,
+    0
+  ],
+  "hardpointAngleOffsets": [
+    0
+  ],
+	"glowColor":[255,255,255,225],
+	"hitGlowRadius": 0,
+	"beamFireOnlyOnFullCharge": true,
+  "fringeColor":[255, 255, 255, 255],
+	"coreColor":[255,255,255,255],
+  "width": 25,
+  #"textureType": ROUGH,
+  "textureType":["graphics/fx/Meng_X_beamfire.png","graphics/fx/Meng_X_beamfire.png"],
+  "textureScrollSpeed": 60.0,
+  "pixelsPerTexel": 7,
+ #"fireSoundOne":"Meng_Xweaponmic",
+	"fireSoundTwo":"Meng_Xweaponmic",
+}

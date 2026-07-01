@@ -1,0 +1,14 @@
+{
+  "variantId": "Meng_DragonRightarmor2_end",
+  "hullId": "Meng_DragonRightarmor2",
+  "displayName": "龙鳞",
+  "goalVariant": false,
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "quality": 1,
+  "permaMods": [],
+  "hullMods": [],
+  "weaponGroups": [],
+  "modules": [],
+  "wings": []
+}

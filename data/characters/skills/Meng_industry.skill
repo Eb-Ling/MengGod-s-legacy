@@ -1,0 +1,23 @@
+{
+	"id":"Meng_industry",
+	"governingAptitude":"industry",
+	"compressHullmods":false,
+	"scope":"GOVERNED_OUTPOST",
+	"effectGroups":[
+		{
+			"requiredSkillLevel":1,
+			"effectBasedOnLevel":false,
+			"effects":[
+				{"type":"CHARACTER_STATS", "script":"data.skills.Meng_industry$Level1"},
+				{"type":"GOVERNED_OUTPOST", "script":"data.skills.Meng_industry$Level2"},
+				{"type":"GOVERNED_OUTPOST", "script":"data.skills.Meng_industry$Level3"},
+				{"type":"GOVERNED_OUTPOST", "script":"data.skills.Meng_industry$Level4"},
+				{"type":"GOVERNED_OUTPOST", "script":"data.skills.Meng_industry$Level5"},
+				{"type":"GOVERNED_OUTPOST", "script":"data.skills.Meng_industry$Level6"},
+				{"type":"GOVERNED_OUTPOST", "script":"data.skills.Meng_industry$Level7"},
+				{"type":"GOVERNED_OUTPOST", "script":"data.skills.Meng_industry$Level8"},
+			]
+		},
+	],
+}
+

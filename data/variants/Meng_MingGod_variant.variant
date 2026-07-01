@@ -1,0 +1,14 @@
+{
+  "variantId": "Meng_MingGod_variant",
+  "hullId": "Meng_MingGod",
+  "displayName": "进攻",
+  "goalVariant": false,
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "quality": 1,
+  "permaMods": [],
+  "hullMods": [],
+  "weaponGroups": [],
+  "modules": [],
+  "wings": []
+}

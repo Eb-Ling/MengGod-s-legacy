@@ -1,0 +1,17 @@
+{
+	"id":"Meng_dragonfire",
+	"onHitEffect":"data.weapons.Meng_Dragonfire_blueonhit",
+	"specClass":"projectile",
+	"spawnType":"BALLISTIC_AS_BEAM",
+	"collisionClass":"RAY",
+	"collisionClassByFighter":"RAY_FIGHTER",
+	"length":300,
+	"width":40,
+	"fadeTime":0.5,
+	"fringeColor":[100, 255, 200,255],
+	"coreColor":[36, 231, 238, 255],
+	"passThroughMissiles":true,
+	"textureType":["graphics/fx/beamcorec.png","graphics/fx/beam_weave_core.png"],
+	"textureScrollSpeed":40,
+	"pixelsPerTexel":1.0,
+}

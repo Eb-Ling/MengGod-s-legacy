@@ -1,0 +1,222 @@
+{
+  "hullName": "New Hull",
+  "hullId": "Meng_fire_li",
+  "hullSize": "FRIGATE",
+  "spriteName": "graphics/Meng/ships/fire/li/Meng_fire_li.png",
+  "style": "Meng_Fire",
+  "height": 166,
+  "width": 98,
+  "center": [49, 83],
+  "collisionRadius": 105,
+  "shieldCenter": [0, 0],
+  "shieldRadius": 104,
+  "viewOffset": 0,
+  "builtInMods": [
+    "Meng_fire_core_li"
+  ],
+  "builtInWeapons": {
+    "WS0001": "Meng_fire_li_aboveweapon",
+    "WS0002": "Meng_fire_li_leftwing1",
+    "WS0003": "Meng_fire_li_rightwing1",
+    "WS0004": "Meng_fire_li_leftwing2",
+    "WS0005": "Meng_fire_li_rightwing2"
+  },
+  "weaponSlots": [
+    {
+      "id": "WS0001",
+      "size": "LARGE",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 360,
+      "angle": 0,
+      "locations": [5, 1],
+      "renderOrderMod": 100
+    },
+    {
+      "id": "WS0002",
+      "size": "LARGE",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 360,
+      "angle": 0,
+      "locations": [17, 17],
+      "renderOrderMod": 80
+    },
+    {
+      "id": "WS0003",
+      "size": "LARGE",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 360,
+      "angle": -0,
+      "locations": [17, -17],
+      "renderOrderMod": 80
+    },
+    {
+      "id": "WS0004",
+      "size": "LARGE",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 360,
+      "angle": 0,
+      "locations": [-9, 10],
+      "renderOrderMod": 60
+    },
+    {
+      "id": "WS0005",
+      "size": "LARGE",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 360,
+      "angle": -0,
+      "locations": [-9, -10],
+      "renderOrderMod": 60
+    },
+    {
+      "id": "WS0006",
+      "size": "LARGE",
+      "type": "HYBRID",
+      "mount": "TURRET",
+      "arc": 360,
+      "angle": 0,
+      "locations": [-15, 1],
+      "renderOrderMod": 110
+    },
+    {
+      "id": "WS0007",
+      "size": "SMALL",
+      "type": "UNIVERSAL",
+      "mount": "HIDDEN",
+      "arc": 0,
+      "angle": 0,
+      "locations": [58, -0],
+      "renderOrderMod": -1
+    }
+  ],
+  "engineSlots": [
+    {
+      "location": [-52, 17.5],
+      "length": 49,
+      "width": 3,
+      "angle": 180,
+      "contrailSize": 3,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine"
+    },
+    {
+      "location": [-52, -17.5],
+      "length": 49,
+      "width": 3,
+      "angle": -180,
+      "contrailSize": 3,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine"
+    },
+    {
+      "location": [-60, 9.5],
+      "length": 62,
+      "width": 3,
+      "angle": 180,
+      "contrailSize": 3,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine"
+    },
+    {
+      "location": [-60, -9.5],
+      "length": 62,
+      "width": 3,
+      "angle": -180,
+      "contrailSize": 3,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine"
+    },
+    {
+      "location": [-60, 9.5],
+      "length": 39,
+      "width": 11,
+      "angle": 180,
+      "contrailSize": 11,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-60, -9.5],
+      "length": 39,
+      "width": 11,
+      "angle": -180,
+      "contrailSize": 11,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-52, 17.5],
+      "length": 39,
+      "width": 11,
+      "angle": 180,
+      "contrailSize": 11,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-52, -17.5],
+      "length": 39,
+      "width": 11,
+      "angle": -180,
+      "contrailSize": 11,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    }
+  ],
+  "bounds": [
+    -83, -3,
+    -78, -3,
+    -76.5, -8.5,
+    -61.5, -8.5,
+    -61.5, -12.5,
+    -54, -15.5,
+    -54, -21.5,
+    -41, -27,
+    -57.5, -49.5,
+    -26, -34,
+    -50.5, -63.5,
+    -50.5, -67,
+    -27, -48,
+    -24, -51,
+    -12.5, -39.5,
+    -11.5, -40.5,
+    -23, -56,
+    -23, -62.5,
+    22.5, -20.5,
+    52, -14.5,
+    75, -14.5,
+    79, -10,
+    83, -9.5,
+    83, -4.5,
+    68.5, -4.5,
+    68.5, 4.5,
+    83, 4.5,
+    83, 9.5,
+    79, 10,
+    75, 14.5,
+    52, 14.5,
+    22.5, 20.5,
+    -23, 62.5,
+    -23, 56,
+    -11.5, 40.5,
+    -12.5, 39.5,
+    -24, 51,
+    -27, 48,
+    -50.5, 67,
+    -50.5, 63.5,
+    -26, 34,
+    -57.5, 49.5,
+    -41, 27,
+    -54, 21.5,
+    -54, 15.5,
+    -61.5, 12.5,
+    -61.5, 8.5,
+    -76.5, 8.5,
+    -78, 3,
+    -83, 3
+  ]
+}

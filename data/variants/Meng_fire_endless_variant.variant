@@ -1,0 +1,65 @@
+{
+  "variantId": "Meng_fire_endless_variant",
+  "hullId": "Meng_fire_endless",
+  "displayName": "éç¨",
+  "goalVariant": true,
+  "fluxCapacitors": 2,
+  "fluxVents": 30,
+  "quality": 1,
+  "permaMods": [],
+  "hullMods": [
+    "Meng_fire_TargetingCore",
+    "Meng_fire_HardArmor",
+    "Meng_fire_SafeFlux"
+  ],
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "lightneedler",
+        "WS0004": "lightneedler",
+        "WS0005": "Meng_hummingbird",
+        "WS0006": "Meng_hummingbird",
+        "WS0009": "Meng_Spectrum",
+        "WS0010": "Meng_Spectrum",
+        "WS0011": "Meng_fire_sharpnel",
+        "WS0012": "Meng_fire_sharpnel",
+        "WS0014": "Meng_hummingbird",
+        "WS0015": "Meng_hummingbird"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {}
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {}
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0007": "Meng_hummingbird",
+        "WS0008": "Meng_hummingbird"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0001": "Meng_fire_sunder"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {}
+    }
+  ],
+  "modules": [],
+  "wings": []
+}

@@ -1,0 +1,40 @@
+{
+  "id": "Meng_Starbeam_m",
+  "specClass": "beam",
+  "type": "ENERGY",
+  "size": "MEDIUM",
+  "beamEffect":"data.weapons.Meng_Starbeam",
+  "collisionClass": "RAY",
+  "collisionClassByFighter": "RAY_FIGHTER",
+  "turretSprite": "graphics/Meng/hullmods/meng_cover.png",
+  "turretGlowSprite": "graphics/Meng/hullmods/meng_cover.png",
+  "turretGunSprite": "graphics/Meng/hullmods/meng_cover.png",
+  "hardpointSprite": "graphics/Meng/hullmods/meng_cover.png",
+  "hardpointGlowSprite": "graphics/Meng/hullmods/meng_cover.png",
+  "hardpointGunSprite": "graphics/Meng/hullmods/meng_cover.png",
+  "turretOffsets": [
+    8.5,
+    0
+  ],
+  "turretAngleOffsets": [
+    0
+  ],
+  "hardpointOffsets": [
+    27,
+    0
+  ],
+  "hardpointAngleOffsets": [
+    0
+  ],
+	"glowColor":[255,255,255,225],
+	"hitGlowRadius": 0,
+	"beamFireOnlyOnFullCharge": true,
+  "fringeColor":[53,238,230, 255],
+	"coreColor":[53,238,230, 255],
+  "width": 10,
+  #"textureType": ROUGH,
+  "textureType":["graphics/fx/Meng_Starbeam.png","graphics/fx/Meng_Starbeam.png"],
+  "textureScrollSpeed": 60.0,
+  "pixelsPerTexel": 7,
+  "fireSoundTwo":"tachyon_lance_fire",
+}

@@ -1,0 +1,86 @@
+{
+	"Meng_protectEngine":{
+		"engineColor":[47, 189, 177,175],
+		"contrailParticleSizeMult":4,
+		"contrailParticleDuration":1.25f,
+		"contrailMaxSpeedMult":0.3f,
+		"contrailAngularVelocityMult":0,
+		"contrailColor":[126, 184, 187,75],
+		"type":"GLOW" # GLOW or SMOKE
+	},
+	"Meng_NonameEngine":{
+		"engineColor":[47, 189, 177,175],
+		"contrailParticleSizeMult":4,
+		"contrailParticleDuration":1.25f,
+		"contrailMaxSpeedMult":0.3f,
+		"contrailAngularVelocityMult":0,
+		"contrailColor":[126, 184, 187,0],
+		"type":"GLOW" # GLOW or SMOKE
+	},
+	"Meng_MingGodEngine":{
+			
+		"mode":"QUAD_STRIP",
+	    "contrailWidthMult":0.70,
+	
+		"engineColor":[224, 0, 0, 255],
+		"engineCampaignColor":[148, 1, 1, 255],
+		
+		"contrailParticleSizeMult":3.5,
+		"contrailParticleDuration":1.5,
+		"contrailParticleFinalSizeMult":0.2,
+		"contrailMaxSpeedMult":2.5,
+		"contrailAngularVelocityMult":15.5,
+		
+		"contrailMinSeg":5,
+		
+		"contrailDuration":2,
+		
+		"contrailColor":[226,78, 78,120],
+		"contrailCampaignColor":[226, 78, 78,70],
+		
+		"type":"SMOKE",
+		
+		"glowSprite":"graphics/fx/Meng_engineflame32.png",
+		"glowOutline":"graphics/fx/engineflame32b.png",
+		
+		"omegaMode":true,
+		"glowSizeMult":0.6,
+		"glowAlternateColor":[148, 1, 1, 255],
+		
+		
+	},
+	"Meng_FireEngine":{
+		"type":"GLOW",
+		"contrailParticleSizeMult":3,
+		"contrailParticleDuration":1,
+		"contrailParticleFinalSizeMult":1,
+		"contrailMaxSpeedMult":1.5,
+		"contrailAngularVelocityMult":0,
+		"glowSprite":"graphics/fx/engineglow32b.png",
+		"glowOutline":"graphics/fx/Meng_engineflame32.png",
+		"omegaMode":true,
+		"glowSizeMult":0.5,
+		"contrailColor":[250, 30, 30,0],
+		"glowAlternateColor":[250, 60, 30, 100],
+		"engineColor":[250, 60, 30, 255],
+		"contrailCampaignColor":[100, 0, 255,100],
+		
+	},
+	"Meng_FireEngine_OuterRing":{
+		"type":"GLOW",
+		"contrailParticleSizeMult":3,
+		"contrailParticleDuration":1,
+		"contrailParticleFinalSizeMult":1,
+		"contrailMaxSpeedMult":1.5,
+		"contrailAngularVelocityMult":0,
+		"glowSprite":"graphics/fx/engineglow32b.png",
+		"glowOutline":"graphics/fx/Meng_engineflame32.png",
+		"omegaMode":true,
+		"glowSizeMult":0.5,
+		"contrailColor":[250, 30, 30,0],
+		"glowAlternateColor":[100, 0, 255,40],
+		"engineColor":[100, 0, 255,200],
+		"contrailCampaignColor":[100, 0, 255,100],
+
+	},
+}

@@ -1,0 +1,49 @@
+{
+    "displayName": "Standard",
+    "fluxCapacitors": 0,
+    "fluxVents": 18,
+    "goalVariant": true,
+    "hullId": "Meng_fire_redfeather",
+    "hullMods": [
+        "Meng_fire_TargetingCore",
+        "heavyarmor",
+    ],
+    "permaMods": [],
+    "sMods": [],
+    "suppressedMods": [],
+    "variantId": "Meng_fire_redfeather_Standard",
+    "weaponGroups": [
+        {
+            "autofire": true,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0001": "lightneedler",
+                "WS0003": "lightneedler",
+                "WS0002": "lightneedler",
+                "WS0004": "lightneedler",
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0005": "heatseeker",
+                "WS0006": "heatseeker",
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0008": "mininglaser",
+                "WS0007": "mininglaser",
+            }
+        },
+    ],
+    "wings": [
+        "warthog_wing",
+        "warthog_wing",
+        "broadsword_wing",
+    ],
+    "modules": [],
+}

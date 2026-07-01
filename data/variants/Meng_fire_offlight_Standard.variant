@@ -1,0 +1,69 @@
+{
+    "displayName": "Standard",
+    "fluxCapacitors": 47,
+    "fluxVents": 0,
+    "goalVariant": true,
+    "hullId": "Meng_fire_offlight",
+    "hullMods": [
+        "Meng_fire_Energy",
+        "Meng_fire_FluxEnhance",
+        "Meng_fire_TargetingCore",
+        "armoredweapons",
+        "fluxcoil",
+        "fluxdistributor",
+        "hardenedshieldemitter",
+        "heavyarmor",
+        "magazines",
+        "stabilizedshieldemitter",
+    ],
+    "permaMods": [],
+    "sMods": [],
+    "suppressedMods": [],
+    "variantId": "Meng_fire_offlight_Standard",
+    "weaponGroups": [
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0005": "Meng_fire_firefly",
+                "WS0006": "Meng_fire_firefly",
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0001": "Meng_lightoffinner",
+                "WS0003": "Meng_lightoffinner",
+                "WS0002": "Meng_lightoffinner",
+                "WS0004": "Meng_lightoffinner",
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0012": "shredder",
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0010": "heavyac",
+                "WS0009": "heavyac",
+                "WS0008": "heavyac",
+                "WS0007": "heavyac",
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0011": "mininglaser",
+            }
+        },
+    ],
+    "wings": [],
+    "modules": [],
+}

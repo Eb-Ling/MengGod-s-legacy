@@ -1,0 +1,273 @@
+{
+  "hullName": "New Hull",
+  "hullId": "Meng_fire_firelight",
+  "hullSize": "CRUISER",
+  "spriteName": "graphics/Meng/ships/fire/Meng_fire_firelight.png",
+  "style": "Meng_Fire",
+  "height": 180,
+  "width": 258,
+  "center": [129, 90],
+  "collisionRadius": 156,
+  "shieldCenter": [0, 0],
+  "shieldRadius": 153.5,
+  "viewOffset": 0,
+  "builtInMods": [
+    "Meng_fire_Phasecore",
+    "Meng_fire_core"
+  ],
+  "builtInWeapons": {
+    "WS0003": "Meng_cover",
+    "WS0008": "Meng_fire_firelight_light",
+    "WS0009": "amblaster"
+  },
+  "weaponSlots": [
+    {
+      "id": "WS0001",
+      "size": "MEDIUM",
+      "type": "BALLISTIC",
+      "mount": "TURRET",
+      "arc": 90,
+      "angle": 0,
+      "locations": [7, 51]
+    },
+    {
+      "id": "WS0002",
+      "size": "MEDIUM",
+      "type": "BALLISTIC",
+      "mount": "TURRET",
+      "arc": 90,
+      "angle": -0,
+      "locations": [7, -51]
+    },
+    {
+      "id": "WS0004",
+      "size": "SMALL",
+      "type": "UNIVERSAL",
+      "mount": "HARDPOINT",
+      "arc": 30,
+      "angle": 0,
+      "locations": [56, 56]
+    },
+    {
+      "id": "WS0005",
+      "size": "SMALL",
+      "type": "UNIVERSAL",
+      "mount": "HARDPOINT",
+      "arc": 30,
+      "angle": -0,
+      "locations": [56, -56]
+    },
+    {
+      "id": "WS0006",
+      "size": "SMALL",
+      "type": "UNIVERSAL",
+      "mount": "HARDPOINT",
+      "arc": 30,
+      "angle": 0,
+      "locations": [36, 84]
+    },
+    {
+      "id": "WS0007",
+      "size": "SMALL",
+      "type": "UNIVERSAL",
+      "mount": "HARDPOINT",
+      "arc": 30,
+      "angle": -0,
+      "locations": [36, -84]
+    },
+    {
+      "id": "WS0008",
+      "size": "LARGE",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 90,
+      "angle": 0,
+      "locations": [0, -0]
+    },
+    {
+      "id": "WS0003",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 90,
+      "angle": 0,
+      "locations": [-1, -0]
+    },
+    {
+      "id": "WS0009",
+      "size": "SMALL",
+      "type": "BUILT_IN",
+      "mount": "HIDDEN",
+      "arc": 30,
+      "angle": 0,
+      "locations": [80.5, -0]
+    },
+    {
+      "id": "WS0010",
+      "size": "SMALL",
+      "type": "UNIVERSAL",
+      "mount": "HIDDEN",
+      "arc": 30,
+      "angle": 0,
+      "locations": [76.5, 9]
+    },
+    {
+      "id": "WS0011",
+      "size": "SMALL",
+      "type": "UNIVERSAL",
+      "mount": "HIDDEN",
+      "arc": 30,
+      "angle": -0,
+      "locations": [76.5, -9]
+    }
+  ],
+  "engineSlots": [
+    {
+      "location": [-35, 83],
+      "length": 103,
+      "width": 3,
+      "angle": 180,
+      "contrailSize": 3,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-35, -83],
+      "length": 103,
+      "width": 3,
+      "angle": -180,
+      "contrailSize": 3,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-71, 19.5],
+      "length": 104.5,
+      "width": 4,
+      "angle": 180,
+      "contrailSize": 4,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-71, -19.5],
+      "length": 104,
+      "width": 4,
+      "angle": -180,
+      "contrailSize": 4,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-71, 11.5],
+      "length": 104.5,
+      "width": 4,
+      "angle": 180,
+      "contrailSize": 4,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-71, -11.5],
+      "length": 104.5,
+      "width": 4,
+      "angle": -180,
+      "contrailSize": 4,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-64, 0.5],
+      "length": 131,
+      "width": 5,
+      "angle": 180,
+      "contrailSize": 5,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-71, 11.5],
+      "length": 83.5,
+      "width": 18,
+      "angle": 180,
+      "contrailSize": 18,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-71, -11.5],
+      "length": 83.5,
+      "width": 18,
+      "angle": -180,
+      "contrailSize": 18,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-35, 83],
+      "length": 83.5,
+      "width": 18,
+      "angle": 180,
+      "contrailSize": 18,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-35, -83],
+      "length": 83.5,
+      "width": 18,
+      "angle": -180,
+      "contrailSize": 18,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-71, 19.5],
+      "length": 83.5,
+      "width": 18,
+      "angle": 180,
+      "contrailSize": 18,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-71, -19.5],
+      "length": 83.5,
+      "width": 18,
+      "angle": -180,
+      "contrailSize": 18,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-63.5, 0.5],
+      "length": 98.5,
+      "width": 16,
+      "angle": 180,
+      "contrailSize": 16,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    }
+  ],
+  "bounds": [
+    -72, -30.5,
+    -91.5, -32,
+    -28.5, -66.5,
+    -38, -78.5,
+    -38, -88.5,
+    -24.5, -93.5,
+    -36.5, -117,
+    -30, -132,
+    25.5, -102.5,
+    90, -25.5,
+    85.5, -19.5,
+    85.5, -6,
+    90.5, -4,
+    90.5, 4,
+    85.5, 6,
+    85.5, 19.5,
+    90, 25.5,
+    25.5, 102.5,
+    -30, 132,
+    -36.5, 117,
+    -24.5, 93.5,
+    -38, 88.5,
+    -38, 78.5,
+    -28.5, 66.5,
+    -91.5, 32,
+    -72, 30.5
+  ]
+}

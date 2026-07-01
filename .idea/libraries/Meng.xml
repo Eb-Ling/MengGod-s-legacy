@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Meng">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jars/Meng.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

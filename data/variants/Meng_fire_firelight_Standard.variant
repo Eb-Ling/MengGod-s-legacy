@@ -1,0 +1,38 @@
+{
+    "displayName": "Standard",
+    "fluxCapacitors": 0,
+    "fluxVents": 14,
+    "goalVariant": true,
+    "hullId": "Meng_fire_firelight",
+    "hullMods": [
+        "Meng_fire_TargetingCore",
+        "armoredweapons",
+        "heavyarmor",
+    ],
+    "permaMods": [],
+    "sMods": [],
+    "suppressedMods": [],
+    "variantId": "Meng_fire_firelight_Standard",
+    "weaponGroups": [
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0001": "heavyneedler",
+                "WS0002": "heavyneedler",
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0005": "Meng_HotSun",
+                "WS0004": "Meng_HotSun",
+                "WS0007": "amblaster",
+                "WS0006": "amblaster",
+            }
+        },
+    ],
+    "wings": [],
+    "modules": [],
+}

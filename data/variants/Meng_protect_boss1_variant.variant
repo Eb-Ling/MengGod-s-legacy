@@ -1,0 +1,83 @@
+{
+  "variantId": "Meng_protect_boss1_variant",
+  "hullId": "Meng_protect_boss1",
+  "displayName": "New Variant",
+  "goalVariant": true,
+  "fluxCapacitors": 50,
+  "fluxVents": 6,
+  "quality": 1,
+  "permaMods": [],
+  "hullMods": [
+    "magazines",
+    "targetingunit",
+    "ballistic_rangefinder",
+    "fluxdistributor"
+  ],
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 021": "annihilatorpod",
+        "WS 022": "phasecl",
+        "WS 023": "phasecl",
+        "WS 024": "annihilatorpod"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 001": "shredder",
+        "WS 003": "shredder"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 008": "railgun",
+        "WS 009": "railgun",
+        "WS 019": "multineedler"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 018": "devastator",
+        "WS 020": "devastator"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 005": "vulcan",
+        "WS 006": "vulcan",
+        "WS 010": "flak",
+        "WS 011": "flak"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 012": "heavymauler",
+        "WS 013": "heavymauler",
+        "WS 014": "heavymauler",
+        "WS 015": "heavymauler"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 016": "tpc",
+        "WS 017": "tpc"
+      }
+    }
+  ],
+  "modules": [],
+  "wings": []
+}

@@ -1,0 +1,37 @@
+{
+    "displayName": "Standard",
+    "fluxCapacitors": 20,
+    "fluxVents": 14,
+    "goalVariant": true,
+    "hullId": "Meng_fire_firesmoke",
+    "hullMods": [
+        "Meng_fire_TargetingCore",
+    ],
+    "permaMods": [],
+    "sMods": [],
+    "suppressedMods": [],
+    "variantId": "Meng_fire_firesmoke_Standard",
+    "weaponGroups": [
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0001": "chaingun",
+                "WS0003": "heavymg",
+                "WS0002": "heavymg",
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0009": "annihilator",
+                "WS0008": "annihilator",
+                "WS0007": "annihilator",
+                "WS0006": "annihilator",
+            }
+        },
+    ],
+    "wings": [],
+    "modules": [],
+}

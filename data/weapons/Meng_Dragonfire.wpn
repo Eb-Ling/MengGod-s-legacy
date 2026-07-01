@@ -1,0 +1,23 @@
+{
+    "id":"Meng_Dragonfire",  # this id must match what's in the spreadsheet
+	"specClass":"projectile",
+	"type":"ENERGY",
+	"size":"LARGE",
+	"everyFrameEffect": "data.weapons.Meng_Dragonfireeffect",
+	"turretSprite": "graphics/Meng/hullmods/meng_cover.png",
+    "turretGlowSprite": "graphics/Meng/hullmods/meng_cover.png",
+    "turretGunSprite": "graphics/Meng/hullmods/meng_cover.png",
+    "hardpointSprite": "graphics/Meng/hullmods/meng_cover.png",
+    "hardpointGlowSprite": "graphics/Meng/hullmods/meng_cover.png",
+    "hardpointGunSprite": "graphics/Meng/hullmods/meng_cover.png",
+	"turretOffsets":[30, 0],
+	"turretAngleOffsets":[0],
+	"hardpointOffsets":[30, 0],
+	"hardpointAngleOffsets":[0],
+	"barrelMode":"ALTERNATING", # or LINKED.  whether barrels fire at the same time or alternate.
+	"animationType":"GLOW_AND_FLASH",
+			
+	"autocharge":true,  # whether the weapon will continue charging and fire if the LMB is tapped instead of held
+	"projectileSpecId":"Meng_dragonfire",  # projectile that will be fired
+    
+}

@@ -1,0 +1,14 @@
+{
+	"id":"Meng_Timesystem",
+	"type":"STAT_MOD",
+	"aiType":"CUSTOM",
+	"aiScript":"data.shipsystems.scripts.ai.Meng_Timesystemai",
+	"statsScript":"data.shipsystems.scripts.Meng_Timesystem",
+	
+	
+	
+	
+	"aiHints":{
+	
+	}
+}

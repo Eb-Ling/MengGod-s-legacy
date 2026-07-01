@@ -1,0 +1,35 @@
+{
+  "Meng_StarshipMist_type": {
+    "defaultName": "Breaking-Mist Emitter",
+    "defaultRadius": 60,
+    "customDescriptionId": "Meng_StarshipMist_type",
+    "interactionImage": "graphics/illustrations/abandoned_station3.jpg",
+    "icon": "graphics/icons/icon_portal.png",
+    "iconWidth": 20,
+    "iconHeight": 20,
+    "sprite": "graphics/stations/station_sporeship_derelict.png",
+    "spriteWidth": 50,
+    "spriteHeight": 64,
+    "renderShadow": true,
+    "useLightColor": true,
+    "showInCampaign": true,
+    "showIconOnMap": true,
+    "showNameOnMap": false,
+    "scaleNameWithZoom": false,
+    "scaleIconWithZoom": true,
+    "tags": ["station"],
+    "layers": [STATIONS]
+  },
+  "Meng_embers_jump_render": {
+    "pluginClass": "data.scripts.campaign.Meng_EmbersJumpRenderPlugin",
+    "defaultName": "",
+    "defaultRadius": 100,
+    "showInCampaign": true,
+    "showIconOnMap": false,
+    "showNameOnMap": false,
+    "renderCircleIndicator": false,
+    "scaleIconWithZoom": false,
+    "tags": [],
+    "layers": [ABOVE]
+  }
+}

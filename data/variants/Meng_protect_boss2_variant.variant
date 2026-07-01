@@ -1,0 +1,66 @@
+{
+  "variantId": "Meng_protect_boss2_variant",
+  "hullId": "Meng_protect_boss2",
+  "displayName": "New Variant",
+  "goalVariant": true,
+  "fluxCapacitors": 29,
+  "fluxVents": 0,
+  "quality": 1,
+  "permaMods": [],
+  "hullMods": [
+    "heavyarmor",
+    "targetingunit"
+  ],
+  "weaponGroups": [
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 000": "hellbore",
+        "WS 001": "hellbore",
+        "WS 018": "vulcan",
+        "WS 019": "vulcan",
+        "WS 020": "vulcan",
+        "WS 021": "vulcan"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 002": "heavymauler",
+        "WS 003": "heavymauler"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 004": "hveldriver",
+        "WS 007": "hveldriver"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 005": "phasecl"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS 008": "vulcan",
+        "WS 009": "vulcan"
+      }
+    }
+  ],
+  "modules": [],
+  "wings": [
+    "flash_wing",
+    "flash_wing",
+    "flash_wing",
+    "flash_wing"
+  ]
+}

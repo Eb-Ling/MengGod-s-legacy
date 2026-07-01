@@ -1,0 +1,46 @@
+{
+  "id": "Meng_Starproject",
+  "specClass": "beam",
+  "type": "ENERGY",
+  "size": "LARGE",
+  "collisionClass": "RAY",
+  "collisionClassByFighter": "RAY_FIGHTER",
+  "beamEffect": "data.weapons.Meng_Starproject_effect",
+  "turretSprite": "graphics/weapons/Meng_Starproject.png",
+  "turretGlowSprite": "graphics/weapons/Meng_Starproject_fire.png",
+  "hardpointSprite": "graphics/weapons/Meng_Starproject_hardpoint.png",
+  "hardpointGlowSprite": "graphics/weapons/Meng_Starproject_hardpoint_fire.png",
+  "glowColor": [
+    0, 227, 255, 255
+  ],
+  "hitGlowRadius": 0,
+  "turretOffsets": [
+    19.5,
+    0
+  ],
+  "turretAngleOffsets": [
+    0
+  ],
+  "hardpointOffsets": [
+    38.5,
+    0
+  ],
+  "hardpointAngleOffsets": [
+    0
+  ],
+  "fringeColor": [
+    0, 227, 255, 255
+  ],
+  "coreColor": [
+    189, 247, 255, 255
+  ],
+  "width": 10,
+  "textureType": [
+    "graphics/fx/Meng_Starproject_fringe.png",
+    "graphics/fx/Meng_Starproject_core.png"
+  ],
+  "pierceSet":[PROJECTILE_FF,PROJECTILE_NO_FF,PROJECTILE_FIGHTER,MISSILE_FF,MISSILE_NO_FF],
+  "fireSoundTwo":"graviton_beam_loop",
+  "textureScrollSpeed": 64,
+  "pixelsPerTexel": 1
+}

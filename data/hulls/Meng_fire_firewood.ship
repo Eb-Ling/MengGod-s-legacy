@@ -1,0 +1,239 @@
+{
+  "hullName": "薪木",
+  "hullId": "Meng_fire_firewood",
+  "hullSize": "FRIGATE",
+  "spriteName": "graphics/Meng/ships/fire/Meng_fire_firewood.png",
+  "style": "Meng_Fire",
+  "height": 146,
+  "width": 144,
+  "center": [72, 73],
+  "collisionRadius": 95,
+  "shieldCenter": [0, 0],
+  "shieldRadius": 95.5,
+  "viewOffset": 0,
+  "builtInMods": [
+    "Meng_fire_core"
+  ],
+  "builtInWeapons": {
+    "WS0004": "Meng_cover",
+    "WS0005": "Meng_fire_firewood_light"
+  },
+  "weaponSlots": [
+    {
+      "id": "WS0001",
+      "size": "SMALL",
+      "type": "BALLISTIC",
+      "mount": "TURRET",
+      "arc": 45,
+      "angle": 0,
+      "locations": [8, 39]
+    },
+    {
+      "id": "WS0002",
+      "size": "SMALL",
+      "type": "BALLISTIC",
+      "mount": "TURRET",
+      "arc": 45,
+      "angle": -0,
+      "locations": [8, -39]
+    },
+    {
+      "id": "WS0003",
+      "size": "LARGE",
+      "type": "UNIVERSAL",
+      "mount": "HARDPOINT",
+      "arc": 0,
+      "angle": 0,
+      "locations": [50, -0]
+    },
+    {
+      "id": "WS0004",
+      "size": "SMALL",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 45,
+      "angle": 0,
+      "locations": [-6.5, -0]
+    },
+    {
+      "id": "WS0005",
+      "size": "LARGE",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 45,
+      "angle": 0,
+      "locations": [0, -0]
+    }
+  ],
+  "engineSlots": [
+    {
+      "location": [-50.5, -37.5],
+      "length": 36,
+      "width": 2,
+      "angle": 180,
+      "contrailSize": 2,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-50.5, 37.5],
+      "length": 36,
+      "width": 2,
+      "angle": -180,
+      "contrailSize": 2,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-66, 15],
+      "length": 41,
+      "width": 2,
+      "angle": -180,
+      "contrailSize": 2,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-66, -15],
+      "length": 41,
+      "width": 2,
+      "angle": 180,
+      "contrailSize": 2,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-71, -0],
+      "length": 50,
+      "width": 3,
+      "angle": -180,
+      "contrailSize": 3,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-58, 28],
+      "length": 39,
+      "width": 2,
+      "angle": -180,
+      "contrailSize": 2,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-58, -28],
+      "length": 39,
+      "width": 2,
+      "angle": 180,
+      "contrailSize": 2,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-50.5, 37.5],
+      "length": 25,
+      "width": 9,
+      "angle": -180,
+      "contrailSize": 9,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-50.5, -37.5],
+      "length": 25,
+      "width": 9,
+      "angle": 180,
+      "contrailSize": 9,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-58, 28],
+      "length": 25,
+      "width": 9,
+      "angle": -180,
+      "contrailSize": 9,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-58, -28],
+      "length": 25,
+      "width": 9,
+      "angle": 180,
+      "contrailSize": 9,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-66, 15],
+      "length": 25,
+      "width": 9,
+      "angle": -180,
+      "contrailSize": 9,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-66, -15],
+      "length": 25,
+      "width": 9,
+      "angle": 180,
+      "contrailSize": 9,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    },
+    {
+      "location": [-71, -0],
+      "length": 34,
+      "width": 11,
+      "angle": 180,
+      "contrailSize": 11,
+      "style": "CUSTOM",
+      "styleId": "Meng_FireEngine_OuterRing"
+    }
+  ],
+  "bounds": [
+    -72, -6.5,
+    -67, -19.5,
+    -59, -22,
+    -59, -36.5,
+    -53, -38.5,
+    -49, -45,
+    -43, -45,
+    -43, -54,
+    -37.5, -60.5,
+    -30, -60.5,
+    -32, -64,
+    -17.5, -71.5,
+    -12, -66.5,
+    -5, -69,
+    2, -61.5,
+    3, -63.5,
+    10, -63.5,
+    12.5, -59.5,
+    21, -59.5,
+    32, -41.5,
+    53, -42,
+    72, -22.5,
+    72, -17.5,
+    67.5, -4.5,
+    67.5, 4.5,
+    72, 17.5,
+    72, 22.5,
+    53, 42,
+    32, 41.5,
+    21, 59.5,
+    12.5, 59.5,
+    10, 63.5,
+    3, 63.5,
+    2, 61.5,
+    -5, 69,
+    -12, 66.5,
+    -17.5, 71.5,
+    -32, 64,
+    -30, 60.5,
+    -37.5, 60.5,
+    -43, 54,
+    -43, 45,
+    -49, 45,
+    -53, 38.5,
+    -59, 36.5,
+    -59, 22,
+    -67, 19.5,
+    -72, 6.5
+  ]
+}

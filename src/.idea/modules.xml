@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/MengGL11Tool/MengGL11Tool.iml" filepath="$PROJECT_DIR$/MengGL11Tool/MengGL11Tool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MengGod's legacy.iml" filepath="$PROJECT_DIR$/MengGod's legacy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../mimikko098v0.762/jars/src/jars.iml" filepath="$PROJECT_DIR$/../../mimikko098v0.762/jars/src/jars.iml" />
+    </modules>
+  </component>
+</project>

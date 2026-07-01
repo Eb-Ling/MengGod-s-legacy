@@ -1,0 +1,63 @@
+{
+  "hullName": "歼星炮",
+  "hullId": "Meng_Jianxing",
+  "hullSize": "CAPITAL_SHIP",
+  "spriteName": "graphics/Meng/ships/Meng_Jianxing.png",
+  "style": "OMEGA",
+  "height": 322,
+  "width": 364,
+  "center": [184, 162],
+  "collisionRadius": 78.5,
+  "shieldCenter": [0, -0],
+  "shieldRadius": 78,
+  "viewOffset": 0,
+  "builtInMods": [
+    "Meng_jianxingsprite",
+    "Meng_God_MEC"
+  ],
+  "weaponSlots": [
+    {
+      "id": "WS0002",
+      "size": "LARGE",
+      "type": "ENERGY",
+      "mount": "HIDDEN",
+      "arc": 19,
+      "angle": 0,
+      "locations": [0, -0]
+    }
+  ],
+  "engineSlots": [
+    {
+      "location": [-11, 41.5],
+      "length": 27.5,
+      "width": 1,
+      "angle": 180,
+      "contrailSize": 1,
+      "style": "LOW_TECH"
+    },
+    {
+      "location": [-11, -41.5],
+      "length": 27.5,
+      "width": 1,
+      "angle": -180,
+      "contrailSize": 1,
+      "style": "LOW_TECH"
+    }
+  ],
+  "bounds": [
+    13, -47,
+    12.5, -54.5,
+    10, -62.5,
+    3.5, -64,
+    -3.5, -64,
+    -9.5, -62,
+    -12.5, -54.5,
+    -12.5, 54.5,
+    -9.5, 62,
+    -3.5, 64,
+    3.5, 64,
+    10, 62.5,
+    12.5, 54.5,
+    13, 47
+  ]
+}

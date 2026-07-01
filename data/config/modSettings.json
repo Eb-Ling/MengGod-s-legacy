@@ -1,0 +1,19 @@
+{
+    "Meng_fireset":{
+		"Meng_fire_core_Softfluxred":2,#虚子炉幅散系统软幅能耗散效率
+		"Meng_fire_core_Hardfluxreduce":0.05,#虚子炉幅散系统硬幅能耗散比例
+		"Meng_fire_fluxtrans_fuse_Accelerate":0.35,#舰船导火索战术系统机动性提升比例
+		"Meng_fire_fluxtrans_attackcore":2,#熄灯人战术系统硬幅能水平下降倍率
+		"Meng_fire_HardArmor_Armormult":0.1,#幅化装甲船插提高装甲值比例
+		"Meng_fire_HardArmor_FluxPercent":10,#幅化装甲船插抗伤转换为硬幅能耗散倍率
+		"Meng_fire_HardArmor_Shieldmult":30,#幅化装甲船插提高装甲值比例
+		"Meng_fire_core_PeakCR":0.5,#虚子炉幅散系统船插抵消峰值下降比例
+		"Meng_fire_TargetingCore_RANGEBONES":100,#火羽目标定位射程提升百分比
+		"Meng_fire_FluxEnhance_DAMAGE_MULT":0.2,
+		"Meng_fire_FluxEnhance_SMOD_MULT":0.1,
+		"Meng_fire_AttackCore_ARMOR_MULT":0.5,
+		"Meng_fire_AttackCore_HULL_MULT":0.2,
+		"Meng_fire_AttackCore_FLUX_MULT":15,
+		"Meng_fire_AttackCore_HFLUX_MULT":0.1,
+    },
+}

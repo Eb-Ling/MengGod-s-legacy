@@ -1,0 +1,4 @@
+name,id,planetary,decivRemove,script,desc,icon,order
+灾难痕迹,Meng_EmbersFactory_3,,TRUE,data.campaign.econ.Meng_EmbersFactory_3,某种古怪的精神污染,graphics/icons/markets/autofactory.png,111
+纳米风暴,Meng_EmbersFactory_1,,TRUE,data.campaign.econ.Meng_EmbersFactory_1,灰色的风暴,graphics/icons/markets/orbital_burns.png,110
+学院遗址,Meng_EmbersFactory_2,,TRUE,data.campaign.econ.Meng_EmbersFactory_2,某段被埋葬的历史,graphics/icons/markets/ruins_vast.png,111

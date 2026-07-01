@@ -1,0 +1,76 @@
+{
+  "hullName": "观火",
+  "hullId": "Meng_witness",
+  "hullSize": "FIGHTER",
+  "spriteName": "graphics/Meng/ships/fire/Meng_witness.png",
+  "style": "Meng_Fire",
+  "height": 58,
+  "width": 40,
+  "center": [20, 29],
+  "collisionRadius": 40,
+  "shieldCenter": [0, 0],
+  "shieldRadius": 40.5,
+  "viewOffset": 0,
+  "builtInMods": [
+    "Meng_fire_core"
+  ],
+  "weaponSlots": [
+    {
+      "id": "WS0001",
+      "size": "SMALL",
+      "type": "UNIVERSAL",
+      "mount": "HIDDEN",
+      "arc": 0,
+      "angle": 0,
+      "locations": [0, -0]
+    }
+  ],
+  "engineSlots": [
+    {
+      "location": [-28, 12.5],
+      "length": 26,
+      "width": 4,
+      "angle": 180,
+      "contrailSize": 4,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-28, -12.5],
+      "length": 26,
+      "width": 4,
+      "angle": -180,
+      "contrailSize": 4,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-28, 7.5],
+      "length": 26,
+      "width": 4,
+      "angle": 180,
+      "contrailSize": 4,
+      "style": "Meng_FireEngine"
+    },
+    {
+      "location": [-28, -7.5],
+      "length": 26,
+      "width": 4,
+      "angle": -180,
+      "contrailSize": 4,
+      "style": "Meng_FireEngine"
+    }
+  ],
+  "bounds": [
+    -16.5, -2.5,
+    -28.5, -4.5,
+    -28.5, -16,
+    -7.5, -20,
+    12, -20,
+    28, -13,
+    28, 13,
+    12, 20,
+    -7.5, 20,
+    -28.5, 16,
+    -28.5, 4.5,
+    -16.5, 2.5
+  ]
+}

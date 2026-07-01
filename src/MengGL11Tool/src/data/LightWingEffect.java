@@ -1,0 +1,352 @@
+package data;
+
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Vector2f;
+
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+
+public class LightWingEffect implements MyRenderTool.MyRender, MyRenderTool.InitializableEffect {
+
+    private Vector2f position;
+    private float elapsed;
+    private float duration;
+    private boolean expired;
+
+    private float wingLength;
+    private float wingWidth;
+    private float wingAngle;
+    private float flowSpeed;
+
+    private float[] colorInner;
+    private float[] colorOuter;
+    private float[] colorGlow;
+
+    private int shaderProgram;
+    private int vbo;
+    private int ibo;
+
+    private int uPositionLoc;
+    private int uWingLengthLoc;
+    private int uWingWidthLoc;
+    private int uWingAngleLoc;
+    private int uTimeLoc;
+    private int uFlowSpeedLoc;
+    private int uLocalAlphaLoc;
+    private int uColorInnerLoc;
+    private int uColorOuterLoc;
+    private int uColorGlowLoc;
+
+    private static final String VERT_SRC =
+        "#version 110\n" +
+        "attribute vec2 a_position;\n" +
+        "attribute vec2 a_texCoord;\n" +
+        "varying vec2 v_uv;\n" +
+        "void main() {\n" +
+        "    v_uv = a_texCoord;\n" +
+        "    gl_Position = gl_ModelViewProjectionMatrix * vec4(a_position, 0.0, 1.0);\n" +
+        "}\n";
+
+    private static final String FRAG_SRC =
+        "#version 110\n" +
+        "varying vec2 v_uv;\n" +
+        "uniform float u_time;\n" +
+        "uniform float u_flowSpeed;\n" +
+        "uniform vec3 u_colorInner;\n" +
+        "uniform vec3 u_colorOuter;\n" +
+        "uniform vec3 u_colorGlow;\n" +
+        "uniform float u_localAlpha;\n" +
+        "\n" +
+        "vec2 hash2(vec2 p) {\n" +
+        "    p = vec2(dot(p, vec2(127.1, 311.7)),\n" +
+        "             dot(p, vec2(269.5, 183.3)));\n" +
+        "    return vec2(\n" +
+        "        fract(sin(p.x) * 43758.5453123),\n" +
+        "        fract(sin(p.y) * 28647.8923190)\n" +
+        "    );\n" +
+        "}\n" +
+        "\n" +
+        "float noise(vec2 p) {\n" +
+        "    vec2 i = floor(p);\n" +
+        "    vec2 f = fract(p);\n" +
+        "    vec2 u = f * f * f * (f * (f * 6.0 - 15.0) + 10.0);\n" +
+        "    float a = dot(hash2(i + vec2(0.0, 0.0)) * 2.0 - 1.0, f - vec2(0.0, 0.0));\n" +
+        "    float b = dot(hash2(i + vec2(1.0, 0.0)) * 2.0 - 1.0, f - vec2(1.0, 0.0));\n" +
+        "    float c = dot(hash2(i + vec2(0.0, 1.0)) * 2.0 - 1.0, f - vec2(0.0, 1.0));\n" +
+        "    float d = dot(hash2(i + vec2(1.0, 1.0)) * 2.0 - 1.0, f - vec2(1.0, 1.0));\n" +
+        "    return mix(mix(a, b, u.x), mix(c, d, u.x), u.y) * 0.5 + 0.5;\n" +
+        "}\n" +
+        "\n" +
+        "float fbm(vec2 p) {\n" +
+        "    float v = 0.0;\n" +
+        "    float a = 0.5;\n" +
+        "    mat2 rot = mat2(0.8, 0.6, -0.6, 0.8);\n" +
+        "    for (int i = 0; i < 5; i++) {\n" +
+        "        v += a * noise(p);\n" +
+        "        p = rot * p * 2.0;\n" +
+        "        a *= 0.5;\n" +
+        "    }\n" +
+        "    return v;\n" +
+        "}\n" +
+        "\n" +
+        "void main() {\n" +
+        "    float u = v_uv.x;\n" +
+        "    float v = v_uv.y;\n" +
+        "    float distFromCenter = abs(v - 0.5) * 2.0;\n" +
+        "\n" +
+        "    float taperFactor = 1.0 - u * 0.65;\n" +
+        "    float taperedDist = distFromCenter / max(taperFactor, 0.05);\n" +
+        "\n" +
+        "    float shapeMask = 1.0 - smoothstep(0.65, 1.0, taperedDist);\n" +
+        "    shapeMask *= 1.0 - smoothstep(0.82, 1.0, u);\n" +
+        "    shapeMask *= smoothstep(0.0, 0.06, u);\n" +
+        "\n" +
+        "    if (shapeMask < 0.01) discard;\n" +
+        "\n" +
+        "    float t = u_time * u_flowSpeed;\n" +
+        "    vec2 flow = vec2(-t, 0.0);\n" +
+        "\n" +
+        "    float f1 = fbm(vec2(u * 6.0, v * 4.0) + flow);\n" +
+        "    float f2 = fbm(vec2(u * 10.0 + 5.0, v * 6.0 + 3.0) + flow * 1.4);\n" +
+        "    float f3 = fbm(vec2(u * 14.0 + 10.0, v * 8.0 - 2.0) + flow * 1.8);\n" +
+        "\n" +
+        "    vec2 warpUV = vec2(u * 4.0, v * 3.0) + flow * 0.6;\n" +
+        "    float warpN = fbm(warpUV + fbm(warpUV + vec2(5.2, 1.3)) * 2.5);\n" +
+        "\n" +
+        "    float streaks = pow(\n" +
+        "        abs(sin(v * 18.0 + warpN * 3.5 - t * 2.0)),\n" +
+        "        4.0\n" +
+        "    );\n" +
+        "\n" +
+        "    float energy = f1 * 0.45 + f2 * 0.3 + f3 * 0.15 + streaks * 0.35;\n" +
+        "\n" +
+        "    float edgeGlow = pow(1.0 - taperedDist, 4.0) * 0.3;\n" +
+        "    float rootGlow = pow(1.0 - u, 3.5) * 0.55;\n" +
+        "\n" +
+        "    vec3 col = mix(u_colorInner, u_colorOuter, u);\n" +
+        "    col += u_colorGlow * (edgeGlow + rootGlow);\n" +
+        "    col *= (0.5 + energy * 1.4);\n" +
+        "\n" +
+        "    float breath = 0.92 + 0.08 * sin(u_time * 3.5);\n" +
+        "    float flicker = 0.96 + 0.04 * sin(u_time * 17.0 + u * 8.0);\n" +
+        "\n" +
+        "    float alpha = shapeMask * energy * breath * flicker * u_localAlpha;\n" +
+        "\n" +
+        "    gl_FragColor = vec4(col * alpha * 2.2, alpha);\n" +
+        "}\n";
+
+    private static final float[][] PALETTES = {
+        {0.4f, 0.65f, 1.0f,  0.1f, 0.25f, 1.0f,  0.55f, 0.8f, 1.0f},
+        {1.0f, 0.3f, 0.5f,   0.85f, 0.08f, 0.25f, 1.0f, 0.45f, 0.6f},
+        {0.3f, 1.0f, 0.55f,  0.08f, 0.7f, 0.18f,  0.45f, 1.0f, 0.65f},
+        {1.0f, 0.8f, 0.25f,  1.0f, 0.35f, 0.08f,  1.0f, 0.9f, 0.45f},
+        {0.7f, 0.3f, 1.0f,   0.4f, 0.08f, 0.85f,  0.8f, 0.5f, 1.0f},
+    };
+    private int paletteIndex = 0;
+
+    public LightWingEffect() {
+        this.position = new Vector2f(0f, 0f);
+        this.elapsed = 0f;
+        this.duration = -1f;
+        this.expired = false;
+
+        this.wingLength = 220f;
+        this.wingWidth = 55f;
+        this.wingAngle = 0f;
+        this.flowSpeed = 1.5f;
+
+        applyPalette(0);
+
+        createShaderProgram();
+        createBuffers();
+        cacheUniformLocations();
+    }
+
+    private void applyPalette(int index) {
+        paletteIndex = index % PALETTES.length;
+        float[] p = PALETTES[paletteIndex];
+        colorInner = new float[]{p[0], p[1], p[2]};
+        colorOuter = new float[]{p[3], p[4], p[5]};
+        colorGlow  = new float[]{p[6], p[7], p[8]};
+    }
+
+    private void createShaderProgram() {
+        try {
+            int vert = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
+            GL20.glShaderSource(vert, VERT_SRC);
+            GL20.glCompileShader(vert);
+            if (GL20.glGetShaderi(vert, GL20.GL_COMPILE_STATUS) == 0) {
+                System.err.println("LightWing vert compile failed: " + GL20.glGetShaderInfoLog(vert, 1024));
+                return;
+            }
+
+            int frag = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
+            GL20.glShaderSource(frag, FRAG_SRC);
+            GL20.glCompileShader(frag);
+            if (GL20.glGetShaderi(frag, GL20.GL_COMPILE_STATUS) == 0) {
+                System.err.println("LightWing frag compile failed: " + GL20.glGetShaderInfoLog(frag, 1024));
+                return;
+            }
+
+            shaderProgram = GL20.glCreateProgram();
+            GL20.glAttachShader(shaderProgram, vert);
+            GL20.glAttachShader(shaderProgram, frag);
+            GL20.glBindAttribLocation(shaderProgram, 0, "a_position");
+            GL20.glBindAttribLocation(shaderProgram, 1, "a_texCoord");
+            GL20.glLinkProgram(shaderProgram);
+
+            if (GL20.glGetProgrami(shaderProgram, GL20.GL_LINK_STATUS) == 0) {
+                System.err.println("LightWing link failed: " + GL20.glGetProgramInfoLog(shaderProgram, 1024));
+                return;
+            }
+
+            GL20.glDeleteShader(vert);
+            GL20.glDeleteShader(frag);
+
+            System.out.println("LightWing shader compiled OK");
+        } catch (Exception e) {
+            System.err.println("LightWing shader error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void createBuffers() {
+        float halfW = wingLength;
+        float halfH = wingWidth;
+
+        FloatBuffer verts = org.lwjgl.BufferUtils.createFloatBuffer(16);
+        verts.put(new float[]{
+            -halfW, -halfH,  0f, 0f,
+             halfW, -halfH,  1f, 0f,
+             halfW,  halfH,  1f, 1f,
+            -halfW,  halfH,  0f, 1f,
+        });
+        verts.flip();
+
+        IntBuffer indices = org.lwjgl.BufferUtils.createIntBuffer(6);
+        indices.put(new int[]{0, 1, 2, 0, 2, 3});
+        indices.flip();
+
+        vbo = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verts, GL15.GL_STATIC_DRAW);
+
+        ibo = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+
+    private void cacheUniformLocations() {
+        if (shaderProgram <= 0) return;
+        uPositionLoc     = GL20.glGetUniformLocation(shaderProgram, "u_position");
+        uWingLengthLoc   = GL20.glGetUniformLocation(shaderProgram, "u_wingLength");
+        uWingWidthLoc    = GL20.glGetUniformLocation(shaderProgram, "u_wingWidth");
+        uWingAngleLoc    = GL20.glGetUniformLocation(shaderProgram, "u_wingAngle");
+        uTimeLoc         = GL20.glGetUniformLocation(shaderProgram, "u_time");
+        uFlowSpeedLoc    = GL20.glGetUniformLocation(shaderProgram, "u_flowSpeed");
+        uLocalAlphaLoc   = GL20.glGetUniformLocation(shaderProgram, "u_localAlpha");
+        uColorInnerLoc   = GL20.glGetUniformLocation(shaderProgram, "u_colorInner");
+        uColorOuterLoc   = GL20.glGetUniformLocation(shaderProgram, "u_colorOuter");
+        uColorGlowLoc    = GL20.glGetUniformLocation(shaderProgram, "u_colorGlow");
+    }
+
+    @Override
+    public void initialize(float x, float y) {
+        this.position.x = x;
+        this.position.y = y;
+        this.elapsed = 0f;
+        this.expired = false;
+    }
+
+    @Override
+    public void advance(float amount) {
+        elapsed += amount;
+        if (duration > 0f && elapsed >= duration) {
+            expired = true;
+        }
+    }
+
+    @Override
+    public void render() {
+        if (expired || shaderProgram <= 0) return;
+
+        float localAlpha = 1.0f;
+        if (duration > 0f) {
+            float progress = elapsed / duration;
+            localAlpha = 1.0f - progress * progress;
+            localAlpha = Math.max(0f, Math.min(1f, localAlpha));
+        }
+
+        GL11.glPushMatrix();
+
+        GL20.glUseProgram(shaderProgram);
+
+        GL20.glUniform2f(uPositionLoc, position.x, position.y);
+        GL20.glUniform1f(uWingLengthLoc, wingLength);
+        GL20.glUniform1f(uWingWidthLoc, wingWidth);
+        GL20.glUniform1f(uWingAngleLoc, wingAngle);
+        GL20.glUniform1f(uTimeLoc, elapsed);
+        GL20.glUniform1f(uFlowSpeedLoc, flowSpeed);
+        GL20.glUniform1f(uLocalAlphaLoc, localAlpha);
+        GL20.glUniform3f(uColorInnerLoc, colorInner[0], colorInner[1], colorInner[2]);
+        GL20.glUniform3f(uColorOuterLoc, colorOuter[0], colorOuter[1], colorOuter[2]);
+        GL20.glUniform3f(uColorGlowLoc, colorGlow[0], colorGlow[1], colorGlow[2]);
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+
+        GL11.glTranslatef(position.x, position.y, 0f);
+        GL11.glRotatef(wingAngle, 0f, 0f, 1f);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
+
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glVertexAttribPointer(0, 2, GL11.GL_FLOAT, false, 16, 0);
+        GL20.glEnableVertexAttribArray(1);
+        GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, 16, 8);
+
+        GL11.glDrawElements(GL11.GL_TRIANGLES, 6, GL11.GL_UNSIGNED_INT, 0);
+
+        GL20.glDisableVertexAttribArray(0);
+        GL20.glDisableVertexAttribArray(1);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+
+        GL20.glUseProgram(0);
+
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glPopMatrix();
+    }
+
+    @Override
+    public boolean isExpired() {
+        return expired;
+    }
+
+    public void setWingParams(float length, float width, float angle) {
+        this.wingLength = length;
+        this.wingWidth = width;
+        this.wingAngle = angle;
+    }
+
+    public void setFlowSpeed(float speed) {
+        this.flowSpeed = speed;
+    }
+
+    public void setDuration(float dur) {
+        this.duration = dur;
+    }
+
+    public void cyclePalette() {
+        applyPalette(paletteIndex + 1);
+        String[] names = {"Blue-Cyan", "Red-Pink", "Green", "Gold", "Purple"};
+        System.out.println("LightWing palette: " + names[paletteIndex]);
+    }
+}

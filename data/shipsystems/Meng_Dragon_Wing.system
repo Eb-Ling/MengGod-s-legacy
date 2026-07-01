@@ -1,0 +1,21 @@
+{
+	"id":"Meng_Dragon_Wing",
+	"type":"STAT_MOD",
+	"aiType":"CUSTOM",
+	"aiScript":"data.shipsystems.scripts.ai.Meng_DragonWingai",
+	
+	"statsScript":"data.shipsystems.scripts.Meng_Dragon_Wing",
+
+	
+	"useSound":"Meng_Dragonwing_c",
+	"loopSound":"system_entropy_loop",
+	"deactivateSound":"system_entropy_off",
+	"outOfUsesSound":"gun_out_of_ammo",
+	
+	"aiHints":{
+	}
+}
+
+
+
+

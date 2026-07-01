@@ -1,0 +1,63 @@
+{
+  "variantId": "Meng_timeboss_variant",
+  "hullId": "Meng_timeboss",
+  "displayName": "æ¶é´éç¹",
+  "goalVariant": true,
+  "fluxCapacitors": 46,
+  "fluxVents": 50,
+  "quality": 1,
+  "permaMods": [],
+  "hullMods": [
+    "advancedshieldemitter",
+    "hardenedshieldemitter"
+  ],
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0001": "Meng_clockbuilder",
+        "WS0021": "pdburst",
+        "WS0023": "resonatormrm"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0002": "rifttorpedo",
+        "WS0003": "rifttorpedo",
+        "WS0004": "rifttorpedo",
+        "WS0005": "rifttorpedo"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0008": "resonatormrm",
+        "WS0015": "resonatormrm",
+        "WS0024": "resonatormrm",
+        "WS0025": "resonatormrm"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0010": "amsrm"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0012": "pdburst",
+        "WS0013": "pdburst",
+        "WS0016": "heavyburst"
+      }
+    }
+  ],
+  "modules": [],
+  "wings": []
+}

@@ -1,0 +1,42 @@
+{
+    "displayName": "Standard",
+    "fluxCapacitors": 20,
+    "fluxVents": 20,
+    "goalVariant": true,
+    "hullId": "Meng_fire_arsonist",
+    "hullMods": [
+        "eccm",
+        "missleracks",
+    ],
+    "permaMods": [],
+    "sMods": [],
+    "suppressedMods": [],
+    "variantId": "Meng_fire_arsonist_Standard",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0003": "Meng_Tombkeeper",
+                "WS0001": "sabotpod",
+                "WS0002": "sabotpod",
+            }
+        },
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0008": "Meng_hummingbird",
+                "WS0009": "Meng_hummingbird",
+                "WS0004": "Meng_hummingbird",
+                "WS0005": "Meng_hummingbird",
+                "WS0006": "Meng_hummingbird",
+                "WS0007": "Meng_hummingbird",
+            }
+        },
+    ],
+    "wings": [
+        "broadsword_wing",
+    ],
+    "modules": [],
+}

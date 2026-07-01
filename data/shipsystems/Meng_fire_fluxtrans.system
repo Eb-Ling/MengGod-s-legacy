@@ -1,0 +1,11 @@
+{
+	"id":"Meng_fire_fluxtrans",
+	"type":"STAT_MOD",
+	"aiType":"CUSTOM",
+	"aiScript":"data.shipsystems.scripts.ai.Meng_fluxtransAI",
+	"statsScript":"data.shipsystems.scripts.Meng_fire_fluxtrans",
+
+	"useSound":"Meng_fire_start",
+	"loopSound":"Meng_fire_loop",
+	"outOfUsesSound":"gun_out_of_ammo",
+}

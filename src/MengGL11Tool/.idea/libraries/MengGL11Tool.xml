@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="MengGL11Tool">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/MengGL11Tool.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,21 @@
+{
+	"id":"Meng_offlight_proj",
+	"specClass":"projectile",
+	"onHitEffect":"data.weapons.Meng_Dragonfire_Max",
+	
+	"spawnType":"BALLISTIC_AS_BEAM",
+	"collisionClass":"RAY",
+	"collisionClassByFighter":"RAY_FIGHTER",
+	"length":100.0,
+	"width":30.0,
+	"hitGlowRadius":0,
+	"fadeTime":0.25,
+	"fringeColor":[230,100,140,200],
+	"coreColor":[255,80,120,255],
+
+	#"coreColor":[255,255,255,50],
+	"textureType":"SMOOTH",  # only needed for BEAM spawnType
+	"textureScrollSpeed":-256,
+	"pixelsPerTexel":5.0
+	
+}

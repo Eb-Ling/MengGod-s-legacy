@@ -1,0 +1,47 @@
+{
+  "id": "Meng_fire_sunder",
+  "specClass": "projectile",
+  "projectileSpecId": "Meng_fire_sunder_shot",
+  "type": "BALLISTIC",
+  "size": "LARGE",
+  "displayArcRadius": 600,
+  "turretSprite": "graphics/weapons/fire/Meng_fire_sunder.png",
+  "turretGunSprite": "graphics/weapons/fire/Meng_fire_sunder_gun.png",
+  "hardpointSprite": "graphics/weapons/fire/Meng_fire_sunder.png",
+  "hardpointGunSprite": "graphics/weapons/fire/Meng_fire_sunder_gun.png",
+  "visualRecoil": 10,
+  "renderHints": [
+    "RENDER_BARREL_BELOW"
+  ],
+  "turretOffsets": [
+    39,
+    0
+  ],
+  "turretAngleOffsets": [
+    0
+  ],
+  "hardpointOffsets": [
+    39,
+    0
+  ],
+  "hardpointAngleOffsets": [
+    0
+  ],
+  "barrelMode": "ALTERNATING",
+  "animationType": "MUZZLE_FLASH",
+  "muzzleFlashSpec": {
+    "length": 65,
+    "spread": 15,
+    "particleSizeMin": 10,
+    "particleSizeRange": 35,
+    "particleDuration": 0.75,
+    "particleCount": 50,
+    "particleColor": [
+      200,
+      130,
+      180,
+      245
+    ]
+  },
+  "fireSoundTwo": "hellbore_fire"
+}

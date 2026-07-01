@@ -1,0 +1,4 @@
+name,id,tags,rarity,base price,stack size,cargo space,icon,sound id,sound id drop,plugin,plugin params,desc,order
+,,,,,,,,,,,,,
+火羽计划通用蓝图包,Meng_fire_package,package_bp,,450000,1000,1,graphics/icons/cargo/blueprint_hightech.png,ui_chip_pickup,ui_bp_package_drop,com.fs.starfarer.api.campaign.impl.items.MultiBlueprintItemPlugin,Meng_fire_bp,可以在重工业生产常见的火羽计划舰船与武器,3000
+,,,,,,,,,,,,,

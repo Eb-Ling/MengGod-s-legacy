@@ -1,0 +1,52 @@
+{
+  "id": "Meng_Gravity",
+  "specClass": "projectile",
+  "projectileSpecId": "Meng_Gravityproj",
+  "type": "ENERGY",
+  "size": "SMALL",
+  "everyFrameEffect": "data.weapons.Meng_Gravityweapon",
+  "turretSprite": "graphics/weapons/Gravitydestory.png",
+  "turretGlowSprite": "graphics/weapons/Gravitydestory_fire.png",
+  "turretGunSprite": "graphics/weapons/Gravitydestory.png",
+  "hardpointSprite": "graphics/weapons/Gravitydestory_1.png",
+  "hardpointGlowSprite": "graphics/weapons/Gravitydestory_1_fire.png",
+  "hardpointGunSprite": "graphics/weapons/Gravitydestory_1.png",
+  "glowColor": [
+    100,
+    100,
+    255,
+    225
+  ],
+  "turretOffsets": [
+    5,
+    0
+  ],
+  "turretAngleOffsets": [
+    0
+  ],
+  "hardpointOffsets": [
+    10,
+    0
+  ],
+  "hardpointAngleOffsets": [
+    0
+  ],
+  "barrelMode": "ALTERNATING",
+  "animationType": "GLOW_AND_FLASH",
+  "autocharge": true,
+  "muzzleFlashSpec": {
+    "length": 3,
+    "spread": 2,
+    "particleSizeMin": 2,
+    "particleSizeRange": 2,
+    "particleDuration": 0.15,
+    "particleCount": 2,
+    "particleColor": [
+      255,
+      240,
+      165,
+      200
+    ]
+  },
+  "fireSoundTwo": "flak_fire"
+}

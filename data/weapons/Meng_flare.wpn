@@ -1,0 +1,58 @@
+{
+  "id": "Meng_flare",
+  "specClass": "beam",
+  "type": "BALLISTIC",
+  "size": "MEDIUM",
+  "collisionClass": "RAY",
+  "collisionClassByFighter": "RAY_FIGHTER",
+  "turretSprite": "graphics/weapons/fire/Meng_flare.png",
+  "hardpointSprite": "graphics/weapons/fire/Meng_flare.png",
+  "glowColor": [
+    200,
+    130,
+    190,
+    255
+  ],
+  "hitGlowRadius": 5,
+  "turretOffsets": [
+    25,
+    0
+  ],
+  "turretAngleOffsets": [
+    0
+  ],
+  "hardpointOffsets": [
+    25,
+    0
+  ],
+  "hardpointAngleOffsets": [
+    0
+  ],
+  "fringeColor": [
+    220,
+    140,
+    180,
+    255
+  ],
+  "coreColor": [
+    240,
+    160,
+    170,
+    255
+  ],
+  "width": 30,
+  "textureType": [
+    "graphics/fx/beamcorec.png",
+    "graphics/fx/beam_weave_core.png"
+  ],
+  "textureScrollSpeed": 64,
+  "pixelsPerTexel": 5,
+  "pierceSet": [
+    PROJECTILE_FF,
+    PROJECTILE_NO_FF,
+    PROJECTILE_FIGHTER,
+    MISSILE_FF,
+    MISSILE_NO_FF
+  ],
+  "fireSoundTwo": "phase_beam_loop"
+}

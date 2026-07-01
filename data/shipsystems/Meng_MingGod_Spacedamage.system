@@ -1,0 +1,15 @@
+{
+	"id":"Meng_MingGod_Spacedamage",
+	"type":"STAT_MOD",
+	"aiType":"CUSTOM",
+	"aiScript":"data.shipsystems.scripts.ai.Meng_SpaceDamage_ai",
+	"statsScript":"data.shipsystems.scripts.Meng_MingGod_Spacedamage",
+	
+	"useSound":"Meng_Xweaponmic",	
+	"outOfUsesSound":"gun_out_of_ammo",
+	
+	
+	"aiHints":{
+	
+	}
+}

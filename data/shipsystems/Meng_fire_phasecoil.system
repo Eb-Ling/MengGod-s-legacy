@@ -1,0 +1,32 @@
+{
+	"id":"Meng_fire_phasecoil",
+	"type":"PHASE_CLOAK",
+	"aiType":"CUSTOM",
+	"aiScript":"data.shipsystems.scripts.ai.Meng_fire_phasecoilAI",
+	"statsScript":"data.shipsystems.scripts.Meng_fire_phasecoil",
+
+	"blockActionsWhileChargingDown":false,
+
+	"canNotCauseOverload":true,
+
+	"phaseHighlight":"_glow1",
+	"phaseDiffuse":"_glow2",
+	"clampTurnRateAfter":true,
+	"clampMaxSpeedAfter":true,
+
+	"engineGlowColor":[0,0,0,0],
+	"engineGlowContrailColor":[0,0,0,0],
+	"engineGlowLengthMult":0,
+	"engineGlowWidthMult":0,
+	"engineGlowGlowMult":0,
+
+	"soundFilterType":"LOWPASS",
+	"soundFilterGain":0.8,
+	"soundFilterGainHF":0.25,
+
+
+	"useSound":"system_phase_cloak_activate",
+	#"deactivateSound":"system_phase_cloak_deactivate",
+	"deactivateSound":"system_phase_cloak_deactivate",
+	"outOfUsesSound":"system_phase_cloak_collision",
+}

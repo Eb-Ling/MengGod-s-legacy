@@ -1,0 +1,58 @@
+{
+  "id": "Meng_Zero",
+  "specClass": "beam",
+  "type": "ENERGY",
+  "size": "LARGE",
+  "beamEffect": "data.weapons.Meng_bossweapon",
+  "everyFrameEffect": "data.weapons.Meng_bossweapon1",
+  "collisionClass": "RAY",
+  "collisionClassByFighter": "RAY_FIGHTER",
+  "turretSprite": "graphics/weapons/Zero.png",
+  "turretGlowSprite": "graphics/weapons/Zero_fire.png",
+  "turretGunSprite": "graphics/weapons/Zero.png",
+  "hardpointSprite": "graphics/weapons/Zero_1.png",
+  "hardpointGlowSprite": "graphics/weapons/Zero_1_fire.png",
+  "hardpointGunSprite": "graphics/weapons/Zero_1.png",
+  "glowColor": [
+    255,
+    60,
+    200,
+    255
+  ],
+  "hitGlowRadius": 0,
+  "turretOffsets": [
+    -2,
+    0
+  ],
+  "turretAngleOffsets": [
+    0
+  ],
+  "hardpointOffsets": [
+    16.5,
+    0
+  ],
+  "hardpointAngleOffsets": [
+    0
+  ],
+  "beamFireOnlyOnFullCharge": true,
+  "fringeColor": [
+    176,
+    0,
+    0,
+    236
+  ],
+  "coreColor": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "width": 35,
+  "textureType": [
+    "graphics/fx/Meng_Zero_beamfire.png",
+    "graphics/fx/emp_arcs.png"
+  ],
+  "pierceSet":[PROJECTILE_FF,PROJECTILE_NO_FF,PROJECTILE_FIGHTER,MISSILE_FF,MISSILE_NO_FF],
+  "textureScrollSpeed": 256,
+  "pixelsPerTexel": 7
+}

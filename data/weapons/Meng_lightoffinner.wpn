@@ -1,0 +1,31 @@
+{
+	"id":"Meng_lightoffinner",  # this id must match what's in the spreadsheet
+	"specClass":"projectile",
+	"type":"ENERGY",
+	"mountTypeOverride":"HYBRID",
+	"size":"MEDIUM",
+	"everyFrameEffect":"data.weapons.Meng_lightoffinner_Effect",
+	"turretSprite": "graphics/weapons/fire/Meng_flare.png",
+    "hardpointSprite": "graphics/weapons/fire/Meng_flare.png",
+	"glowColor":[200,130,190,255],
+	"turretOffsets":[15, 0],
+	"turretAngleOffsets":[0],
+	"hardpointOffsets":[15, 0],
+	"hardpointAngleOffsets":[0],
+	"barrelMode":"ALTERNATING", # or LINKED.  whether barrels fire at the same time or alternate.
+	"unaffectedByProjectileSpeedBonuses":true,
+	#"animationType":"GLOW",
+	#"animationType":"GLOW_AND_FLASH",
+	"animationType":"GLOW",
+	"muzzleFlashSpec":{"length":30.0,
+					   "spread":5.0,
+					   "particleSizeMin":15.0,
+					   "particleSizeRange":20.0,
+					   "particleDuration":0.12,
+					   "particleCount":10,
+					   "particleColor":[200,120,190,255]},
+	"autocharge":true,  # whether the weapon will continue charging and fire if the LMB is tapped instead of held
+	"projectileSpecId":"Meng_offlight_proj",  # projectile that will be fired
+	"noImpactSounds":true,
+	#"fireSoundTwo":"cryoflamer_fire",
+}

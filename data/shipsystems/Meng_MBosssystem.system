@@ -1,0 +1,14 @@
+{
+	"id":"Meng_MBosssystem",
+	"type":"STAT_MOD",
+	"aiType":"CUSTOM",
+	"aiScript":"data.shipsystems.scripts.ai.Meng_Xusystemsai",
+	"statsScript":"data.shipsystems.scripts.Meng_MBosssystem",
+	
+	
+	
+	
+	"aiHints":{
+	
+	}
+}

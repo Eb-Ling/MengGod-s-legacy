@@ -1,0 +1,262 @@
+{
+  "hullName": "星落",
+  "hullId": "Meng_MouMengship",
+  "hullSize": "CAPITAL_SHIP",
+  "spriteName": "graphics/Meng/ships/Meng_Moumengship2.png",
+  "style": "OMEGA",
+  "height": 576,
+  "width": 576,
+  "center": [288, 288],
+  "collisionRadius": 259,
+  "shieldCenter": [0, 0],
+  "shieldRadius": 258.5,
+  "viewOffset": 0,
+  "builtInMods": [
+    "Meng_Starcenter"
+  ],
+  "builtInWeapons": {
+    "WS0012": "Meng_Starbeam",
+    "WS0013": "Meng_Starbeam_m",
+    "WS0014": "Meng_Starbeam_m",
+    "WS0017": "Meng_Starshiplight"
+  },
+  "weaponSlots": [
+    {
+      "id": "WS0001",
+      "size": "MEDIUM",
+      "type": "UNIVERSAL",
+      "mount": "TURRET",
+      "arc": 90,
+      "angle": 20.5,
+      "locations": [49, 29]
+    },
+    {
+      "id": "WS0002",
+      "size": "MEDIUM",
+      "type": "UNIVERSAL",
+      "mount": "TURRET",
+      "arc": 90,
+      "angle": -20.5,
+      "locations": [49, -29]
+    },
+    {
+      "id": "WS0003",
+      "size": "SMALL",
+      "type": "HYBRID",
+      "mount": "TURRET",
+      "arc": 90,
+      "angle": 0,
+      "locations": [93.5, 25.5]
+    },
+    {
+      "id": "WS0004",
+      "size": "SMALL",
+      "type": "HYBRID",
+      "mount": "TURRET",
+      "arc": 90,
+      "angle": -0,
+      "locations": [93.5, -25.5]
+    },
+    {
+      "id": "WS0005",
+      "size": "SMALL",
+      "type": "HYBRID",
+      "mount": "TURRET",
+      "arc": 20,
+      "angle": 0,
+      "locations": [19, 87]
+    },
+    {
+      "id": "WS0006",
+      "size": "SMALL",
+      "type": "HYBRID",
+      "mount": "TURRET",
+      "arc": 20,
+      "angle": -0,
+      "locations": [19, -87]
+    },
+    {
+      "id": "WS0007",
+      "size": "SMALL",
+      "type": "BALLISTIC",
+      "mount": "TURRET",
+      "arc": 130,
+      "angle": 35.5,
+      "locations": [-5.5, 62.5]
+    },
+    {
+      "id": "WS0008",
+      "size": "SMALL",
+      "type": "BALLISTIC",
+      "mount": "TURRET",
+      "arc": 130,
+      "angle": -35.5,
+      "locations": [-5.5, -62.5]
+    },
+    {
+      "id": "WS0009",
+      "size": "LARGE",
+      "type": "UNIVERSAL",
+      "mount": "TURRET",
+      "arc": 40,
+      "angle": 0,
+      "locations": [-2.5, -0]
+    },
+    {
+      "id": "WS0010",
+      "size": "SMALL",
+      "type": "HYBRID",
+      "mount": "TURRET",
+      "arc": 240,
+      "angle": 179,
+      "locations": [-92, -0]
+    },
+    {
+      "id": "WS0011",
+      "size": "MEDIUM",
+      "type": "ENERGY",
+      "mount": "TURRET",
+      "arc": 240,
+      "angle": 180,
+      "locations": [-127, -0]
+    },
+    {
+      "id": "WS0012",
+      "size": "LARGE",
+      "type": "BUILT_IN",
+      "mount": "TURRET",
+      "arc": 0,
+      "angle": 0,
+      "locations": [115, -0]
+    },
+    {
+      "id": "WS0013",
+      "size": "MEDIUM",
+      "type": "BUILT_IN",
+      "mount": "HIDDEN",
+      "arc": 0,
+      "angle": 0,
+      "locations": [150, -19]
+    },
+    {
+      "id": "WS0014",
+      "size": "MEDIUM",
+      "type": "BUILT_IN",
+      "mount": "HIDDEN",
+      "arc": 0,
+      "angle": -0,
+      "locations": [150, 19]
+    },
+    {
+      "id": "WS0015",
+      "size": "SMALL",
+      "type": "UNIVERSAL",
+      "mount": "HIDDEN",
+      "arc": 20,
+      "angle": 0,
+      "locations": [30.5, 75.5]
+    },
+    {
+      "id": "WS0016",
+      "size": "SMALL",
+      "type": "UNIVERSAL",
+      "mount": "HIDDEN",
+      "arc": 20,
+      "angle": -0,
+      "locations": [30.5, -75.5]
+    },
+    {
+      "id": "WS0017",
+      "size": "LARGE",
+      "type": "DECORATIVE",
+      "mount": "TURRET",
+      "arc": 360,
+      "angle": 0,
+      "locations": [0, 0]
+    }
+  ],
+  "engineSlots": [
+    {
+      "location": [-176.5, 7.5],
+      "length": 125.034508,
+      "width": 6.818023,
+      "angle": 179.5,
+      "contrailSize": 6.818023,
+      "style": "Meng_protectEngine"
+    },
+    {
+      "location": [-176.5, -7.5],
+      "length": 125.034508,
+      "width": 6.818023,
+      "angle": -179.5,
+      "contrailSize": 6.818023,
+      "style": "Meng_protectEngine"
+    },
+    {
+      "location": [-66.5, 65.5],
+      "length": 175.458405,
+      "width": 11.062709,
+      "angle": 179.5,
+      "contrailSize": 11.062709,
+      "style": "Meng_protectEngine"
+    },
+    {
+      "location": [-66.5, -65.5],
+      "length": 175.458405,
+      "width": 11.062709,
+      "angle": -179.5,
+      "contrailSize": 11.062709,
+      "style": "Meng_protectEngine"
+    }
+  ],
+  "bounds": [
+    -176, 0,
+    -176.5, 2,
+    -181, 2.5,
+    -181.5, 14.5,
+    -176.5, 12,
+    -144, 25,
+    -115.5, 35,
+    -116, 70.5,
+    -114, 68.5,
+    -90.5, 43.5,
+    -40, 61.5,
+    -67.5, 91,
+    -69, 95,
+    -85, 147,
+    -94.5, 186,
+    8, 97,
+    26, 136.5,
+    31.5, 134.5,
+    33, 77,
+    46.5, 65,
+    138, 34,
+    203, 31,
+    174.5, 22,
+    243, 3,
+    243, -2,
+    174.5, -22,
+    203, -31,
+    138, -34,
+    46.5, -65,
+    33, -77,
+    31.5, -134.5,
+    26, -136.5,
+    8, -97,
+    -94.5, -186,
+    -85, -147,
+    -69, -95,
+    -67.5, -91,
+    -40, -61.5,
+    -90.5, -43.5,
+    -114, -68.5,
+    -116, -70.5,
+    -115.5, -35,
+    -144, -25,
+    -176.5, -12,
+    -181.5, -14.5,
+    -181, -2.5,
+    -176.5, -2,
+    -176, -0
+  ]
+}

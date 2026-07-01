@@ -1,0 +1,46 @@
+{
+  "variantId": "Meng_Starkiller_end",
+  "hullId": "Meng_Starkiller",
+  "displayName": "龙",
+  "goalVariant": true,
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "permaMods": [],
+  "hullMods": [],
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "Meng_Dragonfire"
+      }
+    }
+  ],
+  "modules": [
+    {
+      "Meng_DWL": "Meng_DragonLeftwing_module"
+    },
+    {
+      "Meng_DWR": "Meng_DragonRightwing_module"
+    },
+    {
+      "Meng_DAR2": "Meng_DragonRightarmor1_end"
+    },
+    {
+      "Meng_DAR1": "Meng_DragonRightarmor2_end"
+    },
+    {
+      "Meng_DAR3": "Meng_DragonRightarmor3_end"
+    },
+    {
+      "Meng_DAL3": "Meng_DragonLeftarmor3_end"
+    },
+    {
+      "Meng_DAL2": "Meng_DragonLeftarmor1_end"
+    },
+    {
+      "Meng_DAL1": "Meng_DragonLeftarmor2_end"
+    }
+  ],
+  "wings": []
+}

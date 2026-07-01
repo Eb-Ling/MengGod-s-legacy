@@ -1,0 +1,22 @@
+{
+  "variantId": "Meng_Xufighter_variant",
+  "hullId": "Meng_Xufighter",
+  "displayName": "终末",
+  "goalVariant": false,
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "quality": 1,
+  "permaMods": [],
+  "hullMods": [],
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0001": "riftcascade"
+      }
+    }
+  ],
+  "modules": [],
+  "wings": []
+}

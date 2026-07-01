@@ -1,0 +1,47 @@
+{
+    "displayName": "Standard",
+    "fluxCapacitors": 0,
+    "fluxVents": 3,
+    "goalVariant": true,
+    "hullId": "Meng_fire_brandwing",
+    "hullMods": [
+        "Meng_fire_TargetingCore",
+        "heavyarmor",
+    ],
+    "permaMods": [],
+    "sMods": [],
+    "suppressedMods": [],
+    "variantId": "Meng_fire_brandwing_Standard",
+    "weaponGroups": [
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0003": "lightag",
+                "WS0002": "lightag",
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0005": "lightneedler",
+                "WS0004": "lightneedler",
+                "WS0007": "lightneedler",
+                "WS0006": "lightneedler",
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {
+                "WS0011": "heatseeker",
+                "WS0010": "heatseeker",
+                "WS0009": "Meng_HotSun",
+                "WS0008": "Meng_HotSun",
+            }
+        },
+    ],
+    "wings": [],
+    "modules": [],
+}
