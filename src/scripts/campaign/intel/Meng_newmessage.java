@@ -44,7 +44,6 @@ public class Meng_newmessage extends BaseIntelPlugin {
 
         setImportant(true);
 
-        Global.getSector().addScript(this);
         if (dialog == null) {
             Global.getSector().getIntelManager().addIntel(this, false);
         } else {

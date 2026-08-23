@@ -57,6 +57,7 @@ public class Meng_forthetruth extends BaseIntelPlugin {
     public void advanceImpl(float amount) {
         if (target == null) {
             spawnFleet();
+            if (target == null) return;
             sendUpdateIfPlayerHasIntel(new Object(), false);
         }
 
@@ -75,7 +76,8 @@ public class Meng_forthetruth extends BaseIntelPlugin {
 
     private void spawnFleet() {
         float d = 0f;
-        while (picker==null||pick==null) {
+        // TASC can replace all condition-only markets, so never retry this search indefinitely.
+        for (int attempt = 0; attempt < 10 && (picker == null || pick == null); attempt++) {
             float dist = Math.max(10000f, (float) Math.random() * 50000f);
 
             for (StarSystemAPI system : Global.getSector().getStarSystems()) {
@@ -124,6 +126,20 @@ public class Meng_forthetruth extends BaseIntelPlugin {
                 }
             }
         }
+        if (picker == null || pick == null) {
+            for (StarSystemAPI system : Global.getSector().getStarSystems()) {
+                if (system.hasPulsar()) continue;
+                for (PlanetAPI planet : system.getPlanets()) {
+                    if (!planet.isStar()) {
+                        picker = system;
+                        pick = planet;
+                        break;
+                    }
+                }
+                if (pick != null) break;
+            }
+        }
+        if (picker == null || pick == null) return;
         
         FleetParamsV3 params = new FleetParamsV3(
                 fleets,

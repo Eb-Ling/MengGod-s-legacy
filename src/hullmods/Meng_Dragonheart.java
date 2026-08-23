@@ -11,6 +11,7 @@ import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import data.methods.Meng_BlackHolePlugin;
 import data.methods.Meng_arcfind;
 import data.scripts.plugins.MagicTrailPlugin;
 import org.lwjgl.util.vector.Vector2f;
@@ -23,7 +24,7 @@ public class Meng_Dragonheart extends BaseHullMod {
     public static final String KEY = "Meng_Dragonheartlistener";
     public static final String id = "Meng_Dragonheartsign";
     float ids = MagicTrailPlugin.getUniqueID();
-
+    Meng_BlackHolePlugin blackHole;
     public void addPostDescriptionSection(TooltipMakerAPI tooltip, ShipAPI.HullSize hullSize, ShipAPI ship, float width, boolean isForModSpec) {
         float opad = 12.0F;
         Color highlight = new Color(255, 232, 87, 255);
@@ -100,11 +101,21 @@ public class Meng_Dragonheart extends BaseHullMod {
                 }
             }
         }
+
+
         if (!ship.getCustomData().containsKey(KEY)) {
             DataContainer data1 = new DataContainer();
             ship.setCustomData(KEY, data1);
         }
         DataContainer data1 = (DataContainer) ship.getCustomData().get(KEY);
+        if(!data1.init) {
+            data1.init=true;
+            blackHole = new Meng_BlackHolePlugin(
+                    ship.getLocation(), 500f);
+            blackHole.setLifetime(100000f);
+            Global.getCombatEngine().addLayeredRenderingPlugin(blackHole);
+        }
+        if(data1.init) blackHole.setPosition(Global.getCombatEngine().getPlayerShip().getMouseTarget());
         //为每一艘目标舰船添加监听。
         for (WeaponAPI weapon : ship.getAllWeapons()) {
             for (int num = 1; num < 5; num++) {
@@ -170,6 +181,7 @@ public class Meng_Dragonheart extends BaseHullMod {
         ShipAPI ship;
         boolean timeend = false;
         public boolean spread = false;
+        boolean init = false;
     }
 
     private static class MyDamageListener1 implements DamageListener {

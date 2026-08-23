@@ -694,7 +694,7 @@ public class Meng_clockbuildereffect implements EveryFrameWeaponEffectPlugin {
         ready = false;
 
         if (rready) {
-            Global.getSoundPlayer().playSound("system_phase_teleporter", 1.0f, 1.0f, ship.getLocation(), new Vector2f());
+            Global.getSoundPlayer().playSound("Meng_TransSound_active", 1.0f, 1.0f, ship.getLocation(), new Vector2f());
             Global.getCombatEngine().addLayeredRenderingPlugin(new Meng_ClockbuilderPlugin(weapon, copyarg, copyloc, id, TBF1, TBF2, TBF3));
 
             // 强制禁用武器开火
@@ -811,6 +811,7 @@ public class Meng_clockbuildereffect implements EveryFrameWeaponEffectPlugin {
                 ships.getLocation().set(locs);
                 if (timer - amount <= 2.5f) {
                     createRippleEffect(locs);
+                    Global.getSoundPlayer().playSound("Meng_TransSound_end", 1.0f, 1.0f, ships.getLocation(), new Vector2f());
                 }
                 updateExpandNoiseDeformation(amount);
                 if (weaponRef != null) weaponRef.setForceNoFireOneFrame(true);

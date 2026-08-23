@@ -12,14 +12,14 @@ name,id,tier,rarity,tech/manufacturer,tags,uiTags,base value,unlocked,hidden,hid
 线性时流,Meng_God_Time,,,神的遗留,"defensive,no_drop,no_sell,no_drop_salvage,no_build_in",特殊,,TRUE,,,8,15,25,35,data.hullmods.Meng_timecontrol,掌握的知识让我们可以运用另一种方式巧妙且稳定的增加时间流速，不过这往往被认为是不理性的、充满风险的改造。,增幅时间,,graphics/Meng/hullmods/meng_timecontrol.png
 赐死神罚,Meng_Killer,,,神的遗留,"defensive,no_drop,no_sell,no_drop_salvage",特殊,,TRUE,,,10,20,30,40,data.hullmods.MengKiller,将时间的规律应用于我们的技术，从而锁死敌方舰船对于结构的回复效果。,限制恢复,,graphics/Meng/hullmods/meng_killer.png
 时流之河,Meng_river,,,神的遗留,"defensive,no_drop,no_sell,no_drop_salvage",特殊,,TRUE,,,15,25,35,50,data.hullmods.Meng_river,对舰船集成时间方面的技术，在前方范围内创建时流潮汐，大幅度限制指定范围内的某艘舰船移速。,范围减速,,graphics/Meng/hullmods/meng_river.png
-虚想树龙骨框架,Meng_emp,,,虚想树,"defensive,no_drop,no_sell,no_drop_salvage",特殊,,FALSE,TRUE,,10,20,30,40,data.hullmods.Meng_Karbala,神所垂青之物，也将被赐予神的威能，拥有凡世间远远不可想像的极端加成。,终极力量,,graphics/Meng/hullmods/meng_EMP.png
+虚想树龙骨框架,Meng_emp,,,虚想树,"defensive,no_drop,no_sell,no_drop_salvage",特殊,,FALSE,TRUE,,10,20,30,40,data.hullmods.Meng_Karbala,这是平行宇宙中推翻人之领的霸主，阈限联盟的至高理论——虚想树 所伴生的逆反形态创造出的造物，由倒生树统合暗面质点，在“毁灭”概念上形成的半高维杂糅体，已经在一定程度上超越了现实世界的形态与规则。,终极力量,,graphics/Meng/hullmods/meng_EMP.png
+超限界域,Meng_OverLimitDomain,,,虚想树,"defensive,no_drop,no_sell,no_drop_salvage",特殊,,FALSE,TRUE,,10,20,30,40,data.hullmods.Meng_OverLimitDomain,由卡巴拉虚想树的三位支柱形成的界域。当舰船位于零辐能的无干涉状态，属于神国的界域将会展开，系统冷却会被回卷至未发生的时间线，使战术系统与右键系统重新进入可用状态。,系统刷新,,graphics/Meng/hullmods/Meng_OverLimitDomain.png
 面子工程,Meng_clear,,,神的遗留,"defensive,no_drop,no_sell,no_drop_salvage",特殊,,TRUE,,,0,0,0,0,data.hullmods.Meng_clear,什么？想要你的战舰好看点？装上这个船插，消除一切因为D插和装甲破损而带来的对外观的影响！,面子工程,,graphics/Meng/hullmods/meng_clear.png
 恒域凝视,Meng_MingGodCenter,,,Embers-阶梯计划,"defensive,no_drop,no_sell,no_drop_salvage",特殊,,FALSE,TRUE,,0,0,0,0,data.hullmods.Meng_MingGodCenter,我站在舰桥上远眺，它的目光正注视着无垠的寰宇，或许对于它来说，这些都只是咫尺的一瞥。,空间控制,,graphics/Meng/hullmods/meng_river.png
 ,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,,
 虚子炉幅散系统,Meng_fire_core,,,火羽计划,"defensive,no_drop,no_sell,no_drop_salvage",特殊,,TRUE,TRUE,,0,0,0,0,data.hullmods.Meng_fire_core,内置于舰体内的虚子炉改写了舰船的幅能系统，虚子炉在运作时将会高效排散填塞其中的幅能，从而衍生出截然不同于常规舰船理论的战斗学说。,辐能调整,,graphics/Meng/hullmods/Meng_fire_core.png
+离烬天,Meng_fire_ProjectileGuidance,,,火羽计划,"defensive,no_drop,no_sell,no_drop_salvage",武器,,TRUE,TRUE,,0,0,0,0,data.hullmods.Meng_fire_ProjectileGuidance,"在虚子炉超频时，经由璃的异构虚子炉解离的弹体将会获得等离子体的特质，进行""流光化""，变为流光导弹。",弹体进阶,,graphics/Meng/hullmods/Meng_fire_core.png
 虚子炉-璃,Meng_fire_core_li,,,火羽计划,"defensive,no_drop,no_sell,no_drop_salvage",特殊,,TRUE,TRUE,,0,0,0,0,data.hullmods.Meng_fire_core_li,内置于舰体内的虚子炉改写了舰船的幅能系统，虚子炉在运作时将会高效排散填塞其中的幅能，从而衍生出截然不同于常规舰船理论的战斗学说。,辐能调整,,graphics/Meng/hullmods/Meng_fire_core.png
 火羽目标定位系统,Meng_fire_TargetingCore,,,火羽计划,"offensive,Meng_fire_hullmod",武器,20000,,,,5,10,20,30,data.hullmods.Meng_fire_TargetingCore,火羽战术部门设计出的独有的目标定位系统，通过启动与舰船定位系统搭配的武器槽位的第二种寻敌模式，大幅度更改武器射程。,提高武器射程,,graphics/Meng/hullmods/Meng_fire_targetingcore.png
 幅化装甲集成,Meng_fire_HardArmor,,,火羽计划,"defensive,Meng_fire_hullmod",防御,10000,,,,2,5,7,10,data.hullmods.Meng_fire_HardArmor,将幅化装甲集成至虚子炉幅散体系中，这是火羽防御体系与圣殿技术的一次成功结合。,装甲强化,#免除护盾承受伤害增加的效果,graphics/Meng/hullmods/Meng_fire_hardarmor.png

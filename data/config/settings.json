@@ -70,6 +70,7 @@
 		},
 		"fx":{
 			  "Meng_Shield": "graphics/fx/shields256.png",
+			  "Meng_ShieldMask": "graphics/fx/shield/shields256_mask.png",
 			  "Meng_Beamb":"graphics/fx/Meng_Starproject_fringe.png",
 			  "Meng_MBoss_beam":"graphics/fx/Meng_MBoss_beam.png",
 			  "Meng_Emparc":"graphics/fx/Meng_Emparc.png",

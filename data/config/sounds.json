@@ -62,6 +62,21 @@
       {"file": "sounds/Meng/Meng_Dragonwing_c.ogg", "pitch": 0.8, "volume": 0.8},
     ],
   },
+  "Meng_Scansound": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_Scansound.ogg", "pitch": 1.0, "volume": 1.0},
+    ],
+  },
+  "Meng_TransSound_active": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_TransSound_active.ogg", "pitch": 1.0, "volume": 1.0},
+    ],
+  },
+  "Meng_TransSound_end": {
+    "sounds": [
+      {"file": "sounds/Meng/Meng_TransSound_end.ogg", "pitch": 1.0, "volume": 1.0},
+    ],
+  },
   "Meng_Cracksound": {
     "sounds": [
       {"file": "sounds/Meng/Meng_Cracksound.ogg", "pitch": 2, "volume": 0.6},

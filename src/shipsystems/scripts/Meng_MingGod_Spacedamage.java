@@ -69,7 +69,6 @@ public class Meng_MingGod_Spacedamage extends BaseShipSystemScript {
         private final ShipAPI ship;
         private final String KEY = "Meng_MingGod_eyecharge";
         private final String KEY1 = "Meng_MingGod_eyecharge_own";
-        private final boolean end = false;
 
         public Meng_MingGod_EyePlugin(ShipAPI source) {
             ship = source;
@@ -84,7 +83,7 @@ public class Meng_MingGod_Spacedamage extends BaseShipSystemScript {
 
         @Override
         public boolean isExpired() {
-            return end;//返回值为true时，Plugin删除。
+            return ship == null || !ship.isAlive();
         }
 
         @Override

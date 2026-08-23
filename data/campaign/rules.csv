@@ -159,13 +159,13 @@ $Meng_jumpScanning = true 0","随着你的探测设备启动，跳跃点突然�
 Meng_EmbersJump_Wait,DialogOptionSelected,$option == Meng_jump_wait,"Wait $global.jumpWait 0.25 $global.jumpFinished $global.jumpInterrupted $global.jumpInProgress ""扫描中...""
 $Meng_jumpScanned = true",,,,
 Meng_EmbersJump_WaitFinished,OpenInteractionDialog,"$tag:Meng_embers_jump
-$global.jumpFinished","ShowDefaultVisual
+$Meng_jumpScanned","ShowDefaultVisual
 PrintDescription 3
 SetShortcut defaultLeave ""ESCAPE""","时间缓缓流逝，你的舰队静静地等待着。
 
 片刻之后，扫描终于完成了。",Meng_jump_checkRel:查看扫描结果,,
 Meng_EmbersJump_CheckRel_Low,DialogOptionSelected,"$option == Meng_jump_checkRel
-RepLTE Meng_temple NEUTRAL","AdjustRep Meng_temple SUSPICIOUS -5
+RepLTE Meng_temple NEUTRAL","AdjustRep Meng_temple SUSPICIOUS -1
 SetTextHighlightColors bad
 Highlight ""关系不足""","你对圣殿的贡献度不足以获得自由通行的权限。
 
@@ -175,14 +175,16 @@ Meng_EmbersJump_CheckRel_OK,DialogOptionSelected,"$option == Meng_jump_checkRel
 RepGTE Meng_temple NEUTRAL","AddTextSmall ""扫描通过，允许通行"" good","信徒，欢迎来到圣殿。
 
 跳跃点的封锁能量缓缓消散，终端弹出信息：身份验证通过，允许通行。",Meng_jump_enter:进入跳跃点,,
-Meng_EmbersJump_Enter,DialogOptionSelected,$option == Meng_jump_enter,MengEmbersJumpCMD jump 0,,,,
+Meng_EmbersJump_Enter,DialogOptionSelected,$option == Meng_jump_enter,"MengEmbersJumpCMD jump 0
+$Meng_jumpScanned = false
+UpdateMemory",,,,
 Meng_EmbersJump_ForceEnter,DialogOptionSelected,$option == Meng_jump_force,"RemoveCommodity supplies 150
 RemoveCommodity fuel 250
 AddTextSmall ""舰船受损：消耗150补给，250燃料"" bad","你下令强行突破封锁！
 
 跳跃点的防御系统立即做出反应，强大的能量冲击波席卷了你的舰队。舰船护盾过载，装甲受损，引擎系统也受到了影响。
 
-经过一番挣扎，你的舰队终于冲破了封锁，但付出了惨重的代价。",Meng_jump_leave:迅速离开,,
+经过一番挣扎，你的舰队终于冲破了封锁，但付出了惨重的代价。",Meng_jump_enter:迅速离开,,
 Meng_jump_leave,DialogOptionSelected,$option == Meng_jump_leave,DismissDialog,,,,
 ,,,,,,,
 ,,,,,,,

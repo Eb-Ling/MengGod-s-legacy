@@ -2,55 +2,112 @@ package data.hullmods;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
-import com.fs.starfarer.api.combat.listeners.DamageDealtModifier;
 import com.fs.starfarer.api.combat.DamageAPI;
 import com.fs.starfarer.api.combat.listeners.DamageTakenModifier;
 import com.fs.starfarer.api.graphics.SpriteAPI;
-import com.fs.starfarer.api.util.IntervalUtil;
+import data.methods.shaders.ShaderUtil;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.vector.Vector2f;
 
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
 
+/**
+ * Meng_HexShieldPlugin - 六边形护盾渲染插件。
+ *
+ * <h3>功能概述</h3>
+ * 在舰船护盾表面渲染六边形蜂窝纹理，受击时产生从命中点向外扩散的波纹动画。
+ * 采用现代管线方案：VAO管理顶点、modelMatrix uniform传递变换矩阵、
+ * SSBO传递无限数量的命中事件数据，单次直接渲染到屏幕（无FBO中间步骤）。
+ *
+ * <h3>依赖的API</h3>
+ * <ul>
+ *   <li>{@link ShaderUtil} - shader编译、VAO创建、modelMatrix构建、SSBO管理、uniform设置</li>
+ *   <li>LWJGL GL11/GL13/GL15/GL20/GL30/GL43 - OpenGL操作</li>
+ *   <li>Starsector CombatLayeredRenderingPlugin - 渲染插件生命周期</li>
+ * </ul>
+ *
+ * <h3>渲染管线</h3>
+ * <pre>
+ *   每帧: advance() 清理过期命中事件 → render() 上传SSBO → 单次直接渲染
+ *   顶点着色器: data/shaders/meng/common.vert (modelMatrix + size uniform)
+ *   片段着色器: 六边形蜂窝SDF + 球面投影 + 波纹动画(SSBO命中事件) + 遮罩纹理
+ * </pre>
+ *
+ * <h3>提取来源</h3>
+ * <ul>
+ *   <li>原 Meng_HexShieldPlugin (FBO二步渲染 + 3波槽固定数组)</li>
+ *   <li>{@code src/example/PLSP_EventDisturbVisual.java} (VAO+SSBO+modelMatrix范式参考)</li>
+ * </ul>
+ */
 public class Meng_HexShieldPlugin implements CombatLayeredRenderingPlugin {
 
     private static final org.apache.log4j.Logger LOG = Global.getLogger(Meng_HexShieldPlugin.class);
+
+    /** SSBO中每个命中事件的float数量: uvX, uvY, triggerTime, damage */
+    private static final int HIT_EVENT_FLOATS = 4;
+    /** SSBO binding point，对应片段着色器 layout(std430, binding = 1) */
+    private static final int SSBO_BINDING = 1;
+    /** 脉冲事件SSBO中每个事件的float数量: uvX, uvY, triggerTime, intensity */
+    private static final int PULSE_EVENT_FLOATS = 4;
+    /** 脉冲事件SSBO binding point，对应片段着色器 layout(std430, binding = 2) */
+    private static final int PULSE_SSBO_BINDING = 2;
+    /** 自动脉冲触发间隔（秒），Java侧常量 */
+    private static final float AUTO_PULSE_INTERVAL = 3.0f;
+    /** 脉冲波纹生命周期（秒），参数化控制 - 修改此值可调整脉冲波纹持续时间 */
+    private static final float AUTO_PULSE_LIFETIME = 2.5f;
 
     private ShipAPI ship;
     private float timer = 0f;
     private boolean expired = false;
     private boolean initOnce = false;
     private boolean glInitialized = false;
+    private final boolean renderEnabled;
     private float shieldRadius;
-
-    // FBO
-    private int fboId = 0;
-    private int fboTexId = 0;
-    private int fboW = 0;
-    private int fboH = 0;
-    private static final int CANVAS = 512;
 
     // Shader
     private int shaderProgram;
+    private ShaderUtil.VAOData vao;
+    private int uModelMatrixLoc, uSizeLoc;
     private int uTimeLoc, uHexSizeLoc, uBgColorLoc;
     private int uShieldFacingLoc, uShieldArcLoc;
     private int uMaskTextureLoc;
-    private int[] uWaveCenterLocs = new int[3];
-    private int[] uWaveTriggerTimeLocs = new int[3];
-    private int[] uWaveDamageLocs = new int[3];
+    private int uPulseMaskTextureLoc;
+    private int uHitEventCountLoc;
+    /** 护盾关闭渐出透明度 [0,1]，由 advance() 中的 fadeAlpha/shieldOffTimer 驱动 */
+    private int uFadeAlphaLoc;
+    /** 脉冲事件数量 uniform location */
+    private int uPulseEventCountLoc;
+    /** 脉冲波纹生命周期（秒）uniform location */
+    private int uPulseLifetimeLoc;
 
-    // Wave data
-    private float[] waveCenterX = new float[3];
-    private float[] waveCenterY = new float[3];
-    private float[] waveTriggerTime = new float[3];
-    private float[] waveDamage = new float[3];
+    // SSBO
+    private int ssboId = 0;
+    private int ssboCapacity = 0;
+    private FloatBuffer ssboUploadBuffer = null;
+    private int ssboUploadCapacity = 0;
 
-    // Shield mask sprite (loaded via Starsector sprite system)
+    // Pulse SSBO (separate from hit events, drives gap-glow ripple)
+    private int pulseSsboId = 0;
+    private int pulseSsboCapacity = 0;
+    private FloatBuffer pulseSsboUploadBuffer = null;
+    private int pulseSsboUploadCapacity = 0;
+
+    // Hit events (dynamic list replacing fixed 3-slot wave arrays)
+    private final List<HitEvent> hitEvents = new ArrayList<>();
+    /** 脉冲事件列表 - 驱动缝隙发光波纹，与命中波纹完全独立 */
+    private final List<HitEvent> pulseEvents = new ArrayList<>();
+    /** 自动脉冲计时器，每隔 AUTO_PULSE_INTERVAL 触发一次中心脉冲 */
+    private float autoPulseTimer = 0f;
+
+    // Shield mask sprite
     private SpriteAPI shieldSprite;
+    /** 脉冲专用蒙版贴图 Meng_ShieldMask，直接乘脉冲发光强度 */
+    private SpriteAPI pulseMaskSprite;
 
     // Damage modifier
     private float lastHitTime = -0.3f;
@@ -62,13 +119,16 @@ public class Meng_HexShieldPlugin implements CombatLayeredRenderingPlugin {
     private float lastActiveArcRad = 0f;
     private float lastShieldFacingDeg = 0f;
 
-    // GL resources for fullscreen quad
-    private int vbo, ibo;
-
     public Meng_HexShieldPlugin(ShipAPI ship) {
+        this(ship, true);
+    }
+
+    /** Creates a logic-only instance when renderEnabled is false. */
+    public Meng_HexShieldPlugin(ShipAPI ship, boolean renderEnabled) {
         this.ship = ship;
+        this.renderEnabled = renderEnabled;
         this.shieldRadius = ship.getShieldRadiusEvenIfNoShield();
-        
+
         try {
             this.shieldSprite = Global.getSettings().getSprite("fx", "Meng_Shield");
             LOG.info("[HexShield] Sprite loaded successfully for: " + ship.getName());
@@ -76,12 +136,12 @@ public class Meng_HexShieldPlugin implements CombatLayeredRenderingPlugin {
             LOG.error("[HexShield] Failed to load sprite: " + e.getMessage(), e);
             this.shieldSprite = null;
         }
-
-        for (int i = 0; i < 3; i++) {
-            waveCenterX[i] = 0.5f;
-            waveCenterY[i] = 0.5f;
-            waveTriggerTime[i] = -999f;
-            waveDamage[i] = 0f;
+        try {
+            this.pulseMaskSprite = Global.getSettings().getSprite("fx", "Meng_ShieldMask");
+            LOG.info("[HexShield] Pulse mask sprite loaded successfully");
+        } catch (Exception e) {
+            LOG.error("[HexShield] Failed to load pulse mask sprite: " + e.getMessage(), e);
+            this.pulseMaskSprite = null;
         }
     }
 
@@ -90,266 +150,63 @@ public class Meng_HexShieldPlugin implements CombatLayeredRenderingPlugin {
         createShaderProgram();
         createBuffers();
         cacheUniformLocations();
+        ssboId = ShaderUtil.createSSBO();
+        pulseSsboId = ShaderUtil.createSSBO();
         glInitialized = true;
     }
 
     // ==================== SHADER ====================
 
+    /**
+     * 从模组资源目录加载并编译顶点、片段着色器。
+     * 片段着色器包含六边形蜂窝SDF、球面投影、SSBO命中事件波纹动画和遮罩纹理混合。
+     *
+     * <p>调用路径: {@link #initGL()} 内部调用，仅在首次render时触发。</p>
+     */
     private void createShaderProgram() {
-        try {
-            String vertexSource =
-                "#version 110\n" +
-                "attribute vec2 a_position;\n" +
-                "attribute vec2 a_texCoord;\n" +
-                "varying vec2 v_uv;\n" +
-                "void main() {\n" +
-                "    v_uv = a_texCoord;\n" +
-                "    gl_Position = gl_ModelViewProjectionMatrix * vec4(a_position, 0.0, 1.0);\n" +
-                "}\n";
-
-            String fragmentSource =
-                "#version 110\n" +
-                "varying vec2 v_uv;\n" +
-                "uniform float u_time;\n" +
-                "uniform float u_hexSize;\n" +
-                "uniform vec3 u_bgColor;\n" +
-                "uniform float u_shieldFacing;\n" +
-                "uniform float u_shieldArc;\n" +
-                "uniform sampler2D u_maskTexture;\n" +
-                "uniform vec2 u_waveCenters[3];\n" +
-                "uniform float u_waveTriggerTimes[3];\n" +
-                "uniform float u_waveDamages[3];\n" +
-                "\n" +
-                "float calcHexDist(vec2 p, vec2 cellCenter, float size, float wave, vec2 waveOrigin) {\n" +
-                "    float scaleMod = 1.0 + wave * 0.06;\n" +
-                "    float distToOrigin = length(cellCenter - waveOrigin);\n" +
-                "    vec2 dirToOrigin = (cellCenter - waveOrigin) / max(distToOrigin, 0.0001);\n" +
-                "    float displacement = wave * 0.02;\n" +
-                "    vec2 shiftedCenter = cellCenter + dirToOrigin * displacement;\n" +
-                "    vec2 localPos = (p - shiftedCenter) / scaleMod;\n" +
-                "    float d1 = abs(localPos.x);\n" +
-                "    float d2 = abs(localPos.x * 0.5 + localPos.y * 0.8660254);\n" +
-                "    float d3 = abs(localPos.x * 0.5 - localPos.y * 0.8660254);\n" +
-                "    return max(max(d1, d2), d3);\n" +
-                "}\n" +
-                "\n" +
-                "void main() {\n" +
-                "    vec2 uv = v_uv;\n" +
-                "    vec2 canvasCenter = vec2(0.5, 0.5);\n" +
-                "    vec2 p = (uv - canvasCenter) * 2.0;\n" +
-                "    float sphereRadius = 1.05;\n" +
-                "    float r = length(p);\n" +
-                "    float z = sqrt(max(0.0, sphereRadius * sphereRadius - r * r));\n" +
-                "    float bulge = sphereRadius / max(z, 0.01);\n" +
-                "    vec2 warpedP = mix(p, p * bulge, 0.3);\n" +
-                "\n" +
-                "    vec2 warpedOrigins[3];\n" +
-                "    for (int wi = 0; wi < 3; wi++) {\n" +
-                "        vec2 wOrigin = (u_waveCenters[wi] - canvasCenter) * 2.0;\n" +
-                "        float wR = length(wOrigin);\n" +
-                "        float wZ = sqrt(max(0.0, sphereRadius * sphereRadius - wR * wR));\n" +
-                "        float wBulge = sphereRadius / max(wZ, 0.01);\n" +
-                "        warpedOrigins[wi] = mix(wOrigin, wOrigin * wBulge, 0.3);\n" +
-                "    }\n" +
-                "\n" +
-                "    float size = u_hexSize;\n" +
-                "    float hexWidth = size * 2.0;\n" +
-                "    float hexHeight = size * 1.7320508;\n" +
-                "    float row = floor((warpedP.y + hexHeight * 0.5) / hexHeight);\n" +
-                "    float minDist = 999.0;\n" +
-                "    float cellWave = 0.0;\n" +
-                "\n" +
-                "    for (int dr = -1; dr <= 1; dr++) {\n" +
-                "        float nr = row + float(dr);\n" +
-                "        float isOddRow = mod(nr, 2.0);\n" +
-                "        float rowOffset = isOddRow * size;\n" +
-                "        for (int dc = -1; dc <= 1; dc++) {\n" +
-                "            float col = floor((warpedP.x - rowOffset + hexWidth * 0.5) / hexWidth) + float(dc);\n" +
-                "            float cellCenterX = col * hexWidth + rowOffset;\n" +
-                "            float cellCenterY = nr * hexHeight;\n" +
-                "            vec2 cellCenter = vec2(cellCenterX, cellCenterY);\n" +
-                "            float wave = 0.0;\n" +
-                "            vec2 useOrigin = vec2(0.0);\n" +
-                "            for (int wi = 0; wi < 3; wi++) {\n" +
-                "                float wAge = u_time - u_waveTriggerTimes[wi];\n" +
-                "                float dmgScale =0.3+clamp(u_waveDamages[wi]/100.0, 0.0, 1.0)*0.6+clamp((u_waveDamages[wi]-100.0)/400.0, 0.0, 1.0)*0.3;\n" +
-                "                float waveLifetime = dmgScale*0.5;\n" +
-                "                if (wAge > 0.0 && wAge < waveLifetime) {\n" +
-                "                    float distToOrigin = length(cellCenter - warpedOrigins[wi]);\n" +
-                "                    float ringSpeed =  3.0;\n" +
-                "                    float ringRadius = wAge * ringSpeed;\n" +
-                "                    float ringWidth =  dmgScale * 0.18;\n" +
-                "                    float distToRing = abs(distToOrigin - ringRadius);\n" +
-                "                    float ringIntensity = 1.0 - smoothstep(0.0, ringWidth, distToRing);\n" +
-                "                    float fadeOut = 1.0 - smoothstep(0.0, waveLifetime, wAge);\n" +
-                "                    float ringVal = ringIntensity * fadeOut * 1.2;\n" +
-                "                    if (ringVal > wave) {\n" +
-                "                        wave = ringVal;\n" +
-                "                        useOrigin = warpedOrigins[wi];\n" +
-                "                    }\n" +
-                "                }\n" +
-                "            }\n" +
-                "            float d = calcHexDist(warpedP, cellCenter, size, wave, useOrigin);\n" +
-                "            if (d < minDist) {\n" +
-                "                minDist = d;\n" +
-                "                cellWave = wave;\n" +
-                "            }\n" +
-                "        }\n" +
-                "    }\n" +
-                "\n" +
-                "    float borderWidth = size * 0.08;\n" +
-                "    float edgeAlpha = smoothstep(0.0, borderWidth, abs(minDist - size));\n" +
-                "    float opacity = 0.85 + cellWave * 0.6;\n" +
-                "    float alpha = edgeAlpha * opacity;\n" +
-                "\n" +
-                "    vec2 duv = uv - vec2(0.5);\n" +
-                "    float rot1 = u_time * 0.4;\n" +
-                "    float rot2 = u_time * -0.2;\n" +
-                "    float cr1 = cos(rot1);\n" +
-                "    float sr1 = sin(rot1);\n" +
-                "    float cr2 = cos(rot2);\n" +
-                "    float sr2 = sin(rot2);\n" +
-                "    vec2 uv1 = vec2(0.5) + vec2(duv.x * cr1 - duv.y * sr1, duv.x * sr1 + duv.y * cr1);\n" +
-                "    vec2 uv2 = vec2(0.5) + vec2(duv.x * cr2 - duv.y * sr2, duv.x * sr2 + duv.y * cr2);\n" +
-                "    float maskAlpha = 0.3 + 0.7 * texture2D(u_maskTexture, uv1).a * texture2D(u_maskTexture, uv2).a;\n" +
-                "    float circleFade = 1.0 - smoothstep(0.92, 1.05, r);\n" +
-                "    alpha *= maskAlpha * circleFade;\n" +
-                "\n" +
-                "    float pixelAngle = atan(p.y, p.x);\n" +
-                "    float angleDiff = pixelAngle - u_shieldFacing;\n" +
-                "    angleDiff = mod(angleDiff + 3.14159265, 6.2831853) - 3.14159265;\n" +
-                "    float halfArc = u_shieldArc * 0.5;\n" +
-                "    float arcEdge = 0.06;\n" +
-                "    float arcMask = 1.0 - smoothstep(halfArc , halfArc + arcEdge, abs(angleDiff));\n" +
-                "    alpha *= arcMask;\n" +
-                "\n" +
-                "    gl_FragColor = vec4(u_bgColor, alpha * 0.85);\n" +
-
-                "}\n";
-
-            int vert = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
-            GL20.glShaderSource(vert, vertexSource);
-            GL20.glCompileShader(vert);
-            if (GL20.glGetShaderi(vert, GL20.GL_COMPILE_STATUS) == 0) {
-                LOG.error("[HexShield] Vertex shader compile fail: " + GL20.glGetShaderInfoLog(vert, 1024));
-                return;
-            }
-
-            int frag = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
-            GL20.glShaderSource(frag, fragmentSource);
-            GL20.glCompileShader(frag);
-            if (GL20.glGetShaderi(frag, GL20.GL_COMPILE_STATUS) == 0) {
-                LOG.error("[HexShield] Fragment shader compile fail: " + GL20.glGetShaderInfoLog(frag, 1024));
-                return;
-            }
-
-            shaderProgram = GL20.glCreateProgram();
-            GL20.glAttachShader(shaderProgram, vert);
-            GL20.glAttachShader(shaderProgram, frag);
-            GL20.glBindAttribLocation(shaderProgram, 0, "a_position");
-            GL20.glBindAttribLocation(shaderProgram, 1, "a_texCoord");
-            GL20.glLinkProgram(shaderProgram);
-
-            if (GL20.glGetProgrami(shaderProgram, GL20.GL_LINK_STATUS) == 0) {
-                LOG.error("[HexShield] Shader link fail: " + GL20.glGetProgramInfoLog(shaderProgram, 1024));
-                return;
-            }
-
-            GL20.glDeleteShader(vert);
-            GL20.glDeleteShader(frag);
+        shaderProgram = ShaderUtil.createShaderProgramFromFiles(
+                "data/shaders/meng/common.vert",
+                "data/shaders/meng/hex_shield.frag",
+                "HexShield");
+        if (shaderProgram > 0) {
             LOG.info("[HexShield] Shader compiled and linked successfully");
-        } catch (Exception e) {
-            LOG.error("[HexShield] Shader creation error: " + e.getMessage(), e);
         }
     }
-
+    /**
+     * 创建通用矩形VAO，替代旧的VBO+IBO方案。
+     * 调用路径: {@link #initGL()} 内部调用。
+     */
     private void createBuffers() {
-        float half = CANVAS * 0.5f;
-        
-        // 每个顶点: x, y, u, v → 4 floats × 4 vertices = 16 floats
-        FloatBuffer verts = BufferUtils.createFloatBuffer(16);
-        verts.put(new float[]{
-            -half, -half, 0f, 0f,   // vertex 0: pos(-,-), uv(0,0)
-             half, -half, 1f, 0f,   // vertex 1: pos(+,-), uv(1,0)
-             half,  half, 1f, 1f,   // vertex 2: pos(+,+), uv(1,1)
-            -half,  half, 0f, 1f,   // vertex 3: pos(-,+), uv(0,1)
-        });
-        verts.flip();
-
-        IntBuffer indices = BufferUtils.createIntBuffer(6);
-        indices.put(new int[]{0, 1, 2, 0, 2, 3});
-        indices.flip();
-
-        vbo = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verts, GL15.GL_STATIC_DRAW);
-
-        ibo = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
-        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
-
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+        vao = ShaderUtil.createUniversalRectVAO();
     }
 
+    /**
+     * 缓存所有uniform变量的location，包括新增的modelMatrix、size和u_hitEventCount。
+     * 调用路径: {@link #initGL()} 内部调用。
+     */
     private void cacheUniformLocations() {
         if (shaderProgram <= 0) return;
-        uTimeLoc = GL20.glGetUniformLocation(shaderProgram, "u_time");
-        uHexSizeLoc = GL20.glGetUniformLocation(shaderProgram, "u_hexSize");
-        uBgColorLoc = GL20.glGetUniformLocation(shaderProgram, "u_bgColor");
-        uShieldFacingLoc = GL20.glGetUniformLocation(shaderProgram, "u_shieldFacing");
-        uShieldArcLoc = GL20.glGetUniformLocation(shaderProgram, "u_shieldArc");
-        uMaskTextureLoc = GL20.glGetUniformLocation(shaderProgram, "u_maskTexture");
-        for (int i = 0; i < 3; i++) {
-            uWaveCenterLocs[i] = GL20.glGetUniformLocation(shaderProgram, "u_waveCenters[" + i + "]");
-            uWaveTriggerTimeLocs[i] = GL20.glGetUniformLocation(shaderProgram, "u_waveTriggerTimes[" + i + "]");
-            uWaveDamageLocs[i] = GL20.glGetUniformLocation(shaderProgram, "u_waveDamages[" + i + "]");
-        }
-    }
-
-    // ==================== FBO ====================
-
-    private void ensureFBO(int w, int h) {
-        int tw = nextPowerOfTwo(w);
-        int th = nextPowerOfTwo(h);
-        if (fboId != 0 && fboW == tw && fboH == th) return;
-        destroyFBO();
-        fboW = tw;
-        fboH = th;
-
-        fboTexId = GL11.glGenTextures();
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, fboTexId);
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, fboW, fboH, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
-
-        fboId = GL30.glGenFramebuffers();
-        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fboId);
-        GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, fboTexId, 0);
-        int status = GL30.glCheckFramebufferStatus(GL30.GL_FRAMEBUFFER);
-        if (status != GL30.GL_FRAMEBUFFER_COMPLETE) {
-            System.err.println("HexShield FBO fail: " + status);
-            destroyFBO();
-            return;
-        }
-        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-    }
-
-    private void destroyFBO() {
-        if (fboId != 0) { GL30.glDeleteFramebuffers(fboId); fboId = 0; }
-        if (fboTexId != 0) { GL11.glDeleteTextures(fboTexId); fboTexId = 0; }
-    }
-
-    private int nextPowerOfTwo(int value) {
-        if (value <= 0) return 1;
-        value--;
-        value |= value >> 1; value |= value >> 2;
-        value |= value >> 4; value |= value >> 8;
-        value |= value >> 16;
-        return value + 1;
+        int[] locs = ShaderUtil.getUniformLocations(shaderProgram,
+                "modelMatrix", "size",
+                "u_time", "u_hexSize", "u_bgColor",
+                "u_shieldFacing", "u_shieldArc", "u_maskTexture",
+                "u_hitEventCount",
+                "u_fadeAlpha",
+                "u_pulseEventCount", "u_pulseLifetime",
+                "u_pulseMaskTexture");
+        uModelMatrixLoc = locs[0];
+        uSizeLoc = locs[1];
+        uTimeLoc = locs[2];
+        uHexSizeLoc = locs[3];
+        uBgColorLoc = locs[4];
+        uShieldFacingLoc = locs[5];
+        uShieldArcLoc = locs[6];
+        uMaskTextureLoc = locs[7];
+        uHitEventCountLoc = locs[8];
+        uFadeAlphaLoc = locs[9];
+        uPulseEventCountLoc = locs[10];
+        uPulseLifetimeLoc = locs[11];
+        uPulseMaskTextureLoc = locs[12];
     }
 
     // ==================== CombatLayeredRenderingPlugin ====================
@@ -357,12 +214,20 @@ public class Meng_HexShieldPlugin implements CombatLayeredRenderingPlugin {
     @Override
     public void init(CombatEntityAPI entity) {}
 
+    /**
+     * 清理所有GPU资源: shader program、VAO、SSBO、damage listener。
+     * 调用路径: 引擎在插件过期或被移除时自动调用。
+     */
     @Override
     public void cleanup() {
-        destroyFBO();
-        if (shaderProgram > 0) { GL20.glDeleteProgram(shaderProgram); shaderProgram = 0; }
-        if (vbo != 0) { GL15.glDeleteBuffers(vbo); vbo = 0; }
-        if (ibo != 0) { GL15.glDeleteBuffers(ibo); ibo = 0; }
+        ShaderUtil.cleanupAll(shaderProgram, vao, ssboId);
+        if (pulseSsboId > 0) {
+            GL15.glDeleteBuffers(pulseSsboId);
+        }
+        shaderProgram = 0;
+        vao = null;
+        ssboId = 0;
+        pulseSsboId = 0;
         if (ship != null && damageModifier != null) {
             ship.removeListener(damageModifier);
             damageModifier = null;
@@ -384,6 +249,35 @@ public class Meng_HexShieldPlugin implements CombatLayeredRenderingPlugin {
         if (!ship.isAlive()) { expired = true; return; }
 
         timer += amount;
+
+        // Clear expired hit events
+        Iterator<HitEvent> iter = hitEvents.iterator();
+        while (iter.hasNext()) {
+            HitEvent event = iter.next();
+            float age = timer - event.triggerTime;
+            float dmgScale = 0.3f + Math.min(event.damage / 100f, 1f) * 0.6f
+                    + Math.min(Math.max(event.damage - 100f, 0f) / 400f, 1f) * 0.3f;
+            if (age >= dmgScale * 0.5f) {
+                iter.remove();
+            }
+        }
+
+        // Clear expired pulse events (lifetime = u_pulseLifetime equivalent, default 2.0s)
+        float pulseLifetime = AUTO_PULSE_LIFETIME;
+        Iterator<HitEvent> pIter = pulseEvents.iterator();
+        while (pIter.hasNext()) {
+            HitEvent event = pIter.next();
+            if (timer - event.triggerTime >= pulseLifetime) {
+                pIter.remove();
+            }
+        }
+
+        // Auto-pulse: trigger center ripple at fixed interval
+        autoPulseTimer += amount;
+        if (autoPulseTimer >= AUTO_PULSE_INTERVAL) {
+            autoPulseTimer -= AUTO_PULSE_INTERVAL;
+            pulseEvents.add(new HitEvent(0.5f, 0.5f, timer, 1.0f));
+        }
 
         ShieldAPI shield = ship.getShield();
         if (shield != null && shield.isOn()) {
@@ -413,270 +307,146 @@ public class Meng_HexShieldPlugin implements CombatLayeredRenderingPlugin {
 
     @Override
     public float getRenderRadius() {
-        // Use a very large radius to prevent frustum culling (like clockbuilder does)
         return 10000000f;
     }
 
     // ==================== RENDER ====================
 
-    @Override
-    public void render(CombatEngineLayers layer, ViewportAPI viewport) {
-        if (layer != CombatEngineLayers.ABOVE_SHIPS_LAYER) return;
-        if (expired || !ship.isAlive()) return;
+    /**
+     * 单次直接渲染六边形护盾到屏幕。
+     * 替代旧的FBO二步渲染: 无需中间纹理，直接通过modelMatrix定位到世界坐标。
+     *
+     * <p>调用路径: {@link #render(CombatEngineLayers, ViewportAPI)} 内部调用。</p>
+     *
+     * @param shieldR         护盾当前半径（世界坐标单位）
+     * @param shieldFacingDeg 护盾朝向角度（度）
+     * @param shieldArcRad    护盾弧面角度（弧度）
+     */
+    private void renderShield(float shieldR, float shieldFacingDeg, float shieldArcRad) {
+        uploadHitEvents();
 
-        initGL();
-        if (shaderProgram <= 0) {
-            LOG.debug("[HexShield] Shader not initialized, skipping render");
-            return;
-        }
-        if (shieldSprite == null) {
-            LOG.warn("[HexShield] Shield sprite is null, skipping render");
-            return;
-        }
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        ShieldAPI shield = ship.getShield();
-        if (shield == null) {
-            LOG.debug("[HexShield] Shield is null, skipping render");
-            return;
-        }
-        if (!shield.isOn() && fadeAlpha <= 0f) return;
-
-        float shieldR = shield.isOn() ? shield.getRadius() : shieldRadius;
-
-        if (shieldR <= 0f) {
-            LOG.debug("[HexShield] Shield radius <= 0 (" + shieldR + "), skipping render");
-            return;
-        }
-
-        ensureFBO(CANVAS, CANVAS);
-        if (fboId == 0) {
-            LOG.error("[HexShield] FBO creation failed, skipping render");
-            return;
-        }
-
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-
-        GL20.glUseProgram(0);
-        
-        // Bind FBO using same logic as ensureFBO
-        try {
-            Class<?> shaderLibClass = Class.forName("com.fs.starfarer.api.impl.shader.ShaderLib");
-            java.lang.reflect.Method useBufferCoreMethod = shaderLibClass.getMethod("useBufferCore");
-            java.lang.reflect.Method useBufferARBMethod = shaderLibClass.getMethod("useBufferARB");
-            
-            boolean useCore = (Boolean) useBufferCoreMethod.invoke(null);
-            boolean useARB = (Boolean) useBufferARBMethod.invoke(null);
-            
-            if (useCore) {
-                GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fboId);
-            } else if (useARB) {
-                org.lwjgl.opengl.ARBFramebufferObject.glBindFramebuffer(
-                    org.lwjgl.opengl.ARBFramebufferObject.GL_FRAMEBUFFER, fboId);
-            } else {
-                org.lwjgl.opengl.EXTFramebufferObject.glBindFramebufferEXT(
-                    org.lwjgl.opengl.EXTFramebufferObject.GL_FRAMEBUFFER_EXT, fboId);
-            }
-        } catch (Exception e) {
-            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fboId);
-        }
-        
-        GL11.glViewport(0, 0, fboW, fboH);
-
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glPushMatrix();
-        GL11.glLoadIdentity();
-        GL11.glOrtho(0, fboW, 0, fboH, -2000, 2000);
-        GL11.glMatrixMode(GL11.GL_TEXTURE);
-        GL11.glPushMatrix();
-        GL11.glLoadIdentity();
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glPushMatrix();
-        GL11.glLoadIdentity();
-        GL11.glTranslatef(fboW * 0.5f, fboH * 0.5f, 0f);
-
-        GL11.glColorMask(true, true, true, true);
-        GL11.glClearColor(0f, 0f, 0f, 0f);
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-
-        // Now bind shader and set uniforms
         GL20.glUseProgram(shaderProgram);
-        
-        int glError = GL11.glGetError();
-        if (glError != GL11.GL_NO_ERROR) {
-            LOG.error("[HexShield] GL error after glUseProgram: " + glError);
-        }
-        
+
+        // Model matrix: position at ship location, rotate to shield facing
+        Vector2f shipLoc = ship.getLocation();
+        FloatBuffer modelMat = ShaderUtil.buildModelMatrix(shipLoc.x, shipLoc.y, shieldFacingDeg - 90f);
+        GL20.glUniformMatrix4(uModelMatrixLoc, false, modelMat);
+
+        // Size: shield render area (slightly larger than shield radius)
+        // 2.125 : 补偿 BoxUtil UBO gameViewport 与旧固定管线矩阵栈的微小缩放差异
+        float fullSize = shieldR * 2.125f;
+        GL20.glUniform2f(uSizeLoc, fullSize, fullSize);
+
+        // Standard uniforms
         GL20.glUniform1f(uTimeLoc, timer);
         GL20.glUniform1f(uHexSizeLoc, 0.05f);
         GL20.glUniform3f(uBgColorLoc, 0.56f, 0.0f, 1.0f);
 
-        float shieldFacingDeg = shield.isOn() ? shield.getFacing() : lastShieldFacingDeg;
-        float shieldFacingRad = 1.5707963f;
-        float shieldArcRad = shield.isOn() ? (float) Math.toRadians(shield.getActiveArc()) : lastActiveArcRad;
-        GL20.glUniform1f(uShieldFacingLoc, shieldFacingRad);
+        // Shield arc uniforms (in local rotated frame, facing is always 90 degrees)
+        GL20.glUniform1f(uShieldFacingLoc, 1.5707963f);
         GL20.glUniform1f(uShieldArcLoc, shieldArcRad);
 
+        // Mask texture
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, shieldSprite.getTextureId());
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL20.glUniform1i(uMaskTextureLoc, 0);
 
-        for (int i = 0; i < 3; i++) {
-            GL20.glUniform2f(uWaveCenterLocs[i], waveCenterX[i], waveCenterY[i]);
-            GL20.glUniform1f(uWaveTriggerTimeLocs[i], waveTriggerTime[i]);
-            GL20.glUniform1f(uWaveDamageLocs[i], waveDamage[i]);
+        // Pulse mask texture (binding = 1)
+        if (pulseMaskSprite != null) {
+            GL13.glActiveTexture(GL13.GL_TEXTURE1);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, pulseMaskSprite.getTextureId());
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL20.glUniform1i(uPulseMaskTextureLoc, 1);
         }
 
-        glError = GL11.glGetError();
-        if (glError != GL11.GL_NO_ERROR) {
-            LOG.error("[HexShield] GL error after setting uniforms: " + glError);
-        }
+        // Hit event count (SSBO already bound by uploadHitEvents)
+        GL20.glUniform1i(uHitEventCountLoc, hitEvents.size());
 
-        // Bind VBO and IBO
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
+        // Pulse events: upload and set uniforms
+        uploadPulseEvents();
+        GL20.glUniform1i(uPulseEventCountLoc, pulseEvents.size());
+        GL20.glUniform1f(uPulseLifetimeLoc, AUTO_PULSE_LIFETIME);
 
-        GL20.glEnableVertexAttribArray(0);
-        GL20.glVertexAttribPointer(0, 2, GL11.GL_FLOAT, false, 16, 0);
-        GL20.glEnableVertexAttribArray(1);
-        GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, 16, 8);
+        // 护盾关闭渐出（旧代码通过 glColor4f 实现，新代码改为 uniform）
+        GL20.glUniform1f(uFadeAlphaLoc, fadeAlpha);
 
-        glError = GL11.glGetError();
-        if (glError != GL11.GL_NO_ERROR) {
-            LOG.error("[HexShield] GL error after vertex attrib setup: " + glError);
-        }
+        // Draw
+        ShaderUtil.drawVAOQuad(vao.vaoId);
 
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-
-        GL11.glDrawElements(GL11.GL_TRIANGLES, 6, GL11.GL_UNSIGNED_INT, 0);
-
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-
-        glError = GL11.glGetError();
-
-        if (glError != GL11.GL_NO_ERROR) {
-            LOG.error("[HexShield] GL error after draw: " + glError + " (1282=GL_INVALID_OPERATION)");
-        }
-
-        GL20.glDisableVertexAttribArray(0);
-        GL20.glDisableVertexAttribArray(1);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-
+        // Cleanup state
+        GL13.glActiveTexture(GL13.GL_TEXTURE1);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-        GL20.glUseProgram(0);
-
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glPopMatrix();
-        GL11.glMatrixMode(GL11.GL_TEXTURE);
-        GL11.glPopMatrix();
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glPopMatrix();
-
-        // Unbind FBO
-        try {
-            Class<?> shaderLibClass = Class.forName("com.fs.starfarer.api.impl.shader.ShaderLib");
-            java.lang.reflect.Method useBufferCoreMethod = shaderLibClass.getMethod("useBufferCore");
-            java.lang.reflect.Method useBufferARBMethod = shaderLibClass.getMethod("useBufferARB");
-            
-            boolean useCore = (Boolean) useBufferCoreMethod.invoke(null);
-            boolean useARB = (Boolean) useBufferARBMethod.invoke(null);
-            
-            if (useCore) {
-                GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-            } else if (useARB) {
-                org.lwjgl.opengl.ARBFramebufferObject.glBindFramebuffer(
-                    org.lwjgl.opengl.ARBFramebufferObject.GL_FRAMEBUFFER, 0);
-            } else {
-                org.lwjgl.opengl.EXTFramebufferObject.glBindFramebufferEXT(
-                    org.lwjgl.opengl.EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
-            }
-        } catch (Exception e) {
-            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-        }
-        
-        GL11.glPopAttrib();
-
-        // Step 2: draw FBO texture to screen (following clockbuilder pattern)
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glPushMatrix();
-        GL11.glMatrixMode(GL11.GL_TEXTURE);
-        GL11.glPushMatrix();
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glPushMatrix();
-
-        Vector2f shipLoc = ship.getLocation();
-        GL11.glTranslatef(shipLoc.x, shipLoc.y, 0f);
-        GL11.glRotatef(shieldFacingDeg - 90f, 0f, 0f, 1f);
-
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, fboTexId);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glColor4f(1f, 1f, 1f, fadeAlpha);
-
-        float halfSz = shieldR * 1.08f;
-        
-        // Map full FBO texture to shield quad
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2f(0f, 0f); GL11.glVertex2f(-halfSz, -halfSz);
-        GL11.glTexCoord2f(1f, 0f); GL11.glVertex2f( halfSz, -halfSz);
-        GL11.glTexCoord2f(1f, 1f); GL11.glVertex2f( halfSz,  halfSz);
-        GL11.glTexCoord2f(0f, 1f); GL11.glVertex2f(-halfSz,  halfSz);
-        GL11.glEnd();
-
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
+        GL20.glUseProgram(0);
+        ShaderUtil.unbindSSBO(SSBO_BINDING);
+        ShaderUtil.unbindSSBO(PULSE_SSBO_BINDING);
+    }
 
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glPopMatrix();
-        GL11.glMatrixMode(GL11.GL_TEXTURE);
-        GL11.glPopMatrix();
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glPopMatrix();
+    @Override
+    public void render(CombatEngineLayers layer, ViewportAPI viewport) {
+        if (layer != CombatEngineLayers.ABOVE_SHIPS_LAYER) return;
+        if (expired || !ship.isAlive()) return;
+        if (!renderEnabled) return;
+        initGL();
+        if (shaderProgram <= 0) return;
+        if (shieldSprite == null) return;
 
+        ShieldAPI shield = ship.getShield();
+        if (shield == null) return;
+        if (!shield.isOn() && fadeAlpha <= 0f) return;
+
+        float shieldR = shield.isOn() ? shield.getRadius() : shieldRadius;
+        if (shieldR <= 0f) return;
+
+        float shieldFacingDeg = shield.isOn() ? shield.getFacing() : lastShieldFacingDeg;
+        float shieldArcRad = shield.isOn() ? (float) Math.toRadians(shield.getActiveArc()) : lastActiveArcRad;
+
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        renderShield(shieldR, shieldFacingDeg, shieldArcRad);
         GL11.glPopAttrib();
     }
 
-    // ==================== WAVE TRIGGER ====================
+    // ==================== HIT EVENTS ====================
 
+    /**
+     * 触发新的波纹动画。将命中事件添加到动态列表，由SSBO在下一帧上传。
+     * 替代旧的3波槽固定数组轮转方案，支持无限数量的同时波纹。
+     *
+     * <p>调用路径: {@link #onShieldHit(Vector2f, float)} 内部调用。</p>
+     *
+     * @param uvX    命中点在护盾UV空间的X坐标 [0,1]
+     * @param uvY    命中点在护盾UV空间的Y坐标 [0,1]
+     * @param damage 本次命中造成的护盾伤害值
+     */
     public void triggerWave(float uvX, float uvY, float damage) {
-        for (int i = 0; i < 3; i++) {
-            if (waveTriggerTime[i] < 0 || timer - waveTriggerTime[i] > 0.5f) {
-                waveCenterX[i] = uvX;
-                waveCenterY[i] = uvY;
-                waveTriggerTime[i] = timer;
-                waveDamage[i] = damage;
-                return;
-            }
-        }
-        int oldest = 0;
-        for (int i = 1; i < 3; i++) {
-            if (waveTriggerTime[i] < waveTriggerTime[oldest]) {
-                oldest = i;
-            }
-        }
-        waveCenterX[oldest] = uvX;
-        waveCenterY[oldest] = uvY;
-        waveTriggerTime[oldest] = timer;
-        waveDamage[oldest] = damage;
+        hitEvents.add(new HitEvent(uvX, uvY, timer, damage));
     }
 
+    /**
+     * 处理护盾受击事件: 将世界坐标命中点转换为护盾局部UV坐标，触发波纹。
+     * 包含最小伤害阈值(20)和触发间隔(0.166秒)过滤。
+     *
+     * <p>调用路径: {@link MyDamageDealtModifier#modifyDamageTaken} 回调触发。</p>
+     *
+     * @param hitWorldPos 命中点世界坐标
+     * @param shieldDmg   护盾伤害值
+     */
     private void onShieldHit(Vector2f hitWorldPos, float shieldDmg) {
         if (shieldDmg < 20f) return;
-        if (timer - lastHitTime < 0.166f) return;
+        if (timer - lastHitTime < 0f) return;
         lastHitTime = timer;
 
         ShieldAPI shield = ship.getShield();
-
         if (shield == null) return;
         float sr = shield.getRadius();
         if (sr <= 0f) return;
@@ -695,7 +465,97 @@ public class Meng_HexShieldPlugin implements CombatLayeredRenderingPlugin {
         float uvY = (localY / sr) * 0.5f + 0.5f;
 
         triggerWave(uvX, uvY, shieldDmg);
+    }
 
+    /**
+     * 将命中事件列表上传到SSBO，并绑定到binding point 1。
+     * 采用智能分配策略: 首次或容量不足时使用glBufferData重新分配，
+     * 否则使用glBufferSubData仅更新数据。
+     *
+     * <p>调用路径: {@link #renderShield(float, float, float)} 内部调用，每帧执行。</p>
+     */
+    private void uploadHitEvents() {
+        int eventCount = hitEvents.size();
+        int floatCount = Math.max(HIT_EVENT_FLOATS, eventCount * HIT_EVENT_FLOATS);
+
+        // Ensure upload buffer capacity
+        if (ssboUploadBuffer == null || ssboUploadCapacity < floatCount) {
+            ssboUploadBuffer = BufferUtils.createFloatBuffer(floatCount);
+            ssboUploadCapacity = floatCount;
+        }
+
+        ssboUploadBuffer.clear();
+        if (eventCount > 0) {
+            for (HitEvent event : hitEvents) {
+                ssboUploadBuffer.put(event.uvX);
+                ssboUploadBuffer.put(event.uvY);
+                ssboUploadBuffer.put(event.triggerTime);
+                ssboUploadBuffer.put(event.damage);
+            }
+        } else {
+            // Upload at least one dummy event to avoid zero-size buffer
+            ssboUploadBuffer.put(0f);
+            ssboUploadBuffer.put(0f);
+            ssboUploadBuffer.put(-999f);
+            ssboUploadBuffer.put(0f);
+        }
+        ssboUploadBuffer.flip();
+
+        ssboCapacity = ShaderUtil.uploadSSBO(ssboId, ssboUploadBuffer, floatCount, ssboCapacity);
+        ShaderUtil.bindSSBO(ssboId, SSBO_BINDING);
+    }
+
+    /**
+     * 将脉冲事件列表上传到独立的SSBO (binding=2)。
+     * 脉冲事件与命中事件完全独立，仅驱动缝隙发光效果。
+     *
+     * <p>调用路径: {@link #renderShield(float, float, float)} 内部调用，每帧执行。</p>
+     */
+    private void uploadPulseEvents() {
+        int eventCount = pulseEvents.size();
+        int floatCount = Math.max(PULSE_EVENT_FLOATS, eventCount * PULSE_EVENT_FLOATS);
+
+        if (pulseSsboUploadBuffer == null || pulseSsboUploadCapacity < floatCount) {
+            pulseSsboUploadBuffer = BufferUtils.createFloatBuffer(floatCount);
+            pulseSsboUploadCapacity = floatCount;
+        }
+
+        pulseSsboUploadBuffer.clear();
+        if (eventCount > 0) {
+            for (HitEvent event : pulseEvents) {
+                pulseSsboUploadBuffer.put(event.uvX);
+                pulseSsboUploadBuffer.put(event.uvY);
+                pulseSsboUploadBuffer.put(event.triggerTime);
+                pulseSsboUploadBuffer.put(event.damage);
+            }
+        } else {
+            pulseSsboUploadBuffer.put(0f);
+            pulseSsboUploadBuffer.put(0f);
+            pulseSsboUploadBuffer.put(-999f);
+            pulseSsboUploadBuffer.put(0f);
+        }
+        pulseSsboUploadBuffer.flip();
+
+        pulseSsboCapacity = ShaderUtil.uploadSSBO(pulseSsboId, pulseSsboUploadBuffer, floatCount, pulseSsboCapacity);
+        ShaderUtil.bindSSBO(pulseSsboId, PULSE_SSBO_BINDING);
+    }
+
+    /**
+     * 命中事件数据容器，存储单次护盾受击的UV坐标、触发时间和伤害值。
+     * 数据通过SSBO传递给片段着色器，用于计算波纹动画。
+     */
+    private static class HitEvent {
+        final float uvX;
+        final float uvY;
+        final float triggerTime;
+        final float damage;
+
+        HitEvent(float uvX, float uvY, float triggerTime, float damage) {
+            this.uvX = uvX;
+            this.uvY = uvY;
+            this.triggerTime = triggerTime;
+            this.damage = damage;
+        }
     }
 
     // ==================== DAMAGE LISTENER ====================
@@ -712,8 +572,13 @@ public class Meng_HexShieldPlugin implements CombatLayeredRenderingPlugin {
                                         Vector2f point, boolean shieldHit) {
             if (plugin == null || plugin.expired) return null;
             if (!shieldHit) return null;
-
-            float shieldDmg = damage.getDamage();
+            float shieldDmg;
+            if(param instanceof BeamAPI) {
+                shieldDmg = damage.getDamage() * 0.6f;
+            }
+            else {
+                shieldDmg = damage.getDamage();
+            }
             if (shieldDmg <= 0f) return null;
 
             plugin.onShieldHit(point, shieldDmg);

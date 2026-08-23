@@ -10,8 +10,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.magiclib.plugins.MagicRenderPlugin;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Iterator;
 
 
 public class Meng_fire_smartgun implements EveryFrameWeaponEffectPlugin {
@@ -49,7 +51,9 @@ public class Meng_fire_smartgun implements EveryFrameWeaponEffectPlugin {
 
         @Override
         public boolean isExpired() {
-            return timer >= 10f;//返回值为true时，Plugin删除。
+            return timer >= 10f || pj == null || pj.isExpired() || pj.wasRemoved()
+                    || weapon == null || weapon.getShip() == null || !weapon.getShip().isAlive()
+                    || target == null || !target.isAlive();
         }
 
         @Override
@@ -125,7 +129,7 @@ public class Meng_fire_smartgun implements EveryFrameWeaponEffectPlugin {
 
         @Override
         public boolean isExpired() {
-            return weapon == null;//返回值为true时，Plugin删除。
+            return weapon == null || weapon.getShip() == null || !weapon.getShip().isAlive();
         }
 
         @Override
@@ -135,6 +139,13 @@ public class Meng_fire_smartgun implements EveryFrameWeaponEffectPlugin {
             ShipAPI targets = ship.getShipTarget();
             if (projs == null) {
                 projs = new ArrayList<>();
+            }
+            Iterator<DamagingProjectileAPI> iter = projs.iterator();
+            while (iter.hasNext()) {
+                DamagingProjectileAPI projectile = iter.next();
+                if (projectile == null || projectile.isExpired() || projectile.wasRemoved()) {
+                    iter.remove();
+                }
             }
             if (targets != null) {
                 float distance = MathUtils.getDistance(targets.getLocation(), weapon.getLocation()) - targets.getShieldRadiusEvenIfNoShield();
@@ -172,7 +183,10 @@ public class Meng_fire_smartgun implements EveryFrameWeaponEffectPlugin {
             if (target == null) return;
 
             if (target == lasttarget) targetprocess = Math.min(0.5f, targetprocess + amount);
-            else targetprocess = 0f;
+            else {
+                targetprocess = 0f;
+                Global.getSoundPlayer().playSound("Meng_Scansound", 1f, 1f, ship.getLocation(), new Vector2f());
+            }
             lasttarget = target;
             SpriteAPI targetring = Global.getSettings().getSprite("fx", "Meng_targeting_ring");
             SpriteAPI targetcore = Global.getSettings().getSprite("fx", "Meng_targeting_core");
@@ -180,7 +194,9 @@ public class Meng_fire_smartgun implements EveryFrameWeaponEffectPlugin {
             MagicRenderPlugin.addSingleframe(targetcore, target.getLocation(), CombatEngineLayers.ABOVE_SHIPS_LAYER);
             float width = target.getShieldRadiusEvenIfNoShield();
             targetring.setSize(width * (6f - 8f * targetprocess), width * (6f - 8f * targetprocess));
+            targetring.setColor(new Color(180,155,255, 255));
             targetcore.setSize(width * 2f, width * 2f);
+            targetcore.setColor(new Color(180,155,255, 255));
             targetring.setAlphaMult(targetprocess * 2f);
             targetcore.setAlphaMult(targetprocess * 2f);
             boolean shouldfire = false;

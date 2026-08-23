@@ -136,7 +136,7 @@ public class Meng_Dependent extends BaseShipSystemScript {
 
         @Override
         public boolean isExpired() {
-            return false;//返回值为true时，Plugin删除，因此当计时器超过三秒后删除。
+            return ship == null || target == null || !ship.isAlive() || !target.isAlive() || timer >= 3f;
         }
 
         private void Meng_Hunhua(ShipAPI ship, ShipAPI target) {

@@ -179,7 +179,8 @@ public class Meng_EmbersJumpRenderPlugin extends BaseCustomEntityPlugin {
         alpha *= alphaMult;
         if (alpha <= 0.01f) return;
 
-        // 细微随机闪烁（正负 0.1）
+        // 细微随机闪烁（正负 0.1），懒初始化防止读档后 transient 字段为 null
+        if (random == null) random = new Random();
         float flicker = 1f + (random.nextFloat() - 0.5f) * 0.2f;
         alpha *= flicker;
         if (alpha > 1f) alpha = 1f;

@@ -7,11 +7,14 @@ import com.fs.starfarer.api.characters.FullName;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.impl.MusicPlayerPluginImpl;
 import com.fs.starfarer.api.impl.campaign.ids.*;
+import com.fs.starfarer.api.impl.campaign.procgen.NebulaEditor;
 import com.fs.starfarer.api.impl.campaign.procgen.StarAge;
+import com.fs.starfarer.api.impl.campaign.terrain.HyperspaceTerrainPlugin;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.combat.entities.terrain.Planet;
 import com.fs.starfarer.loading.specs.PlanetSpec;
 import data.scripts.campaign.Meng_Rocifer;
+import org.magiclib.util.MagicCampaign;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -181,7 +184,9 @@ public class Meng_Embers_System {
 
         // generates hyperspace destinations for in-system jump points
         system.autogenerateHyperspaceJumpPoints(true, true);
-
+        HyperspaceTerrainPlugin plugin = Misc.getHyperspaceTerrainPlugin();
+        NebulaEditor editor = new NebulaEditor(plugin);
+        editor.clearArc(system.getLocation().x,system.getLocation().y,0.0f,system.getMaxRadiusInHyperspace()*0.8f,360f,0.25f);
 
     }
 

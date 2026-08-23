@@ -17,15 +17,17 @@ import data.methods.Meng_V2arcfind;
 import data.methods.Meng_arcfind;
 import org.dark.shaders.distortion.DistortionShader;
 import org.dark.shaders.distortion.RippleDistortion;
+import org.lazywizard.lazylib.JSONUtils;
 import org.lazywizard.lazylib.MathUtils;
+import data.methods.shaders.ShaderUtil;
+import data.methods.MengPerformanceSettings;
+import org.lwjgl.input.Controller;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.*;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -102,7 +104,6 @@ public class Meng_MingGodCenter extends BaseHullMod {
             }
         }
 
-
         for (ShipAPI target : Global.getCombatEngine().getShips()) {
             if (target != null) {
                 if (target.getOwner() != ship.getOwner()) {
@@ -158,7 +159,11 @@ public class Meng_MingGodCenter extends BaseHullMod {
                 if (targets == ships && result.getDamageToHull() > this.target.getHitpoints()) {
                     if (!init) {
                         init = true;
-                        Global.getCombatEngine().addLayeredRenderingPlugin(new Meng_MingGodSignPlugin(this.target, ships));
+                        if (MengPerformanceSettings.useLowPerformanceEffects()) {
+                            Global.getCombatEngine().addLayeredRenderingPlugin(new Meng_MingGodSignPlugin(this.target, ships, false));
+                        } else {
+                            Global.getCombatEngine().addLayeredRenderingPlugin(new Meng_MingGodSignPlugin(this.target, ships));
+                        }
                     }
                 }
             }
@@ -183,16 +188,23 @@ public class Meng_MingGodCenter extends BaseHullMod {
         private float arg;
         
         private int shaderProgram;
-        private int vbo;
-        private int ibo;
-        private int uRadiusLoc;
+        private ShaderUtil.VAOData vao;
+        private int uModelMatrixLoc;
+        private int uSizeLoc;
         private int uTimeLoc;
         private int uDurationLoc;
         private int uProgressLoc;
+        private final boolean renderEnabled;
 
         public Meng_MingGodSignPlugin(ShipAPI targets, ShipAPI source) {
+            this(targets, source, true);
+        }
+
+        /** Creates a logic-only instance when renderEnabled is false. */
+        public Meng_MingGodSignPlugin(ShipAPI targets, ShipAPI source, boolean renderEnabled) {
             target = targets;
             ship = source;
+            this.renderEnabled = renderEnabled;
         }
 
         public void init(CombatEntityAPI entity) {
@@ -203,222 +215,36 @@ public class Meng_MingGodCenter extends BaseHullMod {
             noise = Arrays.copyOf(lastnoise, 360);
             arg = (float) Math.random() * 360f;
             
-            createShaderProgram();
-        }
-        
-        private void createShaderProgram() {
-
-            try {
-                String vertexSource = 
-                    "#version 110\n" +
-                    "attribute vec2 a_position;\n" +
-                    "attribute vec2 a_texCoord;\n" +
-                    "varying vec2 v_uv;\n" +
-                    "uniform float u_radius;\n" +
-                    "void main() {\n" +
-                    "    v_uv = a_texCoord;\n" +
-                    "    vec2 scaledPos = a_position * (u_radius / 400.0);\n" +
-                    "    gl_Position = gl_ModelViewProjectionMatrix * vec4(scaledPos, 0.0, 1.0);\n" +
-                    "}\n";
-                
-                String fragmentSource = 
-                    "#version 110\n" +
-                    "varying vec2 v_uv;\n" +
-                    "uniform float u_time;\n" +
-                    "uniform float u_duration;\n" +
-                    "uniform float u_progress;\n" +
-                    "\n" +
-                    "vec4 permute(vec4 x) {\n" +
-                    "    return mod(((x * 34.0) + 1.0) * x, 289.0);\n" +
-                    "}\n" +
-                    "\n" +
-                    "float snoise(vec3 v) {\n" +
-                    "    const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);\n" +
-                    "    const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);\n" +
-                    "\n" +
-                    "    vec3 i  = floor(v + dot(v, C.yyy));\n" +
-                    "    vec3 x0 = v - i + dot(i, C.xxx);\n" +
-                    "\n" +
-                    "    vec3 g = step(x0.yzx, x0.xyz);\n" +
-                    "    vec3 l = 1.0 - g;\n" +
-                    "    vec3 i1 = min(g.xyz, l.zxy);\n" +
-                    "    vec3 i2 = max(g.xyz, l.zxy);\n" +
-                    "\n" +
-                    "    vec3 x1 = x0 - i1 + C.xxx;\n" +
-                    "    vec3 x2 = x0 - i2 + C.yyy;\n" +
-                    "    vec3 x3 = x0 - D.yyy;\n" +
-                    "\n" +
-                    "    i = mod(i, 289.0);\n" +
-                    "    vec4 p = permute(permute(permute(\n" +
-                    "             i.z + vec4(0.0, i1.z, i2.z, 1.0))\n" +
-                    "           + i.y + vec4(0.0, i1.y, i2.y, 1.0))\n" +
-                    "           + i.x + vec4(0.0, i1.x, i2.x, 1.0));\n" +
-                    "\n" +
-                    "    float n_ = 0.142857142857;\n" +
-                    "    vec3 ns = n_ * D.wyz - D.xzx;\n" +
-                    "\n" +
-                    "    vec4 j = p - 49.0 * floor(p * ns.z * ns.z);\n" +
-                    "\n" +
-                    "    vec4 x_ = floor(j * ns.z);\n" +
-                    "    vec4 y_ = floor(j - 7.0 * x_);\n" +
-                    "\n" +
-                    "    vec4 x = x_ * ns.x + ns.yyyy;\n" +
-                    "    vec4 y = y_ * ns.x + ns.yyyy;\n" +
-                    "    vec4 h = 1.0 - abs(x) - abs(y);\n" +
-                    "\n" +
-                    "    vec4 b0 = vec4(x.xy, y.xy);\n" +
-                    "    vec4 b1 = vec4(x.zw, y.zw);\n" +
-                    "\n" +
-                    "    vec4 s0 = floor(b0) * 2.0 + 1.0;\n" +
-                    "    vec4 s1 = floor(b1) * 2.0 + 1.0;\n" +
-                    "    vec4 sh = -step(h, vec4(0.0));\n" +
-                    "\n" +
-                    "    vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;\n" +
-                    "    vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;\n" +
-                    "\n" +
-                    "    vec3 p0 = vec3(a0.xy, h.x);\n" +
-                    "    vec3 p1 = vec3(a0.zw, h.y);\n" +
-                    "    vec3 p2 = vec3(a1.xy, h.z);\n" +
-                    "    vec3 p3 = vec3(a1.zw, h.w);\n" +
-                    "\n" +
-                    "    vec4 norm = 1.0 / vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3));\n" +
-                    "    p0 *= norm.x;\n" +
-                    "    p1 *= norm.y;\n" +
-                    "    p2 *= norm.z;\n" +
-                    "    p3 *= norm.w;\n" +
-                    "\n" +
-                    "    vec4 m = max(0.6 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);\n" +
-                    "    m = m * m;\n" +
-                    "    return 42.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1), dot(p2, x2), dot(p3, x3)));\n" +
-                    "}\n" +
-                    "\n" +
-                    "float turbulence(vec3 p) {\n" +
-                    "    float value = 0.0;\n" +
-                    "    float amplitude = 1.0;\n" +
-                    "    float frequency = 1.0;\n" +
-                    "\n" +
-                    "    for (int i = 0; i < 6; i++) {\n" +
-                    "        value += amplitude * abs(snoise(p * frequency));\n" +
-                    "        amplitude *= 0.5;\n" +
-                    "        frequency *= 2.0;\n" +
-                    "    }\n" +
-                    "\n" +
-                    "    return value * 0.5;\n" +
-                    "}\n" +
-                    "\n" +
-                    "void main() {\n" +
-                    "    vec2 center = vec2(0.5, 0.5);\n" +
-                    "    vec2 toCenter = 2.0*(v_uv - center);\n" +
-                    "    float dist = length(toCenter);\n" +
-                    "\n" +
-                    "    float angle = atan(toCenter.y, toCenter.x);\n" +
-                    "    float normalizedAngle = angle / (2.0 * 3.14159);\n" +
-                    "    \n" +
-                    "    float radialGradient = dist;\n" +
-                    "    \n" +
-                    "    float rotationOffset = u_time * 0.1;\n" +
-                    "    float contractionOffset = radialGradient + u_time* 0.2;\n" +
-                    "    \n" +
-                    "    float combined = normalizedAngle + pow(radialGradient,0.36) - rotationOffset;\n" +
-                    "    \n" +
-                    "    float spiralValue = cos(combined * 3.14159 * 2.0);\n" +
-                    "    \n" +
-                    "    vec3 spiralCoord = vec3(spiralValue, contractionOffset, u_time * 0.1);\n" +
-                    "    float fogNoise = turbulence(spiralCoord);\n" +
-                    "     fogNoise = pow(fogNoise,0.5);\n" +
-                    "    \n" +
-                    "    float radialFade =smoothstep(1.0, 0.5, dist);\n" +
-                    "    float innerFade =smoothstep(0.25+0.025*sin(u_time*3.0),0.5+0.025*sin(u_time*3.0),dist);\n" +
-                    "    vec3 color = vec3(1.0, 0.65, 0.75) * fogNoise * radialFade * innerFade;\n" +
-                    "    \n" +
-                    "    gl_FragColor = vec4(color,  max((1.0-innerFade),fogNoise*radialFade * 0.8));\n" +
-                    "}\n";
-                
-                int vert = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
-                GL20.glShaderSource(vert, vertexSource);
-                GL20.glCompileShader(vert);
-                if (GL20.glGetShaderi(vert, GL20.GL_COMPILE_STATUS) == 0) {
-                    System.err.println("MingGodSign vert compile failed: " + GL20.glGetShaderInfoLog(vert, 1024));
-                    return;
-                }
-
-                int frag = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
-                GL20.glShaderSource(frag, fragmentSource);
-                GL20.glCompileShader(frag);
-                if (GL20.glGetShaderi(frag, GL20.GL_COMPILE_STATUS) == 0) {
-                    System.err.println("MingGodSign frag compile failed: " + GL20.glGetShaderInfoLog(frag, 1024));
-                    return;
-                }
-
-                shaderProgram = GL20.glCreateProgram();
-                GL20.glAttachShader(shaderProgram, vert);
-                GL20.glAttachShader(shaderProgram, frag);
-                GL20.glBindAttribLocation(shaderProgram, 0, "a_position");
-                GL20.glBindAttribLocation(shaderProgram, 1, "a_texCoord");
-                GL20.glLinkProgram(shaderProgram);
-
-                if (GL20.glGetProgrami(shaderProgram, GL20.GL_LINK_STATUS) == 0) {
-                    System.err.println("MingGodSign link failed: " + GL20.glGetProgramInfoLog(shaderProgram, 1024));
-                    return;
-                }
-
-                GL20.glDeleteShader(vert);
-                GL20.glDeleteShader(frag);
-                
-                uRadiusLoc = GL20.glGetUniformLocation(shaderProgram, "u_radius");
-                uTimeLoc = GL20.glGetUniformLocation(shaderProgram, "u_time");
-                uDurationLoc = GL20.glGetUniformLocation(shaderProgram, "u_duration");
-                uProgressLoc = GL20.glGetUniformLocation(shaderProgram, "u_progress");
-
-                createBuffers();
-            } catch (Exception e) {
-                System.err.println("MingGodSign shader error: " + e.getMessage());
-                e.printStackTrace();
+            if (renderEnabled) {
+                createShaderProgram();
             }
         }
         
+        private void createShaderProgram() {
+            shaderProgram = ShaderUtil.createShaderProgramFromFiles(
+                    "data/shaders/meng/common.vert",
+                    "data/shaders/meng/ming_god_sign.frag",
+                    "MingGodSign");
+            if (shaderProgram > 0) {
+                int[] locs = ShaderUtil.getUniformLocations(shaderProgram,
+                        "modelMatrix", "size", "u_time", "u_duration", "u_progress");
+                uModelMatrixLoc = locs[0];
+                uSizeLoc = locs[1];
+                uTimeLoc = locs[2];
+                uDurationLoc = locs[3];
+                uProgressLoc = locs[4];
+                createBuffers();
+            }
+        }
         private void createBuffers() {
-            float halfSize = 400f;
-
-            FloatBuffer verts = org.lwjgl.BufferUtils.createFloatBuffer(16);
-            verts.put(new float[]{
-                -halfSize, -halfSize,  0f, 0f,
-                 halfSize, -halfSize,  1f, 0f,
-                 halfSize,  halfSize,  1f, 1f,
-                -halfSize,  halfSize,  0f, 1f,
-            });
-            verts.flip();
-
-            IntBuffer indices = org.lwjgl.BufferUtils.createIntBuffer(6);
-            indices.put(new int[]{0, 1, 2, 0, 2, 3});
-            indices.flip();
-
-            vbo = GL15.glGenBuffers();
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verts, GL15.GL_STATIC_DRAW);
-
-            ibo = GL15.glGenBuffers();
-            GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
-            GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
-
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-            GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+            vao = ShaderUtil.createUniversalRectVAO();
         }
 
         @Override
         public void cleanup() {
-            if (shaderProgram > 0) {
-                GL20.glDeleteProgram(shaderProgram);
-                shaderProgram = 0;
-            }
-            if (vbo != 0) {
-                GL15.glDeleteBuffers(vbo);
-                vbo = 0;
-            }
-            if (ibo != 0) {
-                GL15.glDeleteBuffers(ibo);
-                ibo = 0;
-            }
+            ShaderUtil.cleanupAll(shaderProgram, vao, 0);
+            shaderProgram = 0;
+            vao = null;
         }
 
         @Override
@@ -512,46 +338,31 @@ public class Meng_MingGodCenter extends BaseHullMod {
 
         @Override
         public void render(CombatEngineLayers layer, ViewportAPI viewport) {
-            if (layer == CombatEngineLayers.ABOVE_PARTICLES && shaderProgram > 0 && size > 0f) {
+            if (!renderEnabled) return;
+            if (layer == CombatEngineLayers.ABOVE_PARTICLES && shaderProgram > 0 && size > 0f && vao != null) {
                 float progress = Math.min(chargelevel, 1.0f);
                 float duration = 100.0f;
                 float elapsed = timer;
                 
                 float currentRadius = size*1.8f * Math.min(spritecharger, 1.0f);
 
-                GL11.glPushMatrix();
-                GL11.glTranslatef(loc.x, loc.y, 0f);
-                GL11.glRotatef(arg, 0f, 0f, 1f);
+                GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+                GL11.glEnable(GL11.GL_BLEND);
+                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
                 GL20.glUseProgram(shaderProgram);
-
-                GL20.glUniform1f(uRadiusLoc, currentRadius);
+                FloatBuffer modelMat = ShaderUtil.buildModelMatrix(loc.x, loc.y, arg);
+                GL20.glUniformMatrix4(uModelMatrixLoc, false, modelMat);
+                float fullSize = currentRadius * 2f;
+                GL20.glUniform2f(uSizeLoc, fullSize, fullSize);
                 GL20.glUniform1f(uTimeLoc, elapsed);
                 GL20.glUniform1f(uDurationLoc, duration);
                 GL20.glUniform1f(uProgressLoc, progress);
 
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-                GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
-
-                GL20.glEnableVertexAttribArray(0);
-                GL20.glVertexAttribPointer(0, 2, GL11.GL_FLOAT, false, 16, 0);
-                GL20.glEnableVertexAttribArray(1);
-                GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, 16, 8);
-
-                GL11.glDrawElements(GL11.GL_TRIANGLES, 6, GL11.GL_UNSIGNED_INT, 0);
-
-                GL20.glDisableVertexAttribArray(0);
-                GL20.glDisableVertexAttribArray(1);
-                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-                GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+                ShaderUtil.drawVAOQuad(vao.vaoId);
 
                 GL20.glUseProgram(0);
-
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GL11.glPopMatrix();
+                GL11.glPopAttrib();
             }
         }
 

@@ -33,15 +33,20 @@ public class Meng_Karbala extends BaseHullMod {
         String s2 = String.valueOf(Math.round(fluxtransmult * 100f));
         String s1 = s2;
         LabelAPI label = tooltip.addPara(
-                "#装甲值清零。武器射程增加 %s%% 。\n#设计类型为虚想树的武器对结构造成伤害数值的 %s%% 会增加自身船体结构值和结构上限。\n" +
-                        "\n#受到的EMP伤害减少 %s%% ，武器引擎修复时间减少 %s%% 。\n#不会过载。\n" +
-                        "\n#结构受到伤害的 %s%% 会转化为硬幅能。\n#幅能值增加的 %s%% 会转化回复结构值，当幅能上升到X时达到阀值，其后幅能上升无法回复结构。\n（数值X为星舰当前的结构值上限）",
+                "-装甲值清零。武器射程增加 %s%% 。\n-设计类型为虚想树的武器对结构造成伤害数值的 %s%% 会增加自身船体结构值和结构上限。\n" +
+                        "\n-受到的EMP伤害减少 %s%% ，武器引擎修复时间减少 %s%% 。\n-不会过载。\n" +
+                        "\n-结构受到伤害的 %s%% 会转化为硬幅能。\n-幅能值增加的 %s%% 会转化回复结构值，当幅能上升到X时达到阀值，其后幅能上升无法回复结构。\n（数值X为星舰当前的结构值上限）",
                 opad, highlight, String.valueOf(Math.round(weaponrange)), String.valueOf(Math.round(transval)),
                 s, s, s2, s1);
         label.setHighlight(String.valueOf(Math.round(weaponrange)), String.valueOf(Math.round(transval)),
                 s, s, s2, s1);
         label.setHighlightColors(highlight, highlight, highlight, highlight, highlight, highlight, highlight, highlight, highlight, highlight, highlight);
-
+        tooltip.addSectionHeading("圣殿史录", Alignment.MID, opad);
+        tooltip.addPara(
+                "当树状宇宙为新神的诞生齐声吟唱，那来自暗面的终曲也即将奏响。",
+                opad,
+                highlight
+        );
     }
 
 

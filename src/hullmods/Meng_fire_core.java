@@ -8,6 +8,7 @@ import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.IntervalUtil;
 import data.methods.Meng_lightMethod;
+import data.methods.MengPerformanceSettings;
 import org.lazywizard.lazylib.combat.entities.SimpleEntity;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
@@ -21,6 +22,8 @@ import java.util.Objects;
 public class Meng_fire_core extends BaseHullMod {
     public static final String KEY = "Meng_fire_coreeffect";
     public static final String LIGHT_EFFECT_KEY = "Meng_fire_core_light_effect";
+    /** 排散特效常驻plugin的customData键 */
+    public static final String DISS_KEY = "Meng_fire_diss_plugin";
     public final float hardfluxred = MagicSettings.getFloat("Meng_fireset", "Meng_fire_core_Hardfluxreduce");
     public final float softfluxred = MagicSettings.getFloat("Meng_fireset", "Meng_fire_core_Softfluxred");
     public final float PeakCR = MagicSettings.getFloat("Meng_fireset", "Meng_fire_core_PeakCR");
@@ -87,10 +90,19 @@ public class Meng_fire_core extends BaseHullMod {
                 ship.setCustomData(LIGHT_EFFECT_KEY, true);
             }
             
-            if (!ship.getCustomData().containsKey("Meng_HexShield")) {
+            if (MengPerformanceSettings.useLowPerformanceEffects()
+                    && !ship.getCustomData().containsKey("Meng_HexShield")) {
+                Global.getCombatEngine().addLayeredRenderingPlugin(new Meng_HexShieldPlugin(ship, false));
+                ship.setCustomData("Meng_HexShield", Boolean.TRUE);
+            } else if (!ship.getCustomData().containsKey("Meng_HexShield")) {
                 Meng_HexShieldPlugin hexPlugin = new Meng_HexShieldPlugin(ship);
                 Global.getCombatEngine().addLayeredRenderingPlugin(hexPlugin);
                 ship.setCustomData("Meng_HexShield", hexPlugin);
+            }
+            if (!ship.getCustomData().containsKey(DISS_KEY)) {
+                Meng_Fire_DissPlugin dissPlugin = new Meng_Fire_DissPlugin(ship);
+                Global.getCombatEngine().addLayeredRenderingPlugin(dissPlugin);
+                ship.setCustomData(DISS_KEY, dissPlugin);
             }
         }
         DataContainer data = (DataContainer) ship.getCustomData().get(KEY);
@@ -168,7 +180,8 @@ public class Meng_fire_core extends BaseHullMod {
                 data.ventcolddown -= amount;
                 if (data.ventcolddown <= 0f) {
                     data.venttime--;
-                    Global.getCombatEngine().addLayeredRenderingPlugin(new Meng_Fire_DissPlugin(ship, size * 0.6f, 1f));
+                    Meng_Fire_DissPlugin dissPlugin = (Meng_Fire_DissPlugin) ship.getCustomData().get(DISS_KEY);
+                    dissPlugin.addRing(size * 0.6f);
                     Global.getSoundPlayer().playSound("flux_loop", 1.0f, 1.0f, coreloc, new Vector2f());
                     data.ventcolddown = 0.2f;
                 }
@@ -179,7 +192,8 @@ public class Meng_fire_core extends BaseHullMod {
                 data.ventcolddown -= amount;
                 if (data.ventcolddown <= 0f) {
                     data.venttime--;
-                    Global.getCombatEngine().addLayeredRenderingPlugin(new Meng_Fire_DissPlugin(ship, ship.getShieldRadiusEvenIfNoShield() * 0.7f, 1f));
+                    Meng_Fire_DissPlugin dissPlugin = (Meng_Fire_DissPlugin) ship.getCustomData().get(DISS_KEY);
+                    dissPlugin.addRing(ship.getShieldRadiusEvenIfNoShield() * 0.7f);
                     if (!ship.isFighter())
                         Global.getSoundPlayer().playSound("flux_loop", 1.0f, 1.0f, ship.getLocation(), new Vector2f());
                     else Global.getSoundPlayer().playSound("flux_loop", 1.0f, 0.5f, ship.getLocation(), new Vector2f());
@@ -222,110 +236,6 @@ public class Meng_fire_core extends BaseHullMod {
         public boolean hasLightWeapon = false;
     }
 
-    public static class Meng_Fire_DissPlugin implements CombatLayeredRenderingPlugin {
-        private ShipAPI ship;
-        private WeaponAPI weapon;
-        private Vector2f loc;
-        private float radius;
-        private float args;
-        private float times;
-        private float timer = 0f;
-        private ArrayList<Integer> picturenum = null;
-
-        public Meng_Fire_DissPlugin(ShipAPI s, float r, float time) {
-            ship = s;
-            radius = r;
-            times = time;
-        }
-
-        public void init(CombatEntityAPI entity) {
-            if (picturenum == null) {
-                picturenum = new ArrayList<>();
-            }
-            for (int i = 0; i < 16; i++) {
-                picturenum.add(Math.round((float) Math.floor(Math.random() * 16.9999f)));
-            }
-            for (WeaponAPI w : ship.getAllWeapons()) {
-                if (w.getSpec().getWeaponId().equals("Meng_cover")) {
-                    weapon = w;
-                }
-            }
-            if (weapon == null) {
-                loc = ship.getLocation();
-            }
-            args = (float) Math.random() * 360f;
-        }
-
-        @Override
-        public void cleanup() {
-        }
-
-        @Override
-        public boolean isExpired() {
-            return timer > times;//返回值为true时，Plugin删除。
-        }
-
-        @Override
-        public void advance(float amount) {
-            timer += amount;
-
-        }
-
-        @Override
-        public EnumSet<CombatEngineLayers> getActiveLayers() {
-            return EnumSet.of(CombatEngineLayers.CONTRAILS_LAYER);
-        }
-
-        @Override
-        public float getRenderRadius() {
-            return 10000000f;
-        }
-
-        @Override
-        public void render(CombatEngineLayers layer, ViewportAPI viewport) {
-            if (layer == CombatEngineLayers.CONTRAILS_LAYER) {
-                float level = timer / times;
-                SpriteAPI sprite = Global.getSettings().getSprite("fx", "Meng_flux_diss");
-                if (weapon != null) {
-                    loc = weapon.getLocation();
-                }
-                for (int i = 0; i < 16; i++) {
-                    float arg = args + i * 360f / 16f;
-                    Vector2f cloudsloc = new Vector2f(loc.x + radius * (1f + level * 0.75f) * (float) Math.cos(Math.toRadians(arg)), loc.y + radius * (1f + level * 0.75f) * (float) Math.sin(Math.toRadians(arg)));
-
-                    int row = picturenum.get(i) % 4;
-                    int column = picturenum.get(i) / 4;
-                    float size = radius * 0.25f * (1f + level);
-                    GL11.glPushMatrix();
-
-                    GL11.glTranslatef(cloudsloc.x, cloudsloc.y, 0.0f);
-
-                    GL11.glRotatef(0f, 0f, 0f, 1f);
-                    GL11.glEnable(GL11.GL_TEXTURE_2D);
-                    sprite.bindTexture();
-                    GL11.glEnable(GL11.GL_BLEND);
-                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-                    GL11.glColor4f(0.66f, 0.56f, 1f, 0.75f*(1f - level * level));
-                    GL11.glBegin(GL11.GL_QUAD_STRIP);
-
-                    GL11.glTexCoord2f(row * 0.25f, column * 0.25f);
-                    GL11.glVertex2f(-size, size);
-                    GL11.glTexCoord2f((row + 1) * 0.25f, column * 0.25f);
-                    GL11.glVertex2f(size, size);
-                    GL11.glTexCoord2f(row * 0.25f, (column + 1) * 0.25f);
-                    GL11.glVertex2f(-size, -size);
-                    GL11.glTexCoord2f((row + 1) * 0.25f, (column + 1) * 0.25f);
-                    GL11.glVertex2f(size, -size);
-                    GL11.glEnd();
-
-                    GL11.glPopMatrix();
-
-
-                }
-            }
-        }
-
-    }
     public static class Meng_Fire_DissFlashPlugin implements CombatLayeredRenderingPlugin {
         private ShipAPI ship;
         private float times;

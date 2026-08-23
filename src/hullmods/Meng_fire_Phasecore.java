@@ -6,15 +6,14 @@ import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import org.lazywizard.lazylib.MathUtils;
-import org.lwjgl.BufferUtils;
+import data.methods.shaders.ShaderUtil;
+import data.methods.MengPerformanceSettings;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.*;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -89,7 +88,12 @@ public class Meng_fire_Phasecore extends BaseHullMod {
             ship.setCustomData(RANGE_KEY, data);
         }
         
-        if (!ship.getCustomData().containsKey(RENDER_KEY)) {
+        if (MengPerformanceSettings.useLowPerformanceEffects()
+                && !ship.getCustomData().containsKey(RENDER_KEY)) {
+            PhaseCoreRangePlugin plugin = new PhaseCoreRangePlugin(ship, EFFECT_RANGE, false);
+            Global.getCombatEngine().addLayeredRenderingPlugin(plugin);
+            ship.setCustomData(RENDER_KEY, plugin);
+        } else if (!ship.getCustomData().containsKey(RENDER_KEY)) {
             PhaseCoreRangePlugin plugin = new PhaseCoreRangePlugin(ship, EFFECT_RANGE);
             Global.getCombatEngine().addLayeredRenderingPlugin(plugin);
             ship.setCustomData(RENDER_KEY, plugin);
@@ -162,242 +166,50 @@ public class Meng_fire_Phasecore extends BaseHullMod {
         private List<IntersectionPoint> intersections;
         
         private int shaderProgram;
-        private int vbo;
-        private int ibo;
+        private ShaderUtil.VAOData vao;
+        private int uModelMatrixLoc;
+        private int uSizeLoc;
         private int uTimeLoc;
         
         private float canvasSize = 5000f;
         private float rotationAngle = 0f;
+        private final boolean renderEnabled;
 
         public PhaseCoreRangePlugin(ShipAPI s, float r) {
+            this(s, r, true);
+        }
+
+        /** Creates a logic-only instance when renderEnabled is false. */
+        public PhaseCoreRangePlugin(ShipAPI s, float r, boolean renderEnabled) {
             ship = s;
             radius = r;
+            this.renderEnabled = renderEnabled;
             timer = 0f;
             intersections = new ArrayList<>();
-            
-            createShaderProgram();
-            createBuffers();
-            cacheUniformLocations();
-        }
-        
-        private void createShaderProgram() {
-            try {
-                String vertexSource = 
-                    "#version 110\n" +
-                    "attribute vec2 a_position;\n" +
-                    "attribute vec2 a_texCoord;\n" +
-                    "varying vec2 v_uv;\n" +
-                    "void main() {\n" +
-                    "    v_uv = a_texCoord;\n" +
-                    "    gl_Position = gl_ModelViewProjectionMatrix * vec4(a_position, 0.0, 1.0);\n" +
-                    "}\n";
 
-                String fragmentSource =
-                        "#version 110\n" +
-                                "varying vec2 v_uv;\n" +
-                                "uniform float u_time;\n" +
-                                "\n" +
-                                "// Simplex 3D Noise function\n" +
-                                "vec4 permute(vec4 x) {\n" +
-                                "    return mod(((x * 34.0) + 1.0) * x, 289.0);\n" +
-                                "}\n" +
-                                "\n" +
-                                "float snoise(vec3 v) {\n" +
-                                "    const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);\n" +
-                                "    const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);\n" +
-                                "\n" +
-                                "    vec3 i  = floor(v + dot(v, C.yyy));\n" +
-                                "    vec3 x0 = v - i + dot(i, C.xxx);\n" +
-                                "\n" +
-                                "    vec3 g = step(x0.yzx, x0.xyz);\n" +
-                                "    vec3 l = 1.0 - g;\n" +
-                                "    vec3 i1 = min(g.xyz, l.zxy);\n" +
-                                "    vec3 i2 = max(g.xyz, l.zxy);\n" +
-                                "\n" +
-                                "    vec3 x1 = x0 - i1 + C.xxx;\n" +
-                                "    vec3 x2 = x0 - i2 + C.yyy;\n" +
-                                "    vec3 x3 = x0 - D.yyy;\n" +
-                                "\n" +
-                                "    i = mod(i, 289.0);\n" +
-                                "    vec4 p = permute(permute(permute(\n" +
-                                "             i.z + vec4(0.0, i1.z, i2.z, 1.0))\n" +
-                                "           + i.y + vec4(0.0, i1.y, i2.y, 1.0))\n" +
-                                "           + i.x + vec4(0.0, i1.x, i2.x, 1.0));\n" +
-                                "\n" +
-                                "    float n_ = 0.142857142857;\n" +
-                                "    vec3 ns = n_ * D.wyz - D.xzx;\n" +
-                                "\n" +
-                                "    vec4 j = p - 49.0 * floor(p * ns.z * ns.z);\n" +
-                                "\n" +
-                                "    vec4 x_ = floor(j * ns.z);\n" +
-                                "    vec4 y_ = floor(j - 7.0 * x_);\n" +
-                                "\n" +
-                                "    vec4 x = x_ * ns.x + ns.yyyy;\n" +
-                                "    vec4 y = y_ * ns.x + ns.yyyy;\n" +
-                                "    vec4 h = 1.0 - abs(x) - abs(y);\n" +
-                                "\n" +
-                                "    vec4 b0 = vec4(x.xy, y.xy);\n" +
-                                "    vec4 b1 = vec4(x.zw, y.zw);\n" +
-                                "\n" +
-                                "    vec4 s0 = floor(b0) * 2.0 + 1.0;\n" +
-                                "    vec4 s1 = floor(b1) * 2.0 + 1.0;\n" +
-                                "    vec4 sh = -step(h, vec4(0.0));\n" +
-                                "\n" +
-                                "    vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;\n" +
-                                "    vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;\n" +
-                                "\n" +
-                                "    vec3 p0 = vec3(a0.xy, h.x);\n" +
-                                "    vec3 p1 = vec3(a0.zw, h.y);\n" +
-                                "    vec3 p2 = vec3(a1.xy, h.z);\n" +
-                                "    vec3 p3 = vec3(a1.zw, h.w);\n" +
-                                "\n" +
-                                "    vec4 norm = 1.0 / vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3));\n" +
-                                "    p0 *= norm.x;\n" +
-                                "    p1 *= norm.y;\n" +
-                                "    p2 *= norm.z;\n" +
-                                "    p3 *= norm.w;\n" +
-                                "\n" +
-                                "    vec4 m = max(0.6 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);\n" +
-                                "    m = m * m;\n" +
-                                "    return 42.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1), dot(p2, x2), dot(p3, x3)));\n" +
-                                "}\n" +
-                                "\n" +
-                                "// Turbulence function using Simplex noise\n" +
-                                "float turbulence(vec3 p) {\n" +
-                                "    float value = 0.0;\n" +
-                                "    float amplitude = 1.0;\n" +
-                                "    float frequency = 1.0;\n" +
-                                "    \n" +
-                                "    for (int i = 0; i < 5; i++) {\n" +
-                                "        value += amplitude * abs(snoise(p * frequency));\n" +
-                                "        amplitude *= 0.5;\n" +
-                                "        frequency *= 2.0;\n" +
-                                "    }\n" +
-                                "    \n" +
-                                "    return value * 0.5;\n" +
-                                "}\n" +
-                                "\n" +
-                                "void main() {\n" +
-                                "    vec2 uv = vec2(v_uv.x,1.0-v_uv.y);\n" +
-                                "    \n" +
-                                "    vec2 center = vec2(0.5, 0.5);\n" +
-                                "    float dist = distance(uv, center);\n" +
-                                "    float maxDist = 0.7071;\n" +
-                                "    float normalizedDist = dist / maxDist;\n" +
-                                "    \n" +
-                                "    float innerRadius = 0.685;\n" +
-                                "    float fadeinRadius = 0.68;\n" +
-                                "    float outerRadius = 0.7;\n" +
-                                "    \n" +
-                                "    if (normalizedDist < fadeinRadius) discard;\n" +
-                                "    if (normalizedDist > outerRadius) discard;\n" +
-                                "    \n" +
-                                "    float fadevalue = smoothstep(fadeinRadius,innerRadius,normalizedDist);\n" +
-                                "    float ringProgress = max(0.0,(normalizedDist - innerRadius)) / (outerRadius - innerRadius);\n" +
-                                "    \n" +
-                                "    float dx = uv.x - 0.5;\n" +
-                                "    float dy = v_uv.y - 0.5;\n" +
-                                "    float angle= abs(atan(dx / dy));\n" +
-                                "    \n" +
-                                "    float scrollSpeed = 0.3;\n" +
-                                "    vec3 noiseCoord = vec3(angle * 40.0 , dist*42.0 - u_time * scrollSpeed, 0.0);\n" +
-                                "    \n" +
-                                "    float noiseValue = pow(turbulence(noiseCoord),1.0);\n" +
-                                "    \n" +
-                                "    float gradientValue = 1.0*(1.0-ringProgress);\n" +
-                                "    float totalalpha = fadevalue*(1.0-ringProgress);\n" +
-                                "    \n" +
-                                "    float dissolveThreshold = gradientValue * 0.7;\n" +
-                                "    \n" +
-                                "    float dissolveWidth = 0.3; " +
-                                "    float dissolved = smoothstep(dissolveThreshold - dissolveWidth, \n" +
-                                "                                 dissolveThreshold + dissolveWidth, \n" +
-                                "                                 noiseValue);\n" +
-                                "    \n" +
-                                "    float coreProtection = smoothstep(innerRadius , innerRadius + 0.01, normalizedDist);\n" +
-                                "    float protectedDissolved =1.0 - dissolved * coreProtection;\n" +
-                                "    \n" +
-                                "    vec3 flameBaseColor = vec3(0.9, 0.75, 1.0);\n" +
-                                "    vec3 outerFlameColor = vec3(0.7, 0.4, 0.95);\n" +
-                                "    \n" +
-                                "    vec3 finalColor = mix(outerFlameColor, flameBaseColor, pow(protectedDissolved,8.0));\n" +
-                                "    \n" +
-                                "    float innerDist = abs(normalizedDist - innerRadius);\n" +
-                                "    float glowIntensity = totalalpha;\n" +
-                                "    vec3 glowColor = vec3(1.0, 0.95, 0.5);\n" +
-                                "    \n" +
-                                "    float alpha = totalalpha * protectedDissolved + glowIntensity * 0.3;\n" +
-                                "    \n" +
-                                "    gl_FragColor = vec4(finalColor, alpha*0.4);\n" +
-                                "}\n";
-
-                int vert = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
-                GL20.glShaderSource(vert, vertexSource);
-                GL20.glCompileShader(vert);
-                if (GL20.glGetShaderi(vert, GL20.GL_COMPILE_STATUS) == 0) {
-                    log.error("PhaseCore Vertex shader compile failed: " + GL20.glGetShaderInfoLog(vert, 1024));
-                    return;
-                }
-                
-                int frag = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
-                GL20.glShaderSource(frag, fragmentSource);
-                GL20.glCompileShader(frag);
-                if (GL20.glGetShaderi(frag, GL20.GL_COMPILE_STATUS) == 0) {
-                    log.error("PhaseCore Fragment shader compile failed: " + GL20.glGetShaderInfoLog(frag, 1024));
-                    return;
-                }
-
-                shaderProgram = GL20.glCreateProgram();
-                GL20.glAttachShader(shaderProgram, vert);
-                GL20.glAttachShader(shaderProgram, frag);
-                GL20.glBindAttribLocation(shaderProgram, 0, "a_position");
-                GL20.glBindAttribLocation(shaderProgram, 1, "a_texCoord");
-                GL20.glLinkProgram(shaderProgram);
-                
-                if (GL20.glGetProgrami(shaderProgram, GL20.GL_LINK_STATUS) == 0) {
-                    log.error("PhaseCore Shader program link failed: " + GL20.glGetProgramInfoLog(shaderProgram, 1024));
-                    return;
-                }
-
-                GL20.glDeleteShader(vert);
-                GL20.glDeleteShader(frag);
-
-            } catch (Exception e) {
-                log.error("PhaseCore Shader error: " + e.getMessage(), e);
+            if (renderEnabled) {
+                createShaderProgram();
+                createBuffers();
+                cacheUniformLocations();
             }
         }
         
+        private void createShaderProgram() {
+            shaderProgram = ShaderUtil.createShaderProgramFromFiles(
+                    "data/shaders/meng/common.vert",
+                    "data/shaders/meng/phase_core.frag",
+                    "PhaseCore");
+        }
         private void createBuffers() {
-            float halfSize = canvasSize * 0.5f;
-
-            FloatBuffer verts = BufferUtils.createFloatBuffer(16);
-            verts.put(new float[]{
-                -halfSize, -halfSize,  0f, 0f,
-                 halfSize, -halfSize,  1f, 0f,
-                 halfSize,  halfSize,  1f, 1f,
-                -halfSize,  halfSize,  0f, 1f,
-            });
-            verts.flip();
-
-            IntBuffer indices = BufferUtils.createIntBuffer(6);
-            indices.put(new int[]{0, 1, 2, 0, 2, 3});
-            indices.flip();
-
-            vbo = GL15.glGenBuffers();
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verts, GL15.GL_STATIC_DRAW);
-
-            ibo = GL15.glGenBuffers();
-            GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
-            GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
-
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-            GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+            vao = ShaderUtil.createUniversalRectVAO();
         }
         
         private void cacheUniformLocations() {
             if (shaderProgram <= 0) return;
-            uTimeLoc = GL20.glGetUniformLocation(shaderProgram, "u_time");
+            int[] locs = ShaderUtil.getUniformLocations(shaderProgram, "modelMatrix", "size", "u_time");
+            uModelMatrixLoc = locs[0];
+            uSizeLoc = locs[1];
+            uTimeLoc = locs[2];
         }
 
         @Override
@@ -406,18 +218,9 @@ public class Meng_fire_Phasecore extends BaseHullMod {
 
         @Override
         public void cleanup() {
-            if (shaderProgram > 0) {
-                GL20.glDeleteProgram(shaderProgram);
-                shaderProgram = 0;
-            }
-            if (vbo != 0) {
-                GL15.glDeleteBuffers(vbo);
-                vbo = 0;
-            }
-            if (ibo != 0) {
-                GL15.glDeleteBuffers(ibo);
-                ibo = 0;
-            }
+            ShaderUtil.cleanupAll(shaderProgram, vao, 0);
+            shaderProgram = 0;
+            vao = null;
         }
 
         @Override
@@ -452,52 +255,24 @@ public class Meng_fire_Phasecore extends BaseHullMod {
 
         @Override
         public void render(CombatEngineLayers layer, ViewportAPI viewport) {
-            if (layer == CombatEngineLayers.ABOVE_SHIPS_LAYER && ship != null && ship.isAlive() && shaderProgram > 0) {
+            if (!renderEnabled) return;
+            if (layer == CombatEngineLayers.ABOVE_SHIPS_LAYER && ship != null && ship.isAlive() && shaderProgram > 0 && vao != null) {
                 Vector2f center = ship.getLocation();
                 if (center == null) return;
                 
                 GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-                
-                GL11.glMatrixMode(GL11.GL_PROJECTION);
-                GL11.glPushMatrix();
-                GL11.glMatrixMode(GL11.GL_TEXTURE);
-                GL11.glPushMatrix();
-                GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                GL11.glPushMatrix();
-                
-                GL11.glTranslatef(center.x, center.y, 0f);
-                
-                GL11.glRotatef(rotationAngle, 0f, 0f, 1f);
-                
-                GL20.glUseProgram(shaderProgram);
-                GL20.glUniform1f(uTimeLoc, timer);
-                
-                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-                GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
-                
-                GL20.glEnableVertexAttribArray(0);
-                GL20.glVertexAttribPointer(0, 2, GL11.GL_FLOAT, false, 16, 0);
-                GL20.glEnableVertexAttribArray(1);
-                GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, 16, 8);
-                
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
                 
-                GL11.glDrawElements(GL11.GL_TRIANGLES, 6, GL11.GL_UNSIGNED_INT, 0);
+                GL20.glUseProgram(shaderProgram);
+                FloatBuffer modelMat = ShaderUtil.buildModelMatrix(center.x, center.y, rotationAngle);
+                GL20.glUniformMatrix4(uModelMatrixLoc, false, modelMat);
+                GL20.glUniform2f(uSizeLoc, canvasSize, canvasSize);
+                GL20.glUniform1f(uTimeLoc, timer);
                 
-                GL20.glDisableVertexAttribArray(0);
-                GL20.glDisableVertexAttribArray(1);
-                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-                GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+                ShaderUtil.drawVAOQuad(vao.vaoId);
+                
                 GL20.glUseProgram(0);
-                
-                GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                GL11.glPopMatrix();
-                GL11.glMatrixMode(GL11.GL_TEXTURE);
-                GL11.glPopMatrix();
-                GL11.glMatrixMode(GL11.GL_PROJECTION);
-                GL11.glPopMatrix();
-                
                 GL11.glPopAttrib();
             }
         }
