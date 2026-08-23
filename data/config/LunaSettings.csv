@@ -1,0 +1,1 @@
+Meng,lowPerformanceEffects,低性能特效模式,Boolean,false,,跳过本模组的现代着色器视觉层；低性能替代特效预留为空，战斗数值与逻辑保持不变。,,

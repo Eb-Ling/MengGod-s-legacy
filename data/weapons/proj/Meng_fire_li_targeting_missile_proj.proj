@@ -1,0 +1,43 @@
+{
+	"id":"Meng_fire_li_targeting_missile_proj",
+	"specClass":"missile",	
+	"missileType":"MISSILE",
+	"sprite":"graphics/weapons/fire/Meng_fire_li_targeting_proj.png",
+	"size":[8,16],
+	"center":[4,8],
+	"collisionRadius":4,
+	"collisionClass":"MISSILE_NO_FF",
+	"explosionColor":[255,100,50,255],  # purely visual, will get a white additively blended core on top of this color
+	"explosionRadius":30, # purely visual
+	#"alwaysAccelerate":true,
+	"engineSpec":{
+				  #"turnAcc":150,
+				  #"turnRate":70,
+				  #"acc":200,
+				  #"dec":100},
+				  "turnAcc":400,
+				  "turnRate":360,
+				  "acc":400,
+				  "dec":400},
+	"engineSlots":[{"id":"ES1",
+					"loc":[-3, 0],
+				    #"style":"MISSILE_MIDLINE",
+				    "style":"CUSTOM",
+					"styleSpec":{
+						"mode":"QUAD_STRIP", # PARTICLES or QUAD_STRIP, determines which params are used
+						"engineColor":[255,255,255,255],
+						"contrailDuration":2,
+						"contrailWidthMult":2,
+						"contrailWidthAddedFractionAtEnd":2,  # can be negative. makes trail spread out/narrow at the end
+						"contrailMinSeg":15, # min segment length, in pixels
+						"contrailMaxSpeedMult":.0f,
+						"contrailAngularVelocityMult":0.5f,
+						"contrailSpawnDistMult":.75, # how far away from engine it starts
+						"contrailColor":[100,100,100,0],
+						"type":"SMOKE" # GLOW or SMOKE; additive or regular blend mode
+					},
+				    "width":2.0,
+				    "length":44.0,
+				    "angle":180.0}],
+
+}
