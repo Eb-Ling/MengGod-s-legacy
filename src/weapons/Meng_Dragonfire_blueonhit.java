@@ -39,12 +39,6 @@ public class Meng_Dragonfire_blueonhit implements OnHitEffectPlugin {
                         new Color(255, 255, 255, 255));
             }
 
-            // 在命中点召唤黑洞（光线步进 + 引力透镜 + 背景扭曲）
-            Meng_BlackHolePlugin blackHole = new Meng_BlackHolePlugin(
-                    new Vector2f(point.x, point.y), BLACKHOLE_RADIUS);
-            blackHole.setLifetime(BLACKHOLE_DURATION);
-            blackHole.setPosition(Global.getCombatEngine().getPlayerShip().getMouseTarget());
-            engine.addLayeredRenderingPlugin(blackHole);
         }
     }
 }

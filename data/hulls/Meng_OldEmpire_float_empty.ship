@@ -1,0 +1,29 @@
+{
+    "hullName": "Empty floating node",
+    "hullId": "Meng_OldEmpire_float_empty",
+    "hullSize": "FRIGATE",
+    "spriteName": "graphics/fx/empty.png",
+    "style": "HIGH_TECH",
+    "height": 1,
+    "width": 1,
+    "center": [0.5, 0.5],
+    "builtInMods": [
+        "always_detaches"
+    ],
+    "collisionRadius": 1,
+    "shieldCenter": [0, 0],
+    "shieldRadius": 1,
+    "viewOffset": 0,
+    "weaponSlots": [],
+    "engineSlots": [],
+    "bounds": [
+        0.5,
+        -0.5,
+        -0.5,
+        -0.5,
+        -0.5,
+        0.5,
+        0.5,
+        0.5
+    ]
+}

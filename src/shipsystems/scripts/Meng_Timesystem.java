@@ -96,7 +96,7 @@ public class Meng_Timesystem extends BaseShipSystemScript {
         Boolean pluginSpawned = (Boolean) ship.getCustomData().get("Meng_timesystem_plugin_spawned");
         if (pluginSpawned == null || !pluginSpawned) {
             ship.getCustomData().put("Meng_timesystem_plugin_spawned", true);
-            engine.addPlugin(new Meng_timePlugin(ship));
+            if(!engine.hasPluginOfClass(Meng_timePlugin.class)) engine.addPlugin(new Meng_timePlugin(ship));
         }
     }
     
@@ -140,6 +140,7 @@ public class Meng_Timesystem extends BaseShipSystemScript {
             return expired || engine == null || engine.isCombatOver() || ship == null || !ship.isAlive();
         }
 
+
         public void advance(float amount, List events){
             if (engine == null || engine.isCombatOver() || ship == null || !ship.isAlive()) {
                 expired = true;
@@ -156,13 +157,12 @@ public class Meng_Timesystem extends BaseShipSystemScript {
                 ship.getLocation().y - 16f * scale + (ship.getShieldRadiusEvenIfNoShield() * 0.35f) * scale
             );
             
-            Global.getSoundPlayer().setSuspendDefaultMusicPlayback(true);
-            
-            if (Global.getSector().getPlayerFleet() != null && 
-                ship.getFleetMember() != null && 
-                ship.getFleetMember().getFleetData() != null && 
+
+            if (Global.getSector().getPlayerFleet() != null &&
+                ship.getFleetMember() != null &&
+                ship.getFleetMember().getFleetData() != null &&
                 ship.getFleetMember().getFleetData().getFleet() != null) {
-                
+
                 if (ship.getFleetMember().getFleetData().getFleet() != Global.getSector().getPlayerFleet()) {
                     if (ship.isAlive()) {
                         checkInterval.advance(amount);

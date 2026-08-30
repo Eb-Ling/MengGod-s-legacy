@@ -1,0 +1,53 @@
+{
+    "hullName":  "轻型浮游炮 3-L",
+    "hullId":  "Meng_OldEmpire_float_05_l",
+    "hullSize":  "FRIGATE",
+    "spriteName":  "graphics/ships/oldempire/modules/floating_module_05_l.png",
+    "style":  "HIGH_TECH",
+    "height":  57,
+    "width":  22,
+    "center":  [
+                   11,
+                   28.5
+               ],
+    "builtInMods":  [
+                        "always_detaches",
+                        "phasefield"
+                    ],
+    "collisionRadius":  27.36,
+    "shieldCenter":  [
+                         0,
+                         0
+                     ],
+    "shieldRadius":  27.36,
+    "viewOffset":  0,
+    "builtInWeapons":  {"WS 001": "Meng_OldEmpire_tracer_pursuit_beam"},
+    "weaponSlots":  [
+                        {
+                            "angle":  0,
+                            "arc":  30,
+                            "id":  "WS 001",
+                            "locations":  [
+                                              12.54,
+                                              0
+                                          ],
+                            "mount":  "TURRET",
+                            "size":  "SMALL",
+                            "type":  "BUILT_IN"
+                        }
+                    ],
+    "engineSlots":  [
+
+                    ],
+    "bounds":  [
+                   26.5,
+                   -9,
+                   -26.5,
+                   -9,
+                   -26.5,
+                   9,
+                   26.5,
+                   9
+               ]
+}
+

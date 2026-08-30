@@ -1,0 +1,37 @@
+{
+    "id":  "Meng_OldEmpire_chain_pellet_shot",
+    "specClass":  "projectile",
+    "spawnType":  "BALLISTIC",
+    "sprite":  "graphics/weapons/oldempire/krg_chain_pellet.png",
+    "size":  [
+                 12,
+                 5
+             ],
+    "collisionRadius":  2.25,
+    "collisionClass":  "PROJECTILE_FF",
+    "collisionClassByFighter":  "PROJECTILE_FIGHTER",
+    "length":  12,
+    "width":  5,
+    "fadeTime":  0.12,
+    "fringeColor":  [
+                        195,
+                        55,
+                        18,
+                        115
+                    ],
+    "coreColor":  [
+                      255,
+                      170,
+                      110,
+                      175
+                  ],
+    "bulletSprite":  "graphics/weapons/oldempire/krg_chain_pellet.png",
+    "explosionColor":  [
+                           170,
+                           45,
+                           15,
+                           90
+                       ],
+    "explosionRadius":  9,
+    "onHitEffect":  "data.weapons.Meng_OldEmpireOnHitEffect"
+}

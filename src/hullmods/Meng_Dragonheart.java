@@ -108,14 +108,6 @@ public class Meng_Dragonheart extends BaseHullMod {
             ship.setCustomData(KEY, data1);
         }
         DataContainer data1 = (DataContainer) ship.getCustomData().get(KEY);
-        if(!data1.init) {
-            data1.init=true;
-            blackHole = new Meng_BlackHolePlugin(
-                    ship.getLocation(), 500f);
-            blackHole.setLifetime(100000f);
-            Global.getCombatEngine().addLayeredRenderingPlugin(blackHole);
-        }
-        if(data1.init) blackHole.setPosition(Global.getCombatEngine().getPlayerShip().getMouseTarget());
         //为每一艘目标舰船添加监听。
         for (WeaponAPI weapon : ship.getAllWeapons()) {
             for (int num = 1; num < 5; num++) {

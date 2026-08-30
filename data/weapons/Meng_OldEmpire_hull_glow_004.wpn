@@ -1,0 +1,23 @@
+{
+    "id":"Meng_OldEmpire_hull_glow_004",
+    "specClass":"beam",
+    "type":"DECORATIVE",
+    "size":"SMALL",
+    "turretSprite":"graphics/ships/oldempire/heihei_004-2.png",
+    "hardpointSprite":"graphics/ships/oldempire/heihei_004-2.png",
+    "showDamageWhenDecorative":false,
+    "renderBelowAllWeapons":true,
+    "renderHints":["RENDER_ADDITIVE"],
+    "turretOffsets":[0,0],
+    "turretAngleOffsets":[0],
+    "hardpointOffsets":[0,0],
+    "hardpointAngleOffsets":[0],
+    "fringeColor":[255,255,255,255],
+    "coreColor":[255,255,255,255],
+    "glowColor":[255,255,255,255],
+    "width":1,
+    "textureType":"ROUGH",
+    "textureScrollSpeed":1,
+    "pixelsPerTexel":1,
+    "everyFrameEffect":"data.weapons.Meng_OldEmpireHullGlowEffect"
+}

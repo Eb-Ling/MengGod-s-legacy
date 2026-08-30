@@ -1,0 +1,128 @@
+{
+    "hullName":  "OldEmpire-002",
+    "hullId":  "Meng_OldEmpire_002",
+    "hullSize":  "DESTROYER",
+    "spriteName":  "graphics/ships/oldempire/heihei_002.png",
+    "style":  "HIGH_TECH",
+    "height":  186,
+    "width":  58,
+    "center":  [
+                   29,
+                   93
+               ],
+    "collisionRadius":  93,
+    "shieldCenter":  [
+                         0,
+                         0
+                     ],
+    "shieldRadius":  98,
+    "viewOffset":  0,
+    "weaponSlots":  [
+                        {
+                            "angle":  0,
+                            "arc":  0,
+                            "id":  "OLDEMPIRE_HULL_GLOW",
+                            "locations":  [
+                                              0,
+                                              0
+                                          ],
+                            "mount":  "TURRET",
+                            "size":  "SMALL",
+                            "type":  "DECORATIVE",
+                            "renderOrderMod":  900
+                        },
+                        {
+                            "angle":  0,
+                            "arc":  2,
+                            "id":  "OLDEMPIRE_AXIS",
+                            "locations":  [
+                                              82,
+                                              0
+                                          ],
+                            "mount":  "HARDPOINT",
+                            "size":  "MEDIUM",
+                            "type":  "ENERGY"
+                        },
+                        {
+                            "angle":  0,
+                            "arc":  360,
+                            "id":  "OLDEMPIRE_FIXED_L",
+                            "locations":  [
+                                              0,
+                                              52
+                                          ],
+                            "mount":  "TURRET",
+                            "size":  "LARGE",
+                            "type":  "STATION_MODULE"
+                        },
+                        {
+                            "angle":  0,
+                            "arc":  360,
+                            "id":  "OLDEMPIRE_FIXED_R",
+                            "locations":  [
+                                              0,
+                                              -52
+                                          ],
+                            "mount":  "TURRET",
+                            "size":  "LARGE",
+                            "type":  "STATION_MODULE"
+                        },
+                        {
+                            "angle":  0,
+                            "arc":  360,
+                            "id":  "OLDEMPIRE_FLOAT_L",
+                            "locations":  [
+                                              -62,
+                                              72
+                                          ],
+                            "mount":  "TURRET",
+                            "size":  "LARGE",
+                            "type":  "STATION_MODULE"
+                        },
+                        {
+                            "angle":  0,
+                            "arc":  360,
+                            "id":  "OLDEMPIRE_FLOAT_R",
+                            "locations":  [
+                                              -62,
+                                              -72
+                                          ],
+                            "mount":  "TURRET",
+                            "size":  "LARGE",
+                            "type":  "STATION_MODULE"
+                        }
+                    ],
+    "engineSlots":  [
+                        {
+                            "location":  [
+                                             -88,
+                                             0
+                                         ],
+                            "length":  28,
+                            "width":  9,
+                            "angle":  180,
+                            "contrailSize":  9,
+                            "style":  "HIGH_TECH"
+                        }
+                    ],
+    "bounds":  [
+                   93,
+                   -29,
+                   -93,
+                   -29,
+                   -93,
+                   29,
+                   93,
+                   29
+               ],
+    "builtInWeapons":  {
+                           "OLDEMPIRE_AXIS":  "Meng_OldEmpire_axis_crimson_spike",
+                           "OLDEMPIRE_HULL_GLOW":  "Meng_OldEmpire_hull_glow_002"
+                       },
+    "builtInMods":  [
+                        "Meng_OldEmpire_floating_battery_controller",
+                        "Meng_OldEmpire_black_hole_core_visual",
+                        "phasefield"
+                    ]
+}
+

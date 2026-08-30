@@ -1,0 +1,37 @@
+{
+    "id":  "Meng_OldEmpire_chain_heavy_shot",
+    "specClass":  "projectile",
+    "spawnType":  "BALLISTIC",
+    "sprite":  "graphics/weapons/oldempire/krg_chain_heavy.png",
+    "size":  [
+                 40,
+                 17
+             ],
+    "collisionRadius":  7.65,
+    "collisionClass":  "PROJECTILE_FF",
+    "collisionClassByFighter":  "PROJECTILE_FIGHTER",
+    "length":  40,
+    "width":  17,
+    "fadeTime":  0.15,
+    "fringeColor":  [
+                        180,
+                        42,
+                        18,
+                        140
+                    ],
+    "coreColor":  [
+                      255,
+                      155,
+                      105,
+                      205
+                  ],
+    "bulletSprite":  "graphics/weapons/oldempire/krg_chain_heavy.png",
+    "explosionColor":  [
+                           170,
+                           40,
+                           15,
+                           115
+                       ],
+    "explosionRadius":  22,
+    "onHitEffect":  "data.weapons.Meng_OldEmpireOnHitEffect"
+}

@@ -1,0 +1,53 @@
+{
+    "hullName":  "轻型浮游炮 4-R",
+    "hullId":  "Meng_OldEmpire_float_08_r",
+    "hullSize":  "FRIGATE",
+    "spriteName":  "graphics/ships/oldempire/modules/floating_module_08_r.png",
+    "style":  "HIGH_TECH",
+    "height":  59,
+    "width":  19,
+    "center":  [
+                   9.5,
+                   29.5
+               ],
+    "builtInMods":  [
+                        "always_detaches",
+                        "phasefield"
+                    ],
+    "collisionRadius":  28.32,
+    "shieldCenter":  [
+                         0,
+                         0
+                     ],
+    "shieldRadius":  28.32,
+    "viewOffset":  0,
+    "builtInWeapons":  {"WS 001": "Meng_OldEmpire_continuous_flux_beam"},
+    "weaponSlots":  [
+                        {
+                            "angle":  0,
+                            "arc":  30,
+                            "id":  "WS 001",
+                            "locations":  [
+                                              12.98,
+                                              0
+                                          ],
+                            "mount":  "TURRET",
+                            "size":  "SMALL",
+                            "type":  "BUILT_IN"
+                        }
+                    ],
+    "engineSlots":  [
+
+                    ],
+    "bounds":  [
+                   27.5,
+                   -7.5,
+                   -27.5,
+                   -7.5,
+                   -27.5,
+                   7.5,
+                   27.5,
+                   7.5
+               ]
+}
+

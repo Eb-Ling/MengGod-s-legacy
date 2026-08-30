@@ -1,0 +1,53 @@
+{
+    "hullName":  "重型浮游炮 3-L",
+    "hullId":  "Meng_OldEmpire_float_07_l",
+    "hullSize":  "FRIGATE",
+    "spriteName":  "graphics/ships/oldempire/modules/floating_module_07_l.png",
+    "style":  "HIGH_TECH",
+    "height":  94,
+    "width":  52,
+    "center":  [
+                   26,
+                   47
+               ],
+    "builtInMods":  [
+                        "always_detaches",
+                        "phasefield"
+                    ],
+    "collisionRadius":  45.12,
+    "shieldCenter":  [
+                         0,
+                         0
+                     ],
+    "shieldRadius":  45.12,
+    "viewOffset":  0,
+    "builtInWeapons":  {"WS 001": "Meng_OldEmpire_spirit_dust_missile"},
+    "weaponSlots":  [
+                        {
+                            "angle":  0,
+                            "arc":  30,
+                            "id":  "WS 001",
+                            "locations":  [
+                                              20.68,
+                                              0
+                                          ],
+                            "mount":  "TURRET",
+                            "size":  "MEDIUM",
+                            "type":  "BUILT_IN"
+                        }
+                    ],
+    "engineSlots":  [
+
+                    ],
+    "bounds":  [
+                   45,
+                   -24,
+                   -45,
+                   -24,
+                   -45,
+                   24,
+                   45,
+                   24
+               ]
+}
+

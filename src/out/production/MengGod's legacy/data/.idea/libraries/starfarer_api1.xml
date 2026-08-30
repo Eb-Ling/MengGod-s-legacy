@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="starfarer.api1">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../../starsector-core/starfarer.api.zip!/" />
+    </SOURCES>
+  </library>
+</component>

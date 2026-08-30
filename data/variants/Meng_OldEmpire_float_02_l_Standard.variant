@@ -1,0 +1,24 @@
+{
+    "displayName":  "轻型浮游炮 1-L",
+    "fluxCapacitors":  0,
+    "fluxVents":  0,
+    "goalVariant":  true,
+    "hullId":  "Meng_OldEmpire_float_02_l",
+    "hullMods":  [
+
+                 ],
+    "permaMods":  [
+
+                  ],
+    "sMods":  [
+
+              ],
+    "variantId":  "Meng_OldEmpire_float_02_l_Standard",
+    "weaponGroups":  [{"autofire": true, "mode": "LINKED", "weapons": {"WS 001": "Meng_OldEmpire_pulse_chain_gun"}}],
+    "modules":  [
+
+                ],
+    "wings":  [
+
+              ]
+}

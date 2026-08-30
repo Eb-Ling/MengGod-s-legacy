@@ -1,0 +1,24 @@
+{
+    "displayName":  "轻型浮游炮 3-L",
+    "fluxCapacitors":  0,
+    "fluxVents":  0,
+    "goalVariant":  true,
+    "hullId":  "Meng_OldEmpire_float_05_l",
+    "hullMods":  [
+
+                 ],
+    "permaMods":  [
+
+                  ],
+    "sMods":  [
+
+              ],
+    "variantId":  "Meng_OldEmpire_float_05_l_Standard",
+    "weaponGroups":  [{"autofire": true, "mode": "LINKED", "weapons": {"WS 001": "Meng_OldEmpire_tracer_pursuit_beam"}}],
+    "modules":  [
+
+                ],
+    "wings":  [
+
+              ]
+}

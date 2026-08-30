@@ -1,0 +1,41 @@
+{
+    "displayName":  "Floating Test",
+    "fluxCapacitors":  0,
+    "fluxVents":  0,
+    "goalVariant":  true,
+    "hullId":  "Meng_OldEmpire_004",
+    "hullMods":  [
+
+                 ],
+    "permaMods":  [
+
+                  ],
+    "sMods":  [
+
+              ],
+    "tags":  [
+                 "Meng_OldEmpire_float_mode_0"
+             ],
+    "variantId":  "Meng_OldEmpire_004_Test",
+    "weaponGroups":  [],
+    "modules":  [
+                    {
+                        "OLDEMPIRE_FLOAT_L":  "Meng_OldEmpire_float_01_l_Standard"
+                    },
+                    {
+                        "OLDEMPIRE_FLOAT_R":  "Meng_OldEmpire_float_01_r_Standard"
+                    },
+                    {
+                        "OLDEMPIRE_FLOAT_C":  "Meng_OldEmpire_float_empty_Standard"
+                    },
+                    {
+                        "OLDEMPIRE_FIXED_L":  "Meng_OldEmpire_float_06_l_Standard"
+                    },
+                    {
+                        "OLDEMPIRE_FIXED_R":  "Meng_OldEmpire_float_06_r_Standard"
+                    }
+                ],
+    "wings":  [
+
+              ]
+}

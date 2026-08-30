@@ -18,12 +18,17 @@
     <orderEntry type="library" name="starfarer.api" level="project" />
     <orderEntry type="library" name="starfarer_obf" level="application" />
     <orderEntry type="library" name="LazyLib" level="application" />
-    <orderEntry type="library" name="LunaLib" level="application" />
     <orderEntry type="library" name="ExerelinCore" level="application" />
     <orderEntry type="library" name="log4j-1.2.9" level="application" />
     <orderEntry type="library" name="xstream-1.4.10" level="application" />
     <orderEntry type="library" name="MagicLib" level="application" />
     <orderEntry type="library" name="lwjgl" level="project" />
     <orderEntry type="library" name="lwjgl_util" level="project" />
+    <orderEntry type="library" name="starfarer.api1" level="project" />
+    <orderEntry type="library" name="fuzzywuzzy-1.3.0" level="application" />
+    <orderEntry type="library" name="LunaLib" level="project" />
+    <orderEntry type="library" name="json" level="application" />
+    <orderEntry type="library" name="jinput" level="application" />
+    <orderEntry type="library" name="lw_Console" level="application" />
   </component>
 </module>

@@ -124,7 +124,7 @@ public class Mengprotect_S extends BaseHullMod {
                             tracker.stopOverload();
                             tracker.setCurrFlux(0f);
                         }
-                        if (ship.getVariant().getHullSpec().getShieldType() != ShieldAPI.ShieldType.NONE) {
+                        if (ship.getShield() != null && ship.getVariant().getHullSpec().getShieldType() != ShieldAPI.ShieldType.NONE) {
                             if (!ship.getShield().isOn()) {
                                 ship.getShield().toggleOn();
                             }
@@ -151,47 +151,32 @@ public class Mengprotect_S extends BaseHullMod {
                     }
                 }
             } else {
-                if (ship.isAlive()) {
-                    if (ship.getAI() != null && ship.getVariant().getHullSpec().getShieldType() != ShieldAPI.ShieldType.NONE) {
-                        ship.blockCommandForOneFrame(ShipCommand.TOGGLE_SHIELD_OR_PHASE_CLOAK);
-                        if (!ship.getShield().isOn()) {
-                            ship.getShield().toggleOn();
-                        }
-                    }
-                    FluxTrackerAPI tracker = ship.getFluxTracker();
-                    float maxFlux = ship.getMaxFlux();
-                    float nowFlux = ship.getCurrFlux();
-                    if (nowFlux >= maxFlux) {
-                        tracker.setCurrFlux(0f);
-                        if (ship.getAllWeapons().size() > 0) {
-                            Global.getCombatEngine().applyDamage(ship, ship.getAllWeapons().get(Math.max(0, (int) Math.round((ship.getAllWeapons().size() - 1) * Math.random()))).getLocation(), 6000, DamageType.ENERGY, 0f, true, false, ship, true);
-                        } else {
-                            Global.getCombatEngine().applyDamage(ship, ship.getLocation(), 6000, DamageType.ENERGY, 0f, true, false, ship, true);
-                        }
-                        tracker.stopOverload();
-                    }
-                }
+                toggleShieldField(ship);
             }
         } else {
-            if (ship.isAlive()) {
-                if (ship.getAI() != null && ship.getVariant().getHullSpec().getShieldType() != ShieldAPI.ShieldType.NONE) {
-                    ship.blockCommandForOneFrame(ShipCommand.TOGGLE_SHIELD_OR_PHASE_CLOAK);
-                    if (!ship.getShield().isOn()) {
-                        ship.getShield().toggleOn();
-                    }
+            toggleShieldField(ship);
+        }
+    }
+
+    private void toggleShieldField(ShipAPI ship) {
+        if (ship.isAlive()) {
+            if (ship.getAI() != null && ship.getShield() != null && ship.getVariant().getHullSpec().getShieldType() != ShieldAPI.ShieldType.NONE) {
+                ship.blockCommandForOneFrame(ShipCommand.TOGGLE_SHIELD_OR_PHASE_CLOAK);
+                if (!ship.getShield().isOn()) {
+                    ship.getShield().toggleOn();
                 }
-                FluxTrackerAPI tracker = ship.getFluxTracker();
-                float maxFlux = ship.getMaxFlux();
-                float nowFlux = ship.getCurrFlux();
-                if (nowFlux >= maxFlux) {
-                    tracker.setCurrFlux(0f);
-                    if (ship.getAllWeapons().size() > 0) {
-                        Global.getCombatEngine().applyDamage(ship, ship.getAllWeapons().get(Math.max(0, (int) Math.round((ship.getAllWeapons().size() - 1) * Math.random()))).getLocation(), 6000, DamageType.ENERGY, 0f, true, false, ship, true);
-                    } else {
-                        Global.getCombatEngine().applyDamage(ship, ship.getLocation(), 6000, DamageType.ENERGY, 0f, true, false, ship, true);
-                    }
-                    tracker.stopOverload();
+            }
+            FluxTrackerAPI tracker = ship.getFluxTracker();
+            float maxFlux = ship.getMaxFlux();
+            float nowFlux = ship.getCurrFlux();
+            if (nowFlux >= maxFlux) {
+                tracker.setCurrFlux(0f);
+                if (ship.getAllWeapons().size() > 0) {
+                    Global.getCombatEngine().applyDamage(ship, ship.getAllWeapons().get(Math.max(0, (int) Math.round((ship.getAllWeapons().size() - 1) * Math.random()))).getLocation(), 6000, DamageType.ENERGY, 0f, true, false, ship, true);
+                } else {
+                    Global.getCombatEngine().applyDamage(ship, ship.getLocation(), 6000, DamageType.ENERGY, 0f, true, false, ship, true);
                 }
+                tracker.stopOverload();
             }
         }
     }

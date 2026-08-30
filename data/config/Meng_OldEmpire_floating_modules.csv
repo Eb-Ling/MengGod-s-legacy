@@ -1,0 +1,11 @@
+mode,leftVariant,rightVariant,isLight,name,fixedHull,fixedSide
+0,Meng_OldEmpire_float_02_l_Standard,Meng_OldEmpire_float_02_r_Standard,TRUE,1 侦察节点,,
+1,Meng_OldEmpire_float_04_l_Standard,Meng_OldEmpire_float_04_r_Standard,TRUE,2 截击节点,,
+2,Meng_OldEmpire_float_05_l_Standard,Meng_OldEmpire_float_05_r_Standard,TRUE,3 火力节点,,
+3,Meng_OldEmpire_float_08_l_Standard,Meng_OldEmpire_float_08_r_Standard,TRUE,4 针锋节点,,
+0,Meng_OldEmpire_float_01_l_Standard,Meng_OldEmpire_float_01_r_Standard,FALSE,1 聚焦节点,,
+1,Meng_OldEmpire_float_03_l_Standard,Meng_OldEmpire_float_03_r_Standard,FALSE,2 裂解节点,,
+2,Meng_OldEmpire_float_07_l_Standard,Meng_OldEmpire_float_07_r_Standard,FALSE,3 展翼节点,,
+3,Meng_OldEmpire_float_09_l_Standard,Meng_OldEmpire_float_09_r_Standard,FALSE,4 视界节点,,
+,Meng_OldEmpire_float_08_l_Standard,Meng_OldEmpire_float_08_r_Standard,FALSE,,Meng_OldEmpire_002,BOTH
+,Meng_OldEmpire_float_06_l_Standard,Meng_OldEmpire_float_06_r_Standard,FALSE,,Meng_OldEmpire_004,BOTH

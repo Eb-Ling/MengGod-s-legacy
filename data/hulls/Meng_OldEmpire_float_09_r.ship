@@ -1,0 +1,53 @@
+{
+    "hullName":  "重型浮游炮 4-R",
+    "hullId":  "Meng_OldEmpire_float_09_r",
+    "hullSize":  "FRIGATE",
+    "spriteName":  "graphics/ships/oldempire/modules/floating_module_09_l.png",
+    "style":  "HIGH_TECH",
+    "height":  82,
+    "width":  42,
+    "center":  [
+                   21,
+                   41
+               ],
+    "builtInMods":  [
+                        "always_detaches",
+                        "phasefield"
+                    ],
+    "collisionRadius":  39.36,
+    "shieldCenter":  [
+                         0,
+                         0
+                     ],
+    "shieldRadius":  39.36,
+    "viewOffset":  0,
+    "builtInWeapons":  {"WS 001": "Meng_OldEmpire_pulse_chain_gun"},
+    "weaponSlots":  [
+                        {
+                            "angle":  0,
+                            "arc":  30,
+                            "id":  "WS 001",
+                            "locations":  [
+                                              18.04,
+                                              0
+                                          ],
+                            "mount":  "TURRET",
+                            "size":  "MEDIUM",
+                            "type":  "BUILT_IN"
+                        }
+                    ],
+    "engineSlots":  [
+
+                    ],
+    "bounds":  [
+                   39,
+                   -19,
+                   -39,
+                   -19,
+                   -39,
+                   19,
+                   39,
+                   19
+               ]
+}
+

@@ -1,0 +1,71 @@
+{
+    "specClass":  "missile",
+    "sprite":  "graphics/weapons/oldempire/krg_dust_cyber.png",
+    "size":  [
+                 18,
+                 18
+             ],
+    "center":  [
+                   9,
+                   9
+               ],
+    "collisionRadius":  8.1,
+    "collisionClass":  "MISSILE_NO_FF",
+    "hitGlowRadius":  32.4,
+    "behaviorSpec":  {
+                         "behavior":  "CUSTOM",
+                         "minDelayBeforeTriggering":  0,
+                         "triggerDistance":  [
+                                                 800,
+                                                 850
+                                             ],
+                         "preferredMinFireDistance":  [
+                                                           700,
+                                                           750
+                                                       ],
+                         "turnRateBoost":  50,
+                         "targetingTime":  1,
+                         "firingTime":  2.625,
+                         "targetingLaserId":  "targetinglaser1",
+                         "targetingLaserFireOffset":  [
+                                                           8,
+                                                           0
+                                                       ],
+                         "payloadWeaponId":  "Meng_OldEmpire_dust_cyber_payload",
+                         "targetingLaserRange":  0,
+                         "targetingLaserArc":  3,
+                         "bombPumped":  false,
+                         "snapFacingToTargetIfCloseEnough":  true,
+                         "fadeOutEngineWhenFiring":  false,
+                         "randomStrafe":  true,
+                         "destroyMissleWhenDoneFiring":  true,
+                         "destroyedExplosionColor":  [
+                                                         5,
+                                                         135,
+                                                         175,
+                                                         255
+                                                     ]
+                     },
+    "explosionColor":  [
+                           100,
+                           200,
+                           255,
+                           255
+                       ],
+    "explosionRadius":  120,
+    "engineSpec":  {
+                       "turnAcc":  800,
+                       "turnRate":  200,
+                       "acc":  100,
+                       "dec":  100
+                   },
+    "id":  "Meng_OldEmpire_dust_cyber_shot",
+    "missileType":  "MISSILE",
+    "armingTime":  0.05,
+    "noEngineGlowTime":  0.0,
+    "flameoutTime":  0.5,
+    "fadeTime":  0.25,
+    "maxFlightTime":  25,
+    "collisionClassAfterFlameout":  "NONE",
+    "engineSlots":  []
+}

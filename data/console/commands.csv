@@ -3,3 +3,5 @@ Meng _Test,data.scripts.campaign.intel.Meng_eventtitle,"Meng,campaign",Meng_Test
 ,,,,
 ,,,,
 ,,,,
+oldempireaddfleet,scripts.console.Meng_OldEmpireAddFleet,"Meng_OldEmpire,cheat,campaign",oldempireaddfleet [amount],"Adds one of each OldEmpire hull to the player fleet. Optional amount adds that many of every hull."
+oldempireaddaxial,scripts.console.Meng_OldEmpireAddAxialWeapons,"Meng_OldEmpire,cheat,campaign",oldempireaddaxial [amount],"Adds Crimson Spike to the player cargo. Optional amount controls the quantity."

@@ -1,0 +1,53 @@
+{
+    "hullName":  "轻型浮游炮 1-R",
+    "hullId":  "Meng_OldEmpire_float_02_r",
+    "hullSize":  "FRIGATE",
+    "spriteName":  "graphics/ships/oldempire/modules/floating_module_02_r.png",
+    "style":  "HIGH_TECH",
+    "height":  56,
+    "width":  26,
+    "center":  [
+                   13,
+                   28
+               ],
+    "builtInMods":  [
+                        "always_detaches",
+                        "phasefield"
+                    ],
+    "collisionRadius":  26.88,
+    "shieldCenter":  [
+                         0,
+                         0
+                     ],
+    "shieldRadius":  26.88,
+    "viewOffset":  0,
+    "builtInWeapons":  {"WS 001": "Meng_OldEmpire_pulse_chain_gun"},
+    "weaponSlots":  [
+                        {
+                            "angle":  0,
+                            "arc":  30,
+                            "id":  "WS 001",
+                            "locations":  [
+                                              12.32,
+                                              0
+                                          ],
+                            "mount":  "TURRET",
+                            "size":  "SMALL",
+                            "type":  "BUILT_IN"
+                        }
+                    ],
+    "engineSlots":  [
+
+                    ],
+    "bounds":  [
+                   26,
+                   -11,
+                   -26,
+                   -11,
+                   -26,
+                   11,
+                   26,
+                   11
+               ]
+}
+

@@ -4,7 +4,6 @@ import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.PluginPick;
 import com.fs.starfarer.api.combat.AutofireAIPlugin;
-import com.fs.starfarer.api.combat.ShipAIPlugin;
 import com.fs.starfarer.api.combat.WeaponAPI;
 import com.fs.starfarer.api.impl.campaign.intel.bar.events.BarEventManager;
 import com.thoughtworks.xstream.XStream;
@@ -18,8 +17,14 @@ import org.boxutil.BoxUtilModPlugin;
 import org.dark.shaders.light.LightData;
 import org.dark.shaders.util.ShaderLib;
 import org.dark.shaders.util.TextureData;
+import lunalib.lunaRefit.LunaRefitManager;
+import data.methods.Meng_ModuleRefitButton;
+import data.methods.Meng_ModuleSelectorScript;
 
 public class Mengplugin extends BaseModPlugin {
+
+    /** OldEmpire浮动模块改装按钮是否已注册（防止重复注册） */
+    private static boolean oldEmpireLunaButtonsRegistered = false;
 
     public void onGameLoad(boolean newGame) {
 
@@ -40,6 +45,9 @@ public class Mengplugin extends BaseModPlugin {
         // 注册圣殿跳跃点Memory标记脚本
         Global.getSector().removeScriptsOfClass(Meng_EmbersJumpPlugin.class);
         Global.getSector().addScript(new Meng_EmbersJumpPlugin());
+
+        // 注册OldEmpire浮动模块改装按钮
+        registerOldEmpireLunaButtons();
     }
 
     @Override
@@ -72,9 +80,45 @@ public class Mengplugin extends BaseModPlugin {
 
         if (Global.getSettings().getModManager().isModEnabled("shaderLib")) {
             ShaderLib.init();
-            LightData.readLightDataCSV("data/config/modFiles/meng_light_data.csv.csv");
+            LightData.readLightDataCSV("data/config/modFiles/meng_light_data.csv");
             TextureData.readTextureDataCSV("data/config/modFiles/meng_texture_data.csv");
         }
         BoxUtilModPlugin.initPre();
+
+        // 加载浮动模块CSV配置数据（必须在按钮注册前调用）
+        Meng_ModuleSelectorScript.loadModuleData();
+
+        // 注册OldEmpire浮动模块改装按钮
+        registerOldEmpireLunaButtons();
+    }
+
+    /**
+     * 向LunaRefit注册OldEmpire浮动模块切换按钮。
+     * 根据CSV中注册的模块数量动态注册按钮（轻/重型各自有多少种模式就注册多少个），
+     * 玩家在改装界面可通过按钮在不同浮动模块模式间切换。
+     * 相位纹理的预加载已改由settings.json的"Meng_OldEmpire_phase"分类声明，
+     * 由游戏引擎在加载时自动完成，无需在代码中手动加载。
+     */
+    private static void registerOldEmpireLunaButtons() {
+        if (oldEmpireLunaButtonsRegistered) {
+            return;
+        }
+        // 动态获取模式数量（从CSV加载），轻/重型取最大值以确保全部覆盖
+        int maxModes = Math.max(
+                Meng_ModuleSelectorScript.getModeCount(true),
+                Meng_ModuleSelectorScript.getModeCount(false));
+        if (maxModes <= 0) {
+            Global.getLogger(Mengplugin.class)
+                    .warn("OldEmpire floating module data is empty; refit buttons were not registered");
+            return;
+        }
+        for (int i = 0; i < maxModes; i++) {
+            // A组：轻型和重型各一种模式
+            LunaRefitManager.addRefitButton(new Meng_ModuleRefitButton(true, i));
+            LunaRefitManager.addRefitButton(new Meng_ModuleRefitButton(false, i));
+            // B组：额外的第二组浮动模块槽位
+            LunaRefitManager.addRefitButton(new Meng_ModuleRefitButton(false, i, 1));
+        }
+        oldEmpireLunaButtonsRegistered = true;
     }
 }

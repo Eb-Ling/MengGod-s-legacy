@@ -1,0 +1,19 @@
+{
+  "id":"Meng_OldEmpire_axis_crimson_spike_proj",
+  "specClass":"projectile",
+  "onFireEffect":"data.weapons.Meng_OldEmpireAxialWeaponEffect",
+  "spawnType":"BALLISTIC",
+  "collisionClass":"NONE",
+  "collisionClassByFighter":"NONE",
+  "length":1.0,
+  "width":1.0,
+  "fadeTime":0.01,
+  "fringeColor":[0,0,0,0],
+  "coreColor":[0,0,0,0],
+  "glowColor":[0,0,0,0],
+  "glowRadius":0,
+  "hitGlowRadius":-1,
+  "textureScrollSpeed":120.0,
+  "pixelsPerTexel":2.0,
+  "bulletSprite":""
+}

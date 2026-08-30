@@ -1,11 +1,9 @@
 package data.hullmods;
 
 import com.fs.starfarer.api.combat.BaseHullMod;
-import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.WeaponAPI;
-import com.fs.starfarer.api.combat.WeaponAPI;
-import com.fs.starfarer.api.combat.listeners.WeaponBaseRangeModifier;
+import com.fs.starfarer.api.combat.listeners.WeaponRangeModifier;
 import com.fs.starfarer.api.impl.campaign.ids.HullMods;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.LabelAPI;
@@ -18,6 +16,7 @@ import java.util.Map;
 
 public class Meng_fire_TargetingCore extends BaseHullMod {
     public final float RANGE_BONES= MagicSettings.getFloat("Meng_fireset", "Meng_fire_TargetingCore_RANGEBONES");
+    private static final String RANGE_MODIFIER_KEY = "Meng_fire_targeting_core_range_modifier";
     private static final Map<ShipAPI.HullSize, Float> RANGE_THRESHOLD = new HashMap<>();
     static {
         RANGE_THRESHOLD.put(ShipAPI.HullSize.FRIGATE, 700f);
@@ -37,19 +36,13 @@ public class Meng_fire_TargetingCore extends BaseHullMod {
         tooltip.addSectionHeading("数据分析", Alignment.MID, opad);
 
         LabelAPI label = tooltip.addPara(
-                "#舰船的实弹与能量武器射程增加 %s%% 。\n#舰船武器射程按舰船大小分别无法超过 %s ， %s ， %s ， %s 。",
+                "- 舰船的实弹与能量武器射程增加 %s%% 。\n- 舰船武器射程按舰船大小分别无法超过 %s ， %s ， %s ， %s 。",
                 opad, highlight, String.valueOf(Math.round(RANGE_BONES)), String.valueOf(Math.round(RANGE_THRESHOLD.get(ShipAPI.HullSize.FRIGATE))), String.valueOf(Math.round(RANGE_THRESHOLD.get(ShipAPI.HullSize.DESTROYER))), String.valueOf(Math.round(RANGE_THRESHOLD.get(ShipAPI.HullSize.CRUISER))), String.valueOf(Math.round(RANGE_THRESHOLD.get(ShipAPI.HullSize.CAPITAL_SHIP)))
         );
 
         label.setHighlight(Math.round(RANGE_BONES)+"%",String.valueOf(Math.round(RANGE_THRESHOLD.get(ShipAPI.HullSize.FRIGATE))), String.valueOf(Math.round(RANGE_THRESHOLD.get(ShipAPI.HullSize.DESTROYER))), String.valueOf(Math.round(RANGE_THRESHOLD.get(ShipAPI.HullSize.CRUISER))), String.valueOf(Math.round(RANGE_THRESHOLD.get(ShipAPI.HullSize.CAPITAL_SHIP))));
         label.setHighlightColors(highlight, highlight, highlight, highlight, highlight, highlight, highlight);
 
-    }
-    @Override
-    public void applyEffectsBeforeShipCreation(ShipAPI.HullSize hullSize, MutableShipStatsAPI stats, String id) {
-        super.applyEffectsBeforeShipCreation(hullSize, stats, id);
-        stats.getEnergyWeaponRangeBonus().modifyPercent(id,RANGE_BONES);
-        stats.getBallisticWeaponRangeBonus().modifyPercent(id,RANGE_BONES);
     }
     @Override
     public boolean isApplicableToShip(ShipAPI ship) {
@@ -63,14 +56,47 @@ public class Meng_fire_TargetingCore extends BaseHullMod {
 
     @Override
     public void advanceInCombat(ShipAPI ship, float amount) {
-        float range=RANGE_THRESHOLD.get(ship.getHullSize());
-        for(WeaponAPI weapon:ship.getAllWeapons()){
-            if(weapon.getRange()>=range) {
-                if (weapon.getSpec().getMountType() != WeaponAPI.WeaponType.MISSILE) {
-                    weapon.ensureClonedSpec();
-                    weapon.getSpec().setMaxRange(weapon.getSpec().getMaxRange() - 1f);
-                }
+        if (!ship.getCustomData().containsKey(RANGE_MODIFIER_KEY)) {
+            ship.addListener(new TargetingCoreRangeModifier(RANGE_BONES));
+            ship.setCustomData(RANGE_MODIFIER_KEY, Boolean.TRUE);
+        }
+    }
+
+    private static final class TargetingCoreRangeModifier implements WeaponRangeModifier {
+        private final float rangeBonusPercent;
+
+        private TargetingCoreRangeModifier(float rangeBonusPercent) {
+            this.rangeBonusPercent = rangeBonusPercent;
+        }
+
+        @Override
+        public float getWeaponRangePercentMod(ShipAPI ship, WeaponAPI weapon) {
+            return 0f;
+        }
+
+        @Override
+        public float getWeaponRangeMultMod(ShipAPI ship, WeaponAPI weapon) {
+            if (weapon == null || weapon.getType() == WeaponAPI.WeaponType.MISSILE) {
+                return 1f;
             }
+
+            Float rangeThreshold = RANGE_THRESHOLD.get(ship.getHullSize());
+            if (rangeThreshold == null) {
+                return 1f;
+            }
+
+            float baseRange = weapon.getSpec().getMaxRange();
+            if (baseRange <= 0f) {
+                return 1f;
+            }
+
+            float rangeBonusMultiplier = 1f + rangeBonusPercent / 100f;
+            return Math.min(rangeBonusMultiplier, rangeThreshold / baseRange);
+        }
+
+        @Override
+        public float getWeaponRangeFlatMod(ShipAPI ship, WeaponAPI weapon) {
+            return 0f;
         }
     }
 

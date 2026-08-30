@@ -1,0 +1,22 @@
+{
+  "id":"Meng_OldEmpire_axis_crimson_spike",
+  "specClass":"projectile",
+  "type":"ENERGY",
+  "size":"MEDIUM",
+  "everyFrameEffect":"data.weapons.Meng_OldEmpireAxialChargeEffect",
+  "turretSprite":"graphics/weapons/rift_lance_turret_base.png",
+  "turretGlowSprite":"graphics/weapons/rift_lance_turret_glow.png",
+  "hardpointSprite":"graphics/weapons/rift_lance_hardpoint_base.png",
+  "hardpointGlowSprite":"graphics/weapons/rift_lance_hardpoint_glow.png",
+  "turretOffsets":[0,0],
+  "turretAngleOffsets":[0],
+  "hardpointOffsets":[0,0],
+  "hardpointAngleOffsets":[0],
+  "barrelMode":"LINKED",
+  "glowColor":[22,105,238,220],
+  "animationType":"GLOW_AND_FLASH",
+  "autocharge":true,
+  "requiresFullCharge":true,
+  "projectileSpecId":"Meng_OldEmpire_axis_crimson_spike_proj",
+  "fireSoundTwo":"rift_lightning_fire"
+}

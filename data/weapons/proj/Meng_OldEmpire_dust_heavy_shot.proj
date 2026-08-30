@@ -1,0 +1,133 @@
+{
+    "specClass":  "missile",
+    "sprite":  "graphics/weapons/oldempire/krg_dust_heavy.png",
+    "size":  [
+                 56,
+                 56
+             ],
+    "center":  [
+                   28,
+                   28
+               ],
+    "collisionRadius":  11.25,
+    "collisionClass":  "MISSILE_NO_FF",
+    "hitGlowRadius":  45.0,
+    "explosionColor":  [
+                           255,
+                           90,
+                           45,
+                           235
+                       ],
+    "explosionRadius":  80.0,
+    "engineSpec":  {
+                       "turnAcc":  760,
+                       "turnRate":  170,
+                       "acc":  920,
+                       "dec":  700,
+                       "maxSpeed":  448
+                   },
+    "onHitEffect":  "data.weapons.Meng_OldEmpireOnHitEffect",
+    "id":  "Meng_OldEmpire_dust_heavy_shot",
+    "missileType":  "MISSILE",
+    "behaviorSpec":  {
+                         "behavior":  "CUSTOM",
+                         "minDelayBeforeTriggering":  1,
+                         "triggerDistance":  [
+                                                 700,
+                                                 750
+                                             ],
+                         "preferredMinFireDistance":  [
+                                                           700,
+                                                           750
+                                                       ],
+                         "turnRateBoost":  100,
+                         "targetingTime":  0.01,
+                         "firingTime":  1,
+                         "targetingLaserId":  "Meng_OldEmpire_dust_heavy_targeting",
+                         "targetingLaserFireOffset":  [
+                                                           0,
+                                                           0,
+                                                           0,
+                                                           0
+                                                       ],
+                         "targetingLaserSweepAngles":  [
+                                                           0,
+                                                           0,
+                                                           0,
+                                                           0
+                                                       ],
+                         "payloadWeaponId":  "Meng_OldEmpire_dust_heavy_payload",
+                         "targetingLaserRange":  0,
+                         "targetingLaserArc":  0,
+                         "bombPumped":  true,
+                         "fadeOutEngineWhenFiring":  false,
+                         "destroyMissleWhenDoneFiring":  false,
+                         "snapFacingToTargetIfCloseEnough":  false,
+                         "withShapedExplosion":  true,
+                         "shapedExplosionNumParticles":  50,
+                         "shapedExplosionMinParticleDur":  0.7,
+                         "shapedExplosionMaxParticleDur":  1.1,
+                         "shapedExplosionMinParticleSize":  50,
+                         "shapedExplosionMaxParticleSize":  70,
+                         "shapedExplosionArc":  45,
+                         "shapedExplosionMinParticleVel":  50,
+                         "shapedExplosionMaxParticleVel":  250,
+                         "shapedExplosionColor":  [
+                                                       255,
+                                                       40,
+                                                       40,
+                                                       155
+                                                   ],
+                         "shapedExplosionEndSizeMin":  1,
+                         "shapedExplosionEndSizeMax":  2,
+                         "shapedExplosionScatter":  100
+                     },
+    "armingTime":  0.05,
+    "noEngineGlowTime":  0.0,
+    "flameoutTime":  0.5,
+    "fadeTime":  0.25,
+    "maxFlightTime":  25,
+    "collisionClassAfterFlameout":  "NONE",
+    "explosionSpec":  {
+                          "duration":  0.12,
+                          "radius":  75,
+                          "coreRadius":  50,
+                          "collisionClass":  "PROJECTILE_NO_FF",
+                          "collisionClassByFighter":  "PROJECTILE_FIGHTER",
+                          "particleSizeMin":  4.0,
+                          "particleSizeRange":  4.0,
+                          "particleDuration":  1,
+                          "particleCount":  100,
+                          "particleColor":  [
+                                                255,
+                                                100,
+                                                80,
+                                                255
+                                            ],
+                          "explosionColor":  [
+                                                 255,
+                                                 70,
+                                                 70,
+                                                 255
+                                             ],
+                          "useDetailedExplosion":  true,
+                          "useDetailedExplosionColorAlpha":  true,
+                          "detailedExplosionRadius":  150,
+                          "detailedExplosionFlashRadius":  350,
+                          "detailedExplosionFlashDuration":  1.25,
+                          "detailedExplosionFlashColorFringe":  [
+                                                                    255,
+                                                                    20,
+                                                                    50,
+                                                                    255
+                                                                ],
+                          "detailedExplosionFlashColorCore":  [
+                                                                  155,
+                                                                  155,
+                                                                  155,
+                                                                  255
+                                                              ],
+                          "sound":  "system_canister_flak_explosion"
+                      },
+    "engineSlots":  []
+}

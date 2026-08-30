@@ -1,0 +1,27 @@
+{
+  "id": "Meng_OldEmpire_dummy_missile",
+  "specClass": "missile",
+  "missileType": "MISSILE",
+  "onFireEffect": "data.weapons.Meng_OldEmpireProjectileOnFire",
+  "sprite": "graphics/weapons/oldempire/krg_blank_projectile.png",
+  "size": [2, 2],
+  "center": [1, 1],
+  "collisionRadius": 1,
+  "collisionClass": "NONE",
+  "explosionColor": [255, 255, 255, 0],
+  "explosionRadius": 0,
+  "renderTargetIndicator": false,
+  "noCollisionWhileFading": true,
+  "useHitGlowWhenDealingDamage": false,
+  "useHitGlowWhenDestroyed": false,
+  "flameoutTime": 0.01,
+  "noEngineGlowTime": 0.01,
+  "fadeTime": 0.01,
+  "engineSpec": {
+    "turnAcc": 0,
+    "turnRate": 0,
+    "acc": 0,
+    "dec": 0
+  },
+  "engineSlots": []
+}

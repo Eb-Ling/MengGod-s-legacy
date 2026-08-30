@@ -1,0 +1,52 @@
+{
+    "hullName":  "Floating Module 06-R",
+    "hullId":  "Meng_OldEmpire_float_06_r",
+    "hullSize":  "FRIGATE",
+    "spriteName":  "graphics/ships/oldempire/modules/floating_module_06_r.png",
+    "style":  "HIGH_TECH",
+    "height":  160,
+    "width":  86,
+    "center":  [
+                   43,
+                   80
+               ],
+    "builtInMods":  [
+                        "always_detaches",
+                        "phasefield"
+                    ],
+    "collisionRadius":  76.8,
+    "shieldCenter":  [
+                         0,
+                         0
+                     ],
+    "shieldRadius":  76.8,
+    "viewOffset":  0,
+    "weaponSlots":  [
+                        {
+                            "angle":  0,
+                            "arc":  30,
+                            "id":  "WS 001",
+                            "locations":  [
+                                              35.2,
+                                              0
+                                          ],
+                            "mount":  "TURRET",
+                            "size":  "LARGE",
+                            "type":  "UNIVERSAL"
+                        }
+                    ],
+    "engineSlots":  [
+
+                    ],
+    "bounds":  [
+                   78,
+                   -41,
+                   -78,
+                   -41,
+                   -78,
+                   41,
+                   78,
+                   41
+               ]
+}
+

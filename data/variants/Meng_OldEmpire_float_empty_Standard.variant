@@ -1,0 +1,14 @@
+{
+    "displayName": "Empty floating node",
+    "fluxCapacitors": 0,
+    "fluxVents": 0,
+    "goalVariant": true,
+    "hullId": "Meng_OldEmpire_float_empty",
+    "hullMods": [],
+    "permaMods": [],
+    "sMods": [],
+    "variantId": "Meng_OldEmpire_float_empty_Standard",
+    "weaponGroups": [],
+    "modules": [],
+    "wings": []
+}

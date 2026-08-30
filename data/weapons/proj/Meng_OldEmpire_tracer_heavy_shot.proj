@@ -1,0 +1,81 @@
+{
+    "specClass":  "missile",
+    "sprite":  "graphics/weapons/oldempire/krg_tracer_heavy.png",
+    "size":  [
+                 22,
+                 50
+             ],
+    "center":  [
+                   11,
+                   25
+               ],
+    "collisionRadius":  9.9,
+    "collisionClass":  "MISSILE_NO_FF",
+    "hitGlowRadius":  39.6,
+    "explosionColor":  [
+                           255,
+                           30,
+                           60,
+                           245
+                       ],
+    "explosionRadius":  70.4,
+    "engineSpec":  {
+                       "turnAcc":  980,
+                       "turnRate":  230,
+                       "acc":  1250,
+                       "dec":  800,
+                       "maxSpeed":  920
+                   },
+    "onHitEffect":  "data.weapons.Meng_OldEmpireOnHitEffect",
+    "id":  "Meng_OldEmpire_tracer_heavy_shot",
+    "missileType":  "MISSILE",
+    "armingTime":  0.05,
+    "noEngineGlowTime":  0.0,
+    "flameoutTime":  0.5,
+    "fadeTime":  0.25,
+    "maxFlightTime":  3.8,
+    "collisionClassAfterFlameout":  "NONE",
+    "engineSlots":  [
+                        {
+                            "id":  "ES1",
+                            "loc":  [
+                                        -21.0,
+                                        0
+                                    ],
+                            "style":  "CUSTOM",
+                            "styleSpec":  {
+                                              "mode":  "QUAD_STRIP",
+                                              "engineColor":  [
+                                                                  255,
+                                                                  30,
+                                                                  60,
+                                                                  245
+                                                              ],
+                                              "contrailDuration":  0.22,
+                                              "contrailWidthMult":  0.52,
+                                              "contrailWidthAddedFractionAtEnd":  -0.10,
+                                              "contrailMinSeg":  5,
+                                              "contrailMaxSpeedMult":  0.25,
+                                              "contrailAngularVelocityMult":  0.5,
+                                              "contrailSpawnDistMult":  0.0,
+                                              "contrailColor":  [
+                                                                    255,
+                                                                    25,
+                                                                    58,
+                                                                    112
+                                                                ],
+                                              "glowSizeMult":  0.0,
+                                              "glowAlternateColor":  [
+                                                                         255,
+                                                                         255,
+                                                                         255,
+                                                                         205
+                                                                     ],
+                                              "type":  "GLOW"
+                                          },
+                            "width":  12.1,
+                            "length":  45.0,
+                            "angle":  180.0
+                        }
+                    ]
+}

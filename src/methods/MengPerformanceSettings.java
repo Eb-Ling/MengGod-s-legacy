@@ -1,10 +1,15 @@
 package data.methods;
 
+import com.fs.starfarer.api.Global;
+
 import java.lang.reflect.Method;
 
-/** Reads the optional LunaLib setting without making LunaLib a hard dependency. */
+/**
+ * Reads optional LunaLib performance settings without making LunaLib a required dependency.
+ */
 public final class MengPerformanceSettings {
     private static final String MOD_ID = "Meng";
+    private static final String LUNALIB_MOD_ID = "lunalib";
     private static final String LOW_PERFORMANCE_EFFECTS = "lowPerformanceEffects";
     private static Method getBoolean;
     private static boolean lookupAttempted;
@@ -13,6 +18,14 @@ public final class MengPerformanceSettings {
     }
 
     public static boolean useLowPerformanceEffects() {
+        return getBoolean(LOW_PERFORMANCE_EFFECTS, false);
+    }
+
+    private static boolean getBoolean(String fieldId, boolean fallback) {
+        if (!isLunaLibEnabled()) {
+            return fallback;
+        }
+
         try {
             if (!lookupAttempted) {
                 Class<?> settingsClass = Class.forName("lunalib.lunaSettings.LunaSettings");
@@ -20,13 +33,19 @@ public final class MengPerformanceSettings {
                 lookupAttempted = true;
             }
             if (getBoolean == null) {
-                return false;
+                return fallback;
             }
-            Object value = getBoolean.invoke(null, MOD_ID, LOW_PERFORMANCE_EFFECTS);
-            return Boolean.TRUE.equals(value);
+            Object value = getBoolean.invoke(null, MOD_ID, fieldId);
+            return value instanceof Boolean ? (Boolean) value : fallback;
         } catch (Exception ignored) {
             lookupAttempted = true;
-            return false;
+            return fallback;
         }
+    }
+
+    private static boolean isLunaLibEnabled() {
+        return Global.getSettings() != null
+                && Global.getSettings().getModManager() != null
+                && Global.getSettings().getModManager().isModEnabled(LUNALIB_MOD_ID);
     }
 }

@@ -1,0 +1,27 @@
+{
+  "id": "Meng_OldEmpire_dummy_shot",
+  "specClass": "projectile",
+  "spawnType": "BALLISTIC",
+  "sprite": "graphics/weapons/oldempire/krg_blank_projectile.png",
+  "size": [
+    2,
+    2
+  ],
+  "collisionRadius": 1.8,
+  "collisionClass": "NONE",
+  "collisionClassByFighter": "NONE",
+  "length": 2.0,
+  "width": 2.0,
+  "fadeTime": 0.01,
+  "fringeColor": [255, 255, 255, 0],
+  "coreColor": [255, 255, 255, 0],
+  "bulletSprite": "graphics/weapons/oldempire/krg_blank_projectile.png",
+  "explosionColor": [
+    255,
+    130,
+    80,
+    180
+  ],
+  "explosionRadius": 18,
+  "onFireEffect": "data.weapons.Meng_OldEmpireProjectileOnFire"
+}

@@ -1,0 +1,26 @@
+{
+    "displayName":  "Floating Module",
+    "fluxCapacitors":  0,
+    "fluxVents":  0,
+    "goalVariant":  true,
+    "hullId":  "Meng_OldEmpire_float_06_r",
+    "hullMods":  [
+
+                 ],
+    "permaMods":  [
+
+                  ],
+    "sMods":  [
+
+              ],
+    "variantId":  "Meng_OldEmpire_float_06_r_Standard",
+    "weaponGroups":  [
+
+                     ],
+    "modules":  [
+
+                ],
+    "wings":  [
+
+              ]
+}

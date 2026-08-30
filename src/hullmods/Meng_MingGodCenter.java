@@ -25,6 +25,7 @@ import org.lwjgl.input.Controller;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector2f;
+import org.lazywizard.lazylib.combat.entities.SimpleEntity;
 
 import java.awt.*;
 import java.nio.FloatBuffer;
@@ -35,6 +36,8 @@ import java.util.Objects;
 
 public class Meng_MingGodCenter extends BaseHullMod {
     public static final String KEY = "Meng_MingGodheartlistener";
+    public static final String SIGN_FIELD_KEY = "Meng_MingGodSignPlugin";
+    private static final String SIGN_FIELD_REGISTRY_KEY = "Meng_MingGodSignPluginRegistry";
     public static final String id = "Meng_MingGodheartsign";
     public final float range = 80f;
 
@@ -43,7 +46,7 @@ public class Meng_MingGodCenter extends BaseHullMod {
         Color highlight = new Color(255, 225, 171, 255);
         tooltip.addSectionHeading("数据分析", Alignment.MID, opad);
         LabelAPI label2 = tooltip.addPara(
-                "#舰船每隔 %s 秒将会重新装填所有导弹武器的弹药。\n#舰船投射的弹体将经由差分空间潮汐加速 %s%% 。\n#所有非导弹武器射程增加 %s%% 。",
+                "-舰船每隔 %s 秒将会重新装填所有导弹武器的弹药。\n-舰船投射的弹体将经由差分空间潮汐加速 %s%% 。\n-所有非导弹武器射程增加 %s%% 。",
                 opad, highlight, "10", "100", "80"
         );
         label2.setHighlight("10", "100%", "80%");
@@ -53,11 +56,11 @@ public class Meng_MingGodCenter extends BaseHullMod {
 
 
         LabelAPI label = tooltip.addPara(
-                "这艘舰船的能量来源于名为 \"冥\" 的差分空间锁，舰船朝向范围内60°的且距离在3000su以内的舰船将会被 \"冥\"注视。\n\n?当注视完全成型，舰船可通过战术系统对所有被注视的目标投射 空间裂缝。\n?冥河摧毁的目标将会被\"冥\"注视，在原地张开 虚无空间，形成标记，虚无空间将随时间逐渐活化，并会持续吸收周围弹体加速活化进度，当活化达到一定程度将会发生爆炸，造成至多 5000点能量伤害。",
+                "这艘舰船的能量来源于名为 \"冥\" 的差分空间锁，拥有操控空间的力量\n-冥河摧毁的目标将会被\"冥\"注视，在原地张开 虚无空间 ，形成标记，虚无空间将随时间逐渐活化，并会持续吸收周围弹体加速活化进度，当活化达到一定程度将会发生爆炸，造成至多 5000 点能量伤害。",
                 opad, highlight, "20"
 
         );
-        label.setHighlight("\"冥\"", "空间裂缝", "虚无空间", "次元裂隙", "5000");
+        label.setHighlight("\"冥\"",  "虚无空间",  "5000");
         label.setHighlightColors(highlight, highlight, highlight, highlight, highlight, highlight, highlight);
 
         tooltip.addSectionHeading("圣殿史录", Alignment.MID, opad);
@@ -142,6 +145,14 @@ public class Meng_MingGodCenter extends BaseHullMod {
         IntervalUtil interval = new IntervalUtil(10f, 10f);
     }
 
+    public static ArrayList<Meng_MingGodSignPlugin> getActiveSignFields(CombatEngineAPI engine) {
+        Object registryObject = engine.getCustomData().get(SIGN_FIELD_REGISTRY_KEY);
+        if (registryObject instanceof ArrayList) {
+            return new ArrayList<Meng_MingGodSignPlugin>((ArrayList<Meng_MingGodSignPlugin>) registryObject);
+        }
+        return new ArrayList<Meng_MingGodSignPlugin>();
+    }
+
     private static class MyDamageListener1 implements DamageListener {
         public ShipAPI target;
         public ShipAPI ships;
@@ -160,9 +171,13 @@ public class Meng_MingGodCenter extends BaseHullMod {
                     if (!init) {
                         init = true;
                         if (MengPerformanceSettings.useLowPerformanceEffects()) {
-                            Global.getCombatEngine().addLayeredRenderingPlugin(new Meng_MingGodSignPlugin(this.target, ships, false));
+                            Meng_MingGodSignPlugin sign = new Meng_MingGodSignPlugin(this.target, ships, false);
+                            this.target.setCustomData(SIGN_FIELD_KEY, sign);
+                            Global.getCombatEngine().addLayeredRenderingPlugin(sign);
                         } else {
-                            Global.getCombatEngine().addLayeredRenderingPlugin(new Meng_MingGodSignPlugin(this.target, ships));
+                            Meng_MingGodSignPlugin sign = new Meng_MingGodSignPlugin(this.target, ships);
+                            this.target.setCustomData(SIGN_FIELD_KEY, sign);
+                            Global.getCombatEngine().addLayeredRenderingPlugin(sign);
                         }
                     }
                 }
@@ -185,6 +200,7 @@ public class Meng_MingGodCenter extends BaseHullMod {
         private float[] ideanoise;
         private float[] noise;
         private Vector2f loc;
+        private final CombatEntityAPI fieldAnchor;
         private float arg;
         
         private int shaderProgram;
@@ -205,6 +221,42 @@ public class Meng_MingGodCenter extends BaseHullMod {
             target = targets;
             ship = source;
             this.renderEnabled = renderEnabled;
+            fieldAnchor = new SimpleEntity(targets.getLocation());
+            registerField();
+        }
+
+        public void applySpatialTransform(Vector2f center, float cosine, float sine) {
+            Vector2f position = fieldAnchor.getLocation();
+            Vector2f offset = Vector2f.sub(position, center, new Vector2f());
+            position.set(center.x + offset.x * cosine - offset.y * sine,
+                    center.y + offset.x * sine + offset.y * cosine);
+            if (loc != null) {
+                loc.set(position);
+            }
+        }
+
+        public Vector2f getFieldLocation() {
+            return fieldAnchor.getLocation();
+        }
+
+        private void registerField() {
+            CombatEngineAPI engine = Global.getCombatEngine();
+            Object registryObject = engine.getCustomData().get(SIGN_FIELD_REGISTRY_KEY);
+            ArrayList<Meng_MingGodSignPlugin> registry;
+            if (registryObject instanceof ArrayList) {
+                registry = (ArrayList<Meng_MingGodSignPlugin>) registryObject;
+            } else {
+                registry = new ArrayList<Meng_MingGodSignPlugin>();
+                engine.getCustomData().put(SIGN_FIELD_REGISTRY_KEY, registry);
+            }
+            registry.add(this);
+        }
+
+        private void unregisterField() {
+            Object registryObject = Global.getCombatEngine().getCustomData().get(SIGN_FIELD_REGISTRY_KEY);
+            if (registryObject instanceof ArrayList) {
+                ((ArrayList<Meng_MingGodSignPlugin>) registryObject).remove(this);
+            }
         }
 
         public void init(CombatEntityAPI entity) {
@@ -242,6 +294,8 @@ public class Meng_MingGodCenter extends BaseHullMod {
 
         @Override
         public void cleanup() {
+            fieldAnchor.getLocation().set(loc);
+            unregisterField();
             ShaderUtil.cleanupAll(shaderProgram, vao, 0);
             shaderProgram = 0;
             vao = null;
@@ -255,6 +309,7 @@ public class Meng_MingGodCenter extends BaseHullMod {
         @Override
         public void advance(float amount) {
             CombatEngineAPI engine = Global.getCombatEngine();
+            loc.set(fieldAnchor.getLocation());
             timer += amount * (1 + chargelevel);
             f += amount;
             if (f > 1f) {
@@ -308,9 +363,9 @@ public class Meng_MingGodCenter extends BaseHullMod {
             if (chargelevel >= 1f) {
                 DamagingExplosionSpec spc = new DamagingExplosionSpec(
                         size * 0.25f,
-                        size * 6f,
-                        size * 3f,
-                        size * 40f,
+                        size * 3.5f,
+                        size * 2f,
+                        size * 30f,
                         size * 4f,
                         CollisionClass.PROJECTILE_NO_FF,
                         CollisionClass.PROJECTILE_NO_FF,

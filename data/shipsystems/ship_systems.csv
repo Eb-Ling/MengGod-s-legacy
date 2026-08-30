@@ -14,7 +14,7 @@ name,id,flux/second,f/s (base rate),f/s (base cap),flux/use,f/u (base rate),f/u 
 星轨坠落,Meng_Starfalling,,,,2000,,,,4,,21,,3,5,,,,TRUE,TRUE,,,,TRUE,TRUE,,,
 污染者的哀嚎,Meng_burndrive,1,,,,,,,,,2,4,1,10,TRUE,,,,,,TRUE,TRUE,TRUE,,,,graphics/icons/hullsys/burn_drive.png
 凭依/归尘,Meng_Dependent,,,,,,,,,,0.5,0.5,0.5,10,TRUE,,,,,,,,,,,,
-空间撕裂,Meng_MingGod_Spacedamage,,,,2000,,,,3,0.2,0.5,,0.5,2,,,,,,,,,,,,,
+天域神演,Meng_MingGod_Spacedamage,,,,2000,,,,2,0.0666,0.5,,0.5,2,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,
 炉芯回流,Meng_fire_fluxtrans,,,,,,,,,,1,5,1,25,,,,,,,,,,,,,graphics/icons/hullsys/ammo_feeder.png
 蛾化散流,Meng_fire_fluxtrans_wingsacc,1,,,,,,,,,1,10,1,25,TRUE,,,,,,,,,,,,graphics/icons/hullsys/ammo_feeder.png
@@ -23,3 +23,4 @@ name,id,flux/second,f/s (base rate),f/s (base cap),flux/use,f/u (base rate),f/u 
 不尽之律,Meng_fire_fluxtrans_endless,,,,,,,,,,1,10,1,25,,,,,,,,,,,,,graphics/icons/hullsys/ammo_feeder.png
 能质天平,Meng_fire_fluxtrans_phase,,,,,,,,,,1,5,1,25,,,,,,,,,,,,,graphics/icons/hullsys/ammo_feeder.png
 虚数潜航,Meng_fire_phasecoil,,,,,,,,,,1,10,2,10,TRUE,,,,,,,,,,TRUE,,graphics/icons/hullsys/phase_cloak.png
+深红相位线圈,Meng_OldEmpire_phasecloak,,,,,,,,,,0.5,,0.5,2,TRUE,,TRUE,TRUE,TRUE,,,,TRUE,,TRUE,defensive,graphics/icons/hullsys/phase_cloak.png

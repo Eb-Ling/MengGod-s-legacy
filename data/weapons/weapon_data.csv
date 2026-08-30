@@ -191,3 +191,26 @@ Noname右飘带,Meng_Noname_after_right,0,,100000,1000,,200,100,0,0,,30,1.5,,ENE
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+猩红钉刺,Meng_OldEmpire_axis_crimson_spike,3,,26000,1500,,800,250,28,32,16,,,,ENERGY,520,,1.0,1.35,1,,0,0,0,20,,2600,,0.58,130,,,DIRECT_AIM,"energy12, rare_bp, Meng_OldEmpire",,OldEmpire,,裂隙闪电汇击,瞬时,无制导,优秀,极佳,黑红核心完成蓄力后锁定命中点,多条裂隙闪电汇聚并引发范围坍缩,,,TRUE,202
+舰体流光-001,Meng_OldEmpire_hull_glow_001,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,"restricted, no_drop, invisible_in_codex",,黑黑舰队,,,,,,,,,,,TRUE,9901
+舰体流光-002,Meng_OldEmpire_hull_glow_002,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,"restricted, no_drop, invisible_in_codex",,黑黑舰队,,,,,,,,,,,TRUE,9902
+舰体流光-003,Meng_OldEmpire_hull_glow_003,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,"restricted, no_drop, invisible_in_codex",,黑黑舰队,,,,,,,,,,,TRUE,9903
+舰体流光-004,Meng_OldEmpire_hull_glow_004,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,"restricted, no_drop, invisible_in_codex",,黑黑舰队,,,,,,,,,,,TRUE,9904
+舰体流光-005,Meng_OldEmpire_hull_glow_005,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,"restricted, no_drop, invisible_in_codex",,黑黑舰队,,,,,,,,,,,TRUE,9905
+,Meng_OldEmpire_axis_crimson_spike_burst,0,,,,,800,250,0,,,,,,ENERGY,0,,,,1,,,,,,,0,0,20,1000,,,SYSTEM,"restricted, no_drop, invisible_in_codex",,OldEmpire,,,,,,,,,,,,
+脉冲链炮,Meng_OldEmpire_pulse_chain_gun,2,0.5,0,450,,40,,,70,0,,,,KINETIC,9,,,0.25,,,0,5,0.45,8,,950,,,,,,,"restricted, no_drop, invisible_in_codex",,黑黑舰队,,General,,,,,,,,,,
+灵尘飞弹,Meng_OldEmpire_spirit_dust_missile,2,0.5,0,1900,,510,,,55,0,9999,,,ENERGY,86,,,3.0,,,,,,,,,285,7.6,140,,,GUIDED_POOR,"restricted, no_drop, invisible_in_codex",,黑黑舰队,,General,Medium,Good,,,,,,,,
+恒流光束,Meng_OldEmpire_continuous_flux_beam,2,0.5,0,720,651,,,,55,0,,,,ENERGY,,250,0.3,0.18,,,,,,,5000,,,,,,,,"restricted, no_drop, invisible_in_codex, beam10",,黑黑舰队,,Suppression,,,,,,,,,,
+曳迹追猎束,Meng_OldEmpire_tracer_pursuit_beam,2,0.5,0,900,,94.5,,,70,0,9999,,,ENERGY,72,,,1.05,,,,,,,,,430,3.4,140,,,GUIDED_POOR,"restricted, no_drop, invisible_in_codex",,黑黑舰队,,General,Fast,Good,,,,,,,,
+,Meng_OldEmpire_spawn_chain,,,,450,,40,,,,,,,,KINETIC,,,,,,,,,,,,950,,,,,,,"SYSTEM, restricted, no_drop, invisible_in_codex",,黑黑舰队,,,,,,,,,,,,
+,Meng_OldEmpire_spawn_chain_heavy,,,,500,,40,,,,,,,,KINETIC,,,,,,,,,,,,850,,,,,,,"SYSTEM, restricted, no_drop, invisible_in_codex",,黑黑舰队,,,,,,,,,,,,
+,Meng_OldEmpire_spawn_chain_pellet,,,,240,,38,,,,,,,,KINETIC,,,,,,,,,,,,980,,,,,,,"SYSTEM, restricted, no_drop, invisible_in_codex",,黑黑舰队,,,,,,,,,,,,
+,Meng_OldEmpire_spawn_dust,,,,950,,510,,,,,,,,ENERGY,,,,,,,,,,,,,150,7.6,140,,,,"SYSTEM, restricted, no_drop, invisible_in_codex",,黑黑舰队,,,,,,,,,,,,
+,Meng_OldEmpire_spawn_dust_heavy,,,,1050,,510,,,,,,,,ENERGY,,,,,,,,,,,,,448,8.8,220,,,,"SYSTEM, restricted, no_drop, invisible_in_codex",,黑黑舰队,,,,,,,,,,,,
+,Meng_OldEmpire_spawn_dust_cyber,,,,1200,,200,,15,30,,,,,KINETIC,,,,,,,,,,,,150,25,5,250,,,,"SYSTEM, restricted, no_drop, invisible_in_codex",,黑黑舰队,,,,,,,,,,,,
+,Meng_OldEmpire_spawn_tracer,,,,980,,94.5,,,,,,,,ENERGY,,,,,,,,,,,,,860,3.4,140,,,,"SYSTEM, restricted, no_drop, invisible_in_codex",,黑黑舰队,,,,,,,,,,,,
+,Meng_OldEmpire_spawn_tracer_heavy,,,,1100,,94.5,,,,,,,,ENERGY,,,,,,,,,,,,,920,3.8,240,,,,"SYSTEM, restricted, no_drop, invisible_in_codex",,黑黑舰队,,,,,,,,,,,,
+,Meng_OldEmpire_spawn_tracer_small,,,,820,,190,,,,,,,,ENERGY,,,,,,,,,,,,,880,3.0,70,,,,"SYSTEM, restricted, no_drop, invisible_in_codex",,黑黑舰队,,,,,,,,,,,,
+,Meng_OldEmpire_dust_cyber_payload,2,,0,1000,100,,,20,30,0,,,,KINETIC,0,,0.1,0.1,10,0.5,,,,,2400,,,,,,,,"SYSTEM, restricted, no_drop, invisible_in_codex",,,,,,,,,,,,,,
+,Meng_OldEmpire_dust_heavy_payload,2,,0,1000,510,,,,20,0,,,,ENERGY,0,,0,0.75,0.25,0.5,,,,,1000000,,,,,,,"SYSTEM, DANGEROUS","fires_one_burst, restricted, no_drop, invisible_in_codex",,,,,,,,,,,,,,
+,Meng_OldEmpire_dust_heavy_targeting,0,,1,0,0,,,0,200,0,1000,1000,,ENERGY,,0,0.01,0.01,0.01,0.01,,,,,1000000,,,,,,,,"SYSTEM, restricted, no_drop, invisible_in_codex",,,,,,,,,,,,,,

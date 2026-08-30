@@ -1,0 +1,53 @@
+{
+    "hullName":  "重型浮游炮 1-L",
+    "hullId":  "Meng_OldEmpire_float_01_l",
+    "hullSize":  "FRIGATE",
+    "spriteName":  "graphics/ships/oldempire/modules/floating_module_01_l.png",
+    "style":  "HIGH_TECH",
+    "height":  100,
+    "width":  42,
+    "center":  [
+                   21,
+                   50
+               ],
+    "builtInMods":  [
+                        "always_detaches",
+                        "phasefield"
+                    ],
+    "collisionRadius":  48,
+    "shieldCenter":  [
+                         0,
+                         0
+                     ],
+    "shieldRadius":  48,
+    "viewOffset":  0,
+    "builtInWeapons":  {"WS 001": "Meng_OldEmpire_tracer_pursuit_beam"},
+    "weaponSlots":  [
+                        {
+                            "angle":  0,
+                            "arc":  30,
+                            "id":  "WS 001",
+                            "locations":  [
+                                              22,
+                                              0
+                                          ],
+                            "mount":  "TURRET",
+                            "size":  "MEDIUM",
+                            "type":  "BUILT_IN"
+                        }
+                    ],
+    "engineSlots":  [
+
+                    ],
+    "bounds":  [
+                   48,
+                   -19,
+                   -48,
+                   -19,
+                   -48,
+                   19,
+                   48,
+                   19
+               ]
+}
+
